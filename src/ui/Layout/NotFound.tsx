@@ -1,6 +1,6 @@
 import React from "react";
 
-function Forum() {
+function NotFound() {
     return <div style={{
         display: 'flex',
         justifyContent: 'center',
@@ -10,8 +10,8 @@ function Forum() {
             fontFamily: 'sans-serif',
             fontWeight: 'bolder',
             fontSize: '4rem'
-        }}>Forum</p>
+        }}>404<br>Not Found!</br></p>
     </div>
 }
 
-export default Forum
+export default NotFound

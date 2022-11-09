@@ -7,13 +7,7 @@ import HomeController from './HomeController'
 const HomeScreen: FC<{
     homeController: HomeController,
 }> = (props) => {
-    let [data, updateData] = useState(props.homeController.getData())
-    useEffect(() => {
-        let updateDataInterval = setInterval(() => {
-            updateData(props.homeController.getData())
-        })
-        return () => clearInterval(updateDataInterval)
-    }, [])
+    let data = props.homeController.getData()
     let TitleRows = useMemo(() => {
         let ans: JSX.Element[] = []
         data.forEach((value: Film[], key: string) => {

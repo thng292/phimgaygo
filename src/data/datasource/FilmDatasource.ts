@@ -1,7 +1,7 @@
 import Film from "../model/FilmModel";
 
 
-class FilmProvider {
+class FilmDatasource {
     #FilmsDatabase: Film[] | undefined = [{
         id: 26327,
         name: 'Cho thuê vợ',
@@ -225,11 +225,7 @@ class FilmProvider {
     constructor() {
         // TODO
     }
-
-    clearDatabase() {
-        this.#FilmsDatabase = undefined
-    }
-
+    
     getFilms(category: string, numberOfResults: number = 20): Map<string, Film[]> {
         this.#FilmsDatabase = this.#FilmsDatabase ?? []
         if (category === 'all') {
@@ -242,7 +238,7 @@ class FilmProvider {
                     }
                 } else {
                     ans.set(i.category, [i])
-                    ans.get('recommed')?.push(i)                
+                    ans.get('recommend')?.push(i)                
                 }
             }
             return ans
@@ -267,4 +263,4 @@ class FilmProvider {
     }
 }
 
-export default FilmProvider
+export default FilmDatasource

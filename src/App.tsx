@@ -1,19 +1,24 @@
 import React from 'react'
 import './App.css'
-import HomeScreen from './ui/Home/HomeScreen'
-import FilmProvider from './data/provider/FilmProvider'
+import FilmDatasource from './data/datasource/FilmDatasource'
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import FilmRepo from './data/repo/FilmRepo';
+import getAllFilms from './useCases/getAllFIlms';
 import HomeController from './ui/Home/HomeController';
 
-let filmProvider = new FilmProvider()
-let homeController = new HomeController(filmProvider)
+const HomeScreen = React.lazy(() => import('./ui/Home/HomeScreen'))
+
+let filmDatasource = new FilmDatasource()
+let filmRepo = new FilmRepo(filmDatasource)
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={
-          <HomeScreen homeController={homeController} />
+          <React.Suspense fallback={<>loading</>}>
+            <HomeScreen homeController={new HomeController(new getAllFilms(filmRepo))} />
+          </React.Suspense> 
         }>
           <Route path=''></Route>
         </Route>

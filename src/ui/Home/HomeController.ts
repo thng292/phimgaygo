@@ -1,13 +1,13 @@
-import FilmProvider from "../../data/provider/FilmProvider";
 import Film from "../../data/model/FilmModel";
+import getAllFilms from '../../useCases/getAllFilms'
 
 export default class HomeController {
-    #filmProvider: FilmProvider
-    constructor(filmProvider: FilmProvider) {
-        this.#filmProvider = filmProvider
+    #getAllFilmUseCase: getAllFilms
+    constructor(getAllFilmUseCase: getAllFilms) {
+        this.#getAllFilmUseCase = getAllFilmUseCase
     }
 
     getData(): Map<string, Film[]> {
-        return this.#filmProvider.getFilms('all')
+        return this.#getAllFilmUseCase.exec(1, 5, 5)
     }
 }
