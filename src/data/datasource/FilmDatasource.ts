@@ -1,6 +1,5 @@
 import Film from "../model/FilmModel";
 
-
 class FilmDatasource {
     #FilmsDatabase: Film[] | undefined = [{
         id: 26327,
@@ -10,7 +9,7 @@ class FilmDatasource {
         year: 2022,
         directors: "Cris D'amato",
         casts: ["Caio Castro", "Thati Lopes", "Mariana Xavier"],
-        category: 'Comedy',
+        genre: 'Comedy',
         soundTracks: [
             "Rebola – Iza feat. Gloria Groove & Carlinhos Brown",
             "Let a Little Love In – Caleb Hawley",
@@ -61,7 +60,7 @@ class FilmDatasource {
         country: "Mỹ",
         directors: "Princeton Holt",
         casts: ["David Vaughn", "Irina Abraham", "Devin Fuller"],
-        category: "Comedy",
+        genre: "Comedy",
         soundTracks: ["AP", "https://embed.music.apple.com/us/album/2050-original-motion-picture-soundtrack/1491108077"],
         description: "Một người đàn ông đang đấu tranh để giữ hạnh phúc gia đình phát hiện ra một dịch vụ cung cấp một giải pháp ... sexbots.",
         availableIn: [
@@ -102,7 +101,7 @@ class FilmDatasource {
         country: "Anh",
         directors: "Eddie Sternberg",
         casts: ["Ed Skrein", "Eleanor Matsuura", "Leo Long"],
-        category: "Comedy",
+        genre: "Comedy",
         soundTracks: ["AP", "https://embed.music.apple.com/us/album/i-used-to-be-famous-soundtrack-from-the-netflix-film/1642788025"],
         year: 2022,
         availableIn: [
@@ -144,7 +143,7 @@ class FilmDatasource {
         country: "Mỹ",
         directors: "Greg Daniels",
         casts: ["Steve Carell", "Jenna Fischer", "John Krasinski"],
-        category: "Comedy",
+        genre: "Comedy",
         soundTracks: ["AP", "https://embed.music.apple.com/us/album/the-office-theme-from-tv-series-ep/439309149"],
         year: 2022,
         availableIn: [
@@ -185,7 +184,7 @@ class FilmDatasource {
         country: "Anh",
         directors: "OI Parker",
         casts: ['George Clooney', 'Sean Lynch', 'Julia Roberts'],
-        category: "Comedy",
+        genre: "Comedy",
         soundTracks: ["AP", "https://embed.music.apple.com/us/album/ticket-to-paradise-original-motion-picture-soundtrack/1642843428"],
         year: 2022,
         availableIn: [
@@ -221,23 +220,25 @@ class FilmDatasource {
         banner: "https://image.tmdb.org/t/p/original/ulyR4pWVMRtVcanoassVbmgfEPT.jpg"
     }
     ]
-    #CurrentFilm: Film | undefined = undefined
+    #Genres: string[] = [
+        'Âm nhạc', 'Bí ẩn', 'Chiến tranh', 'Chiến tranh & Chính trị', 'Chính kịch', 'Gia đình', 'Giật gân', 'Hài', 'Hành động', 'Hành động & Phiêu lưu', 'Hoạt hình', 'Kinh dị', 'Kỳ ảo', 'Lãng mạn', 'Lịch sử', 'Nói chuyện', 'Phiêu lưu', 'Phim dài kỳ', 'Tài liệu', 'Thực tế', 'Tin tức', 'Tội phạm', 'Trẻ em', 'Truyền hình', 'Viễn Tây', 'Viễn tưởng', 'Viễn tưởng & Thần thoại'
+    ]
     constructor() {
         // TODO
     }
     
-    getFilms(category: string, numberOfResults: number = 20): Map<string, Film[]> {
+    getFilms(genre: string, numberOfResults: number = 20): Map<string, Film[]> {
         this.#FilmsDatabase = this.#FilmsDatabase ?? []
-        if (category === 'all') {
+        if (genre === 'all') {
             let ans = new Map<string, Film[]>()
             ans.set('recommend', [])
             for (let i of this.#FilmsDatabase) {
-                if (ans.has(i.category)) {
-                    if ((ans.get(i.category)?.length ?? numberOfResults) < numberOfResults) {
-                        ans.get(i.category)?.push(i)
+                if (ans.has(i.genre)) {
+                    if ((ans.get(i.genre)?.length ?? numberOfResults) < numberOfResults) {
+                        ans.get(i.genre)?.push(i)
                     }
                 } else {
-                    ans.set(i.category, [i])
+                    ans.set(i.genre, [i])
                     ans.get('recommend')?.push(i)                
                 }
             }
@@ -246,14 +247,14 @@ class FilmDatasource {
         let ans: Film[] = []
         let cnt = 0;
         for (let i of this.#FilmsDatabase) {
-            if (i.category === category) {
+            if (i.genre === genre) {
                 cnt++;
                 ans.push(i);
             }
             if (cnt>=numberOfResults) break
         }
         let tmp = new Map<string, Film[]>()
-        tmp.set(category, ans)
+        tmp.set(genre, ans)
         return tmp
     }
 

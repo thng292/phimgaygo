@@ -6,6 +6,7 @@ const BigBanner: FC<{ films: Film[] }> = (props) => {
     if (props.films.length==0) return <></>
     let [currentIndex, setIndex] = useState(0)
     let [willChangeBg, setWillChangeBg] = useState(true)
+    console.log(props.films)
     useEffect(() => {
         const autoChangeBannerTimer = setInterval(() => {
                 setIndex((prevState: number) =>
@@ -49,7 +50,7 @@ const BigBanner: FC<{ films: Film[] }> = (props) => {
             length={props.films[currentIndex].length}
             year={props.films[currentIndex].year}
             imdb={props.films[currentIndex].imdbRating}
-            category={props.films[currentIndex].category}
+            genre={props.films[currentIndex].genre}
             thumbUrl={props.films[currentIndex].thumb}
             style={{
                 background: 'linear-gradient(to right, #333, #43434300)',

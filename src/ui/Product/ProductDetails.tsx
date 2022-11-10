@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import {Film} from '../../database/mockDB'
+import Film from '../../data/model/FilmModel'
 
 const ProductDetails: FC<{ product: Film }> = (props) => {
     return <div>

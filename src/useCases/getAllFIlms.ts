@@ -7,8 +7,8 @@ class getAllFilms {
         this.#filmRepo = filmRepo
     }
 
-    exec(start: number, end: number, noCategory: number): Map<string, Film[]> {
-        return this.#filmRepo.getAllFilm(start, end, noCategory)
+    exec(start: number, end: number, noGenre: number): Map<string, Film[]> {
+        return this.#filmRepo.getAllFilm(start, end, noGenre)
     }
 }
 

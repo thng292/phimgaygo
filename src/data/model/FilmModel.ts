@@ -6,7 +6,7 @@ interface Film {
     year: number,
     directors: string,
     casts: string[],
-    category: string,
+    genre: string,
     soundTracks: string[] | null,
     description: string,
     comments: {
@@ -22,10 +22,6 @@ interface Film {
     thumb: string,
     banner: string,
 };
-
-export enum FilmCategory {
-    All,
-} 
 
 export default Film;
 // <iframe allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" frameborder="0" height="450" style="width:100%;max-width:660px;overflow:hidden;background:transparent;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/album/2050-original-motion-picture-soundtrack/1491108077"></iframe>

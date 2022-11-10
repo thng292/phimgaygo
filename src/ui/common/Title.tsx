@@ -1,4 +1,4 @@
-import { Film } from '../../database/mockDB'
+import Film from '../../data/model/FilmModel'
 import React, { FC, useState } from 'react'
 
 const Title: FC<{

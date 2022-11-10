@@ -5,7 +5,7 @@ const FilmInfo: FC<{
     name: string,
     length: string,
     year: number,
-    category: string,
+    genre: string,
     desc: string,
     cast: string,
     imdb: number,
@@ -37,7 +37,7 @@ const FilmInfo: FC<{
                 }}>
                     <p className="desc fade p10">{props.year}</p>
                     <p className="desc fade p10">{props.length}</p>
-                    <p className="desc fade p10">{props.category}</p>
+                    <p className="desc fade p10">{props.genre}</p>
                     <p className="desc fade p10">{props.imdb} on IMDb</p>
                 </div>
                 <p className="p10 desc" style={{
