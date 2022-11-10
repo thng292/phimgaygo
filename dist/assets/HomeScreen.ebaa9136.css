@@ -1,0 +1,1 @@
+.disable-scrollbars::-webkit-scrollbar{background:transparent;width:0px}.disable-scrollbars{scrollbar-width:none;-ms-overflow-style:none}.title{font-size:1.8rem;font-family:sans-serif;font-weight:700;color:#fff;max-width:35vw;max-lines:1}.desc{font-family:sans-serif;font-weight:lighter;color:#fff;max-width:35vw}.fade{color:#a3a3a3!important}.p10{padding:5px 10px}
