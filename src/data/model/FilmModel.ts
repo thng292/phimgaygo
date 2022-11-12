@@ -1,29 +1,82 @@
-interface Film {
+export interface FilmOverview {
+    adult: boolean,
+    backdrop_path: string,
+    genre_ids: number[],
     id: number,
-    name: string,
-    length: string,
-    country: string,
-    year: number,
-    directors: string,
-    casts: string[],
-    genre: string,
-    soundTracks: string[] | null,
-    description: string,
-    comments: {
+    media_type: string,
+    original_language: string,
+    original_title: string,
+    overview: string
+    popularity: number
+    poster_path: string,
+    release_date: string,
+    title: string,
+    video: boolean,
+    vote_average: number,
+    vote_count: number
+}
+
+export interface FilmDiscover {
+    page: number,
+    results: FilmOverview[],
+    total_pages: number,
+    total_results: number,
+}
+
+export default interface Film {
+    adult: boolean,
+    backdrop_path: string,
+    belongs_to_collection: object,
+    budget: number,
+    genres: {
+        id: number,
+        name: string
+    },
+    homepage: string,
+    id: number,
+    imdb_id: string,
+    original_language: string,
+    original_title: string,
+    overview: string,
+    popularity: number,
+    poster_path: string,
+    production_companies: {
+        id: number,
+        logo_path: string,
         name: string,
-        content: string,
-    }
-    availableIn: {
-        variant: string,
-        price: number,
+        origin_country: string
     }[],
-    imdbRating: number,
-    trailerUrl: string,
-    thumb: string,
-    banner: string,
+    production_countries: {
+        iso_3166_1: string,
+        name: string,
+    }[],
+    release_date: string,
+    revenue: number,
+    runtime: number,
+    spoken_languages: {
+        english_name: string,
+        iso_639_w1: string,
+        name: string,
+    },
+    status: string,
+    tagline: string,
+    title: string,
+    video: boolean,
+    vote_average: number,
+    vote_count: number,
+    keywords: {
+        keywords: {
+            id: number,
+            name: string,
+        }[]
+    },
+    recommendations: FilmDiscover,
+    release_dates: object,
+    similar: FilmDiscover,
+    credits: object
 };
 
-export default Film;
+
 // <iframe allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" frameborder="0" height="450" style="width:100%;max-width:660px;overflow:hidden;background:transparent;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.music.apple.com/us/album/2050-original-motion-picture-soundtrack/1491108077"></iframe>
 
 

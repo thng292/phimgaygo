@@ -1,20 +1,21 @@
-import Film from '../../data/model/FilmModel'
+import { FilmOverview } from '../../data/model/FilmModel'
 import React, { FC, useState } from 'react'
 
 const Title: FC<{
-    film: Film,
+    film: FilmOverview,
     onPlay: (id: number) => void,
     onFavorite: (id: number) => void,
-    onInfo: (id: number) => void
+    onInfo: (id: number) => void,
+    width: string,
 }> = (props) => {
     let [hover, setHover] = useState(false)
     return (<div>
         <div style={{
             margin: '10px',
-            backgroundImage: "url('" + props.film.thumb + "')",
+            //width: '20vw',
+            backgroundImage: "url('https://image.tmdb.org/t/p/w342" + props.film.poster_path + "')",
             backgroundSize: 'contain',
             backgroundRepeat: 'no-repeat',
-            height: '40vh',
             aspectRatio: '2/3',
             borderRadius: '15px',
         }}
@@ -75,8 +76,9 @@ const Title: FC<{
             fontFamily: 'sans-serif',
             textAlign: 'center',
             width: '100%',
-            fontSize: '1.2rem'
-        }}>{props.film.name}</p>
+            fontSize: '1.2rem',
+            textOverflow: 'ellipsis'
+        }}>{props.film.title}</p>
     </div>)
 }
 

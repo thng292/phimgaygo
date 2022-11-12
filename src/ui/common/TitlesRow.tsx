@@ -1,13 +1,14 @@
 import React, { useState, FC } from 'react'
-import Film from '../../data/model/FilmModel'
+import Film, { FilmOverview } from '../../data/model/FilmModel'
 import Title from './Title'
 import './css/hideScrollber.css'
 const TitlesRow: FC<{
     title: string,
-    films: Film[],
+    films: FilmOverview[],
     onPlay: (id: number) => void,
     onFavorite: (id: number) => void,
-    onInfo: (id: number)=>void
+    onInfo: (id: number)=>void,
+    windowWidth: number,
 }> = (props) => {
     return (<>
         <p style={{
@@ -23,7 +24,7 @@ const TitlesRow: FC<{
             flexDirection: 'row',
             overflowX: 'scroll',
         }}>
-            {props.films.map((film: Film) => <Title key={film.id} film={film} onFavorite={props.onFavorite} onInfo={props.onInfo} onPlay={props.onPlay}></Title>)}
+        {props.films.map((film: FilmOverview) => <Title key={film.id} width={"" + ((props.windowWidth-60)/5)} film={film} onFavorite={props.onFavorite} onInfo={props.onInfo} onPlay={props.onPlay}></Title>)}
         </div>
     </>)
 }

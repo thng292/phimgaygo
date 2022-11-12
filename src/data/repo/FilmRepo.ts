@@ -1,28 +1,61 @@
 import FilmDatasource from '../datasource/FilmDatasource'
-import Film from '../model/FilmModel'
+import Film, { FilmDiscover, FilmOverview } from '../model/FilmModel'
+import HomeDataModel from '../../ui/Home/HomeDataModel'
 
 class FilmRepo {
-    #filmDatasource: FilmDatasource
-    #filmDataResults: { Req: string, Data: Map<string, Film[]> }[] = []
-    constructor(filmDatasource: FilmDatasource) {
-        this.#filmDatasource = filmDatasource
-        //this.getAllFilm(1, 5, 20);
+    #filmDatasource = new FilmDatasource()
+    #language = 'vi'
+    #region = 'VN'
+
+    getUpcoming(
+        page: number = 1,
+        language: string = this.#language,
+        region: string = this.#region 
+    ) {
+        return this.#filmDatasource.getUpcoming(page, language, region)
     }
 
-    #cache(req: string, data: Map<string, Film[]>) {
-        this.#filmDataResults.push({
-            Req: req,
-            Data: data
+    getNowPlaying(
+        page: number = 1,
+        language: string = this.#language,
+        region: string = this.#region 
+    ) {
+        return this.#filmDatasource.getNowPlaying(page, language, region)
+    }
+
+    getTrending(
+        timeWindow: 'day' | 'week' = 'day',
+        language: string = this.#language
+    ) {
+        return this.#filmDatasource.getTrending(timeWindow, language)
+    }
+
+    getDiscover(
+        page: number = 1,
+        sortedBy: string = 'popularity.desc',
+        includeAdult: boolean = false,
+        language: string = this.#language
+    ) {
+        return this.#filmDatasource.getDiscover(page, sortedBy, includeAdult, language)
+    }
+
+    getHomeData() {
+        return Promise.all([
+            this.getTrending(),
+            this.getNowPlaying(),
+            this.getUpcoming(),
+            this.getDiscover(),
+        ]).then((value) => {
+            return new Promise((resolve: (data: HomeDataModel) => void,
+                reject) => {
+                resolve({
+                    trending: (value[0].data as FilmDiscover).results,
+                    nowPlaying: (value[1].data as FilmDiscover).results,
+                    upcoming: (value[2].data as FilmDiscover).results,
+                    discover: (value[3].data as FilmDiscover).results,
+                })
+            })
         })
-        while (this.#filmDataResults.length > 10) this.#filmDataResults.pop()
-    }
-
-    getAllFilm(start: number, end: number, numberOfGenre: number): Map<string, Film[]> {
-        for (let i of this.#filmDataResults) {
-            if (i.Req === `genre=all&start=${start}&end=${end}&numberOfGenre=${numberOfGenre}`) return i.Data
-        }
-        this.#cache(`genre=all&start=${start}&end=${end}&numberOfGenre=${numberOfGenre}` ,this.#filmDatasource.getFilms('all'))
-        return this.#filmDataResults[this.#filmDataResults.length-1].Data
     }
 }
 

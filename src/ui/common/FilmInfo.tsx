@@ -2,14 +2,13 @@ import React, { FC } from "react"
 import './css/typography.css'
 
 const FilmInfo: FC<{
-    name: string,
-    length: string,
-    year: number,
-    genre: string,
-    desc: string,
-    cast: string,
-    imdb: number,
-    thumbUrl: string,
+    title: string,
+    original_title: string,
+    release_date: string,
+    genres: string[],
+    overview: string,
+    vote_avg: number,
+    poster_path: string,
     onClick: () => void,
     onCart: () => void,
     style: React.CSSProperties | null
@@ -21,30 +20,30 @@ const FilmInfo: FC<{
             display: 'flex',
             flexDirection: 'row',
         }}>
-            <img className="p10" src={props.thumbUrl} alt={props.name} style={{
+            <img className="p10" src={props.poster_path} alt={props.title} style={{
                 maxWidth: '20vw',
                 maxHeight: '30vh',
             }} />
             <div style={{
                 position: 'relative',
             }}>
-                <p className="title p10">{props.name}</p>
+                <p className="title p10">{props.title}</p>
                 <div style={{
                     display: "grid",
                     gridTemplateColumns: 'auto auto',
                     gridTemplateRows: 'auto auto',
                     width: 'fit-content',
                 }}>
-                    <p className="desc fade p10">{props.year}</p>
-                    <p className="desc fade p10">{props.length}</p>
-                    <p className="desc fade p10">{props.genre}</p>
-                    <p className="desc fade p10">{props.imdb} on IMDb</p>
+                    <p className="desc fade p10">{props.release_date}</p>
+                    <p className="desc fade p10">{props.vote_avg}</p>
+                    <p className="desc fade p10">{props.genres.join(', ')}</p>
+                    <p className="desc fade p10">{props.vote_avg} on IMDb</p>
                 </div>
                 <p className="p10 desc" style={{
                     maxHeight: '45px',
                     overflow: 'hidden'
-                }}>{props.desc}</p>
-                <p className="p10 desc"><span className="fade">Starring: </span>{props.cast}</p>
+                }}>{props.overview}</p>
+                <p className="p10 desc">{props.original_title}</p>
                 <button onClick={() => props.onCart()} style={{
                     background: 'linear-gradient(to right, #da22ff, #9733ee)',
                     position: 'absolute',
