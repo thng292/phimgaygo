@@ -3,15 +3,20 @@
     font-family: sans-serif;
     font-weight: bold;
     color: white;
-    max-width: 35vw;
+    max-width: 30vw;
     max-lines: 1;
+}
+
+.ogtitle {
+    font-size: 1.2rem!important;
+    font-weight: normal!important;
 }
 
 .desc {
     font-family: sans-serif;
     font-weight: lighter;
     color: white;
-    max-width: 35vw;
+    max-width: 30vw;
 }
 
 .fade {
@@ -20,4 +25,8 @@
 
 .p10 {
     padding: 5px 10px;
+}
+
+.shadow {
+    box-shadow: 0 0 10px rgb(0 0 0 / 18%);
 }

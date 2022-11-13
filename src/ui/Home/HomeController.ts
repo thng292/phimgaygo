@@ -1,4 +1,4 @@
-import Film from "../../data/model/FilmModel";
+import Film from "../../data/model/Film";
 import getAllFilms from '../../useCases/getAllFilms'
 
 export default class HomeController {

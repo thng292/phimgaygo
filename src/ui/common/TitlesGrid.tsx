@@ -1,5 +1,5 @@
-import React, { useState, FC } from 'react'
-import { FilmOverview } from '../../data/model/FilmModel'
+import React, { FC } from 'react'
+import FilmOverview from '../../data/model/FilmOverview'
 import Title from './Title'
 import './css/hideScrollber.css'
 const TitlesGrid: FC<{
@@ -20,11 +20,12 @@ const TitlesGrid: FC<{
         }}>{props.title}</p>
         <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(5, 1fr)'
+            gridTemplateColumns: 'repeat(5, 1fr)',
+            //flexWrap: 'wrap',
         }}>
             {props.films.map((val) => {
                 //console.log(val)
-                return <Title key={val.id} width={'auto'} film={val} onPlay={() => { }} onFavorite={() => { }} onInfo={() => { }}></Title>
+                return <Title key={val.id} title={val.title} posterPath={val.poster_path} onPlay={() => { }} onFavorite={() => { }} onInfo={() => { }}></Title>
             })}
         </div>
     </div>)

@@ -1,4 +1,4 @@
-import {FilmOverview} from '../../data/model/FilmModel'
+import {FilmOverview} from '../../data/model/Film'
 
 export default interface HomeDataModel {
     trending: FilmOverview[],

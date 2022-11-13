@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import './App.css'
 import {Route, Routes} from "react-router-dom";
 import SharedLayout from './ui/Layout/SharedLayout';
-import useWindowSize from "./Utils/useWindowsize";
+import convertToWinSize from "./Utils/ConvertToWinSize";
 
 const HomeScreen = React.lazy(() => import('./ui/Home/HomeScreen'))
 const About = React.lazy(() => import('./ui/About/About'))
@@ -28,13 +28,13 @@ const FAQ = React.lazy(() => import('./ui/FAQ/FAQ'))
 //}
 
 function App() {
-    let windowSize = useWindowSize()
+    
     return (
         <Routes>
             <Route path='/' element={<SharedLayout/>}>
                 <Route index element={
                     <React.Suspense fallback={<>loading</>}>
-                        <HomeScreen windowSize={windowSize}/>
+                        <HomeScreen />
                     </React.Suspense>
                 }></Route>
                 <Route path='About' element={

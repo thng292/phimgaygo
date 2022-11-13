@@ -1,5 +1,5 @@
-import React, { FC } from "react"
-import './css/typography.css'
+import React, { FC, useEffect } from "react"
+import './css/theme.css'
 
 const FilmInfo: FC<{
     title: string,
@@ -22,28 +22,28 @@ const FilmInfo: FC<{
         }}>
             <img className="p10" src={props.poster_path} alt={props.title} style={{
                 maxWidth: '20vw',
-                maxHeight: '30vh',
+                minHeight: '280px',
+                height: '30vh',
             }} />
             <div style={{
                 position: 'relative',
             }}>
                 <p className="title p10">{props.title}</p>
+                <p className="ogtitle title p10">{props.original_title}</p>
+                <p className="desc p10 fade"><span>Genres: </span>{props.genres}</p>
                 <div style={{
                     display: "grid",
                     gridTemplateColumns: 'auto auto',
                     gridTemplateRows: 'auto auto',
                     width: 'fit-content',
                 }}>
-                    <p className="desc fade p10">{props.release_date}</p>
-                    <p className="desc fade p10">{props.vote_avg}</p>
-                    <p className="desc fade p10">{props.genres.join(', ')}</p>
-                    <p className="desc fade p10">{props.vote_avg} on IMDb</p>
+                    <p className="desc fade p10"><span className="fade">Release: </span>{props.release_date}</p>
+                    <p className="desc fade p10"><span>Rating: </span>{props.vote_avg.toPrecision(2)} on <a href="https://www.themoviedb.org/">TMDB</a></p>
                 </div>
                 <p className="p10 desc" style={{
                     maxHeight: '45px',
                     overflow: 'hidden'
                 }}>{props.overview}</p>
-                <p className="p10 desc">{props.original_title}</p>
                 <button onClick={() => props.onCart()} style={{
                     background: 'linear-gradient(to right, #da22ff, #9733ee)',
                     position: 'absolute',

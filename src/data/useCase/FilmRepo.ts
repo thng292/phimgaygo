@@ -1,5 +1,7 @@
 import FilmDatasource from '../datasource/FilmDatasource'
-import Film, { FilmDiscover, FilmOverview } from '../model/FilmModel'
+import Film from '../model/Film'
+import FilmOverview from '../model/FilmOverview'
+import FilmDiscover from '../model/FilmDiscover'
 import HomeDataModel from '../../ui/Home/HomeDataModel'
 
 class FilmRepo {
@@ -56,6 +58,12 @@ class FilmRepo {
                 })
             })
         })
+    }
+
+    getGenres(
+        language: string = this.#language
+    ) {
+        return this.#filmDatasource.getGenres(language)
     }
 }
 

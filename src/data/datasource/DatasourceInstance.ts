@@ -1,8 +1,8 @@
 import axios from 'axios'
-import ApiKey from './ApiKey'
+import config from './config'
     
 const DatasourceInstance = axios.create({
-    baseURL: ApiKey.baseUrl,
+    baseURL: config.baseUrl,
     timeout: 2000,
 })
 
