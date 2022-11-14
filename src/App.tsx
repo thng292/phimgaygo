@@ -3,6 +3,8 @@ import './App.css'
 import {Route, Routes} from "react-router-dom";
 import SharedLayout from './ui/Layout/SharedLayout';
 import convertToWinSize from "./Utils/ConvertToWinSize";
+import FilmDiscover from './data/model/FilmDiscover';
+import getTrending from './data/useCase/getTrending';
 
 const HomeScreen = React.lazy(() => import('./ui/Home/HomeScreen'))
 const About = React.lazy(() => import('./ui/About/About'))
@@ -13,24 +15,23 @@ const FAQ = React.lazy(() => import('./ui/FAQ/FAQ'))
 
 //let filmRepo = new FilmRepo()
 
-//function DDdebug() {
-//  let data: FilmDiscover
-//  useEffect(() => {
-//    filmRepo.getTrending().then(val => {
-//      data = val.data as FilmDiscover
-//      let d = new Date()
-//      console.log(d.getTime(), data)
-//    })
-//  }, [])
-//  return <>
-//    <h1>Debugging</h1>
-//  </>
-//}
+function DDdebug() {
+ let data: FilmDiscover
+ useEffect(() => {
+     getTrending().then(val => {
+         console.log(val)
+     });
+ }, [])
+ return <>
+   <h1>Debugging</h1>
+ </>
+}
 
 function App() {
     
     return (
         <Routes>
+            <Route path='/debug' element={<DDdebug/>}/>
             <Route path='/' element={<SharedLayout/>}>
                 <Route index element={
                     <React.Suspense fallback={<>loading</>}>
