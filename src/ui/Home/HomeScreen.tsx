@@ -1,12 +1,7 @@
-import React, { useState, FC, useEffect, useMemo } from 'react'
-import FilmRepo from '../../data/useCase/FilmRepo'
-import FilmDiscover from '../../data/model/FilmDiscover'
-import FilmOverview from '../../data/model/FilmOverview'
+import React, { FC } from 'react'
 import TitlesGrid from '../common/TitlesGrid'
 import TitlesRow from '../common/TitlesRow'
 import BigBanner from '../common/BigBanner'
-import WindowSize from '../../Utils/windowSize'
-import Genre from '../../data/model/Genre'
 import getTrending from '../../data/useCase/Discovery/getTrending'
 import getNowPlaying from '../../data/useCase/Discovery/getNowPlaying'
 import getUpcoming from '../../data/useCase/Discovery/getUpcoming'
@@ -25,30 +20,30 @@ const HomeScreen: FC<{}> = (props) => {
         <div style={{
             maxWidth: '1400px'
         }}>
-            <BigBanner isLoading={dataTrending.isLoading} films={dataTrending.data?.results} />
+            <BigBanner films={dataTrending.data?.results} />
             <TitlesRow
                 films={dataNowplaying.data?.results}
-                isLoading={dataNowplaying.isLoading}
                 title={"Now Playing"}
                 onFavorite={() => { }}
                 onInfo={id => { }}
                 onPlay={id => { }}
+                onShowAll={() => { }}
             />
             <TitlesRow
                 title='Up Coming'
                 films={dataUpComing.data?.results}
-                isLoading={dataUpComing.isLoading}
                 onFavorite={() => { }}
                 onInfo={id => { }}
                 onPlay={id => { }}
+                onShowAll={() => { }}
             />
             <TitlesGrid
                 films={dataDiscover.data?.results}
-                isLoading={dataDiscover.isLoading}
                 title={"Discover"}
                 onFavorite={id => { }}
                 onInfo={id => { }}
                 onPlay={id => { }}
+                onShowAll={() => { }}
             />
         </div>
     </div>

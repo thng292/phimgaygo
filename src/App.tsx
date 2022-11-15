@@ -6,6 +6,7 @@ import convertToWinSize from "./Utils/ConvertToWinSize";
 import FilmDiscover from './data/model/FilmDiscover';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import config from './data/datasource/config';
+import Browse from './ui/Browse/Browse';
 
 const HomeScreen = React.lazy(() => import('./ui/Home/HomeScreen'))
 const About = React.lazy(() => import('./ui/About/About'))
@@ -45,36 +46,49 @@ function App() {
             <Routes>
                 {/* <Route path='/debug' element={<DDdebug />} /> */}
                 <Route path='/' element={<SharedLayout />}>
+
                     <Route index element={
                         <React.Suspense fallback={<>loading</>}>
                             <HomeScreen />
                         </React.Suspense>
-                    }></Route>
-                    <Route path='Auth' element={
+                    } />
+                    
+                    <Route path='browse' element={ 
+                        <React.Suspense fallback={<>Loading</>}>
+                            <Browse />
+                        </React.Suspense>
+                     } />
+
+                    <Route path='auth' element={
                         <React.Suspense fallback={<>Loading</>}>
                             <Auth />
                         </React.Suspense>
-                    }></Route>
-                    <Route path='About' element={
+                    } />
+                    
+                    <Route path='about' element={
                         <React.Suspense fallback={<>Loading</>}>
                             <About />
                         </React.Suspense>
-                    }></Route>
-                    <Route path='CheckOut' element={
+                    } />
+                    
+                    <Route path='checkcut' element={
                         <React.Suspense fallback={<>Loading</>}>
                             <CheckOut />
                         </React.Suspense>
-                    }></Route>
-                    <Route path='Contact' element={
+                    } />
+                    
+                    <Route path='contact' element={
                         <React.Suspense fallback={<>Loading</>}>
                             <Contact />
                         </React.Suspense>
-                    }></Route>
+                    } />
+                    
                     <Route path='FAQ' element={
                         <React.Suspense fallback={<>Loading</>}>
                             <FAQ />
                         </React.Suspense>
-                    }></Route>
+                    } />
+
                 </Route>
             </Routes>
         </QueryClientProvider>

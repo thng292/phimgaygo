@@ -2,14 +2,14 @@ import React, { FC, useEffect } from "react"
 import './css/theme.css'
 
 const FilmInfo: FC<{
+    id: number,
     title: string,
     original_title: string,
     release_date: string,
-    genres: string[],
+    genres: string,
     overview: string,
     vote_avg: number,
     poster_path: string,
-    isLoadingGenres: boolean,
     onClick: () => void,
     onCart: () => void,
     style: React.CSSProperties | null
@@ -33,13 +33,11 @@ const FilmInfo: FC<{
                 <p className="ogtitle title p10">{props.original_title}</p>
                 <p className="desc p10 fade"><span>Genres: </span>{props.genres}</p>
                 <div style={{
-                    display: "grid",
-                    gridTemplateColumns: 'auto auto',
-                    gridTemplateRows: 'auto auto',
-                    width: 'fit-content',
+                    display: 'flex',
+                    flexDirection: 'row',
                 }}>
                     <p className="desc fade p10"><span className="fade">Release: </span>{props.release_date}</p>
-                    <p className="desc fade p10"><span>Rating: </span>{props.vote_avg.toPrecision(2)} on <a href="https://www.themoviedb.org/">TMDB</a></p>
+                    <p className="desc fade p10"><span>Rating: </span>{props.vote_avg.toPrecision(2)} on <a href={`https://www.themoviedb.org/${props.id}`}>TMDB</a></p>
                 </div>
                 <p className="p10 desc" style={{
                     maxHeight: '45px',
