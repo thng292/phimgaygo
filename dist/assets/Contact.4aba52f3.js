@@ -1,0 +1,1 @@
+import{h as t}from"./index.0c6b3205.js";function n(){return t("div",{style:{display:"flex",justifyContent:"center",alignItems:"center"},children:t("p",{style:{fontFamily:"sans-serif",fontWeight:"bolder",fontSize:"4rem"},children:"Contact"})})}export{n as default};

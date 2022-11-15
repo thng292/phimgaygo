@@ -1,0 +1,1 @@
+import{h as e}from"./index.0c6b3205.js";function n(){return e("div",{style:{display:"flex",justifyContent:"center",alignItems:"center"},children:e("p",{style:{fontFamily:"sans-serif",fontWeight:"bolder",fontSize:"4rem"},children:"CheckOut"})})}export{n as default};
