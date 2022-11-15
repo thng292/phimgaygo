@@ -4,16 +4,17 @@ import FilmOverview from '../../data/model/FilmOverview'
 import FilmInfo from './FilmInfo'
 import './css/theme.css'
 import Genre from '../../data/model/Genre'
+import getGenres from '../../data/useCase/getGenres'
 
-const BigBanner: FC<{ films: FilmOverview[] }> = (props) => {
-    if (props.films.length == 0) return <></>
+const BigBanner: FC<{
+    films: FilmOverview[] | undefined,
+    isLoading: boolean,
+}> = (props) => {
+    if (props.isLoading || props.films === undefined) return <>Loading</>
     let [currentIndex, setIndex] = useState(0)
     let [willChangeBg, setWillChangeBg] = useState(true)
     //console.log(props.films)
-    let genres: Genre[] = []
-    useEffect(() => {
-        genres = JSON.parse(localStorage.getItem("cacheGenres") ?? "[]") as Genre[]
-    },[])
+    let genres = getGenres()
     useEffect(() => {
         const autoChangeBannerTimer = setInterval(() => {
             if (willChangeBg) {
@@ -26,7 +27,6 @@ const BigBanner: FC<{ films: FilmOverview[] }> = (props) => {
             clearInterval(autoChangeBannerTimer)
         }
     }, [willChangeBg])
-    //linear-gradient(0deg,#181818 0,hsla(0,0%,9%,.987) 1.62%,hsla(0,0%,9%,.951) 3.1%,hsla(0,0%,9%,.896) 4.5%,hsla(0,0%,9%,.825) 5.8%,hsla(0,0%,9%,.741) 7.06%,hsla(0,0%,9%,.648) 8.24%,hsla(0,0%,9%,.55) 9.42%,hsla(0,0%,9%,.45) 10.58%,hsla(0,0%,9%,.352) 11.76%,hsla(0,0%,9%,.259) 12.94%,hsla(0,0%,9%,.175) 14.2%,hsla(0,0%,9%,.104) 15.5%,hsla(0,0%,9%,.049) 16.9%,hsla(0,0%,9%,.013) 18.38%,hsla(0,0%,9%,0) 20%), 
     return <div
         className={"shadow"}
         style={{
@@ -56,19 +56,20 @@ const BigBanner: FC<{ films: FilmOverview[] }> = (props) => {
             // Arrow Button
         }
         <FilmInfo
+            isLoadingGenres={genres.isLoading}
             title={props.films[currentIndex].title}
             overview={props.films[currentIndex].overview}
             original_title={props.films[currentIndex].original_title}
             release_date={props.films[currentIndex].release_date}
             vote_avg={props.films[currentIndex].vote_average}
-            genres={props.films[currentIndex].genre_ids.map((id: number) => {
-                for (let i of genres) {
+            genres={genres.isSuccess ? props.films[currentIndex].genre_ids.map((id: number) => {
+                for (let i of genres.data?.genres) {
                     if (i.id === id) {
                         return i.name
                     }
                 }
                 return ""
-            })}
+            }).join(", ") : "Loading"}
             poster_path={config.posterUrl + props.films[currentIndex].poster_path}
             style={{
                 background: 'linear-gradient(to right, #222, #43434300)',

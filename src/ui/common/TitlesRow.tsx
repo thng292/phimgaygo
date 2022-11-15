@@ -4,11 +4,13 @@ import Title from './Title'
 import './css/hideScrollber.css'
 const TitlesRow: FC<{
     title: string,
-    films: FilmOverview[],
+    isLoading: boolean,
+    films: FilmOverview[] | undefined,
     onPlay: (id: number) => void,
     onFavorite: (id: number) => void,
     onInfo: (id: number) => void,
 }> = (props) => {
+    if (props.isLoading) return <>Loading</>
     return (<div>
         <p style={{
             color: 'white',

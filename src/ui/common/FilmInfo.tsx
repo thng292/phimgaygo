@@ -9,6 +9,7 @@ const FilmInfo: FC<{
     overview: string,
     vote_avg: number,
     poster_path: string,
+    isLoadingGenres: boolean,
     onClick: () => void,
     onCart: () => void,
     style: React.CSSProperties | null

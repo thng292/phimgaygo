@@ -4,12 +4,14 @@ import Title from './Title'
 import './css/hideScrollber.css'
 const TitlesGrid: FC<{
     title: string,
-    films: FilmOverview[],
+    films: FilmOverview[] | undefined,
+    isLoading: boolean,
     onPlay: (id: number) => void,
     onFavorite: (id: number) => void,
     onInfo: (id: number) => void
 }> = (props) => {
     //console.log("From TitlesGrid",props.films)
+    if (props.isLoading) return <>Loading</> 
     return (<div>
         <p style={{
             color: 'white',

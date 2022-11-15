@@ -4,7 +4,8 @@ import './css/theme.css'
 
 const Title: FC<{
     title: string,
-    posterPath: string
+    posterPath: string,
+    isLoading: boolean,
     onPlay: () => void,
     onFavorite: () => void,
     onInfo: () => void,
