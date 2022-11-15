@@ -7,7 +7,7 @@ class FilmDatasource {
         // TODO
     }
     //Get movies details shouldn't load the translation when the user don't need them, they are very large
-    // https://api.themoviedb.org/3/movie/550?api_key=728e0b4bf88803b54b1b501869064c0e&language=vi&append_to_response=keywords,credits,recommendations,similar,translations,release_dates
+    // https://api.themoviedb.org/3/movie/550?api_key=728e0b4bf88803b54b1b501869064c0e&language=vi&append_to_response=keywords,credits,recommendations,similar,release_dates
     //Certification lay AU
     //Lay san danh sach cac certification
     //Lay video rieng bang tieng anh

@@ -1,4 +1,4 @@
-export default interface Cast {
+export default interface Crew {
     adult: boolean;
     gender: number;
     id: number;
@@ -7,8 +7,7 @@ export default interface Cast {
     original_name: string;
     popularity: number;
     profile_path: string;
-    cast_id: number;
-    character: string;
     credit_id: string;
-    order: number;
+    department: string;
+    job: string;
 }

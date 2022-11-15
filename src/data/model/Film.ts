@@ -1,14 +1,18 @@
+import Cast from "./Cast"
+import Company from "./Company"
+import Country from "./Country"
+import Crew from "./Crew"
 import FilmDiscover from "./FilmDiscover"
-
+import Genre from "./Genre"
+import KeyWord from "./KeyWord"
+import Language from "./Language"
+import ReleaseDate from "./ReleaseDate"
 export default interface Film {
     adult: boolean,
     backdrop_path: string,
-    belongs_to_collection: object,
+    belongs_to_collection: object | null,
     budget: number,
-    genres: {
-        id: number,
-        name: string
-    },
+    genres: Genre[],
     homepage: string,
     id: number,
     imdb_id: string,
@@ -17,24 +21,12 @@ export default interface Film {
     overview: string,
     popularity: number,
     poster_path: string,
-    production_companies: {
-        id: number,
-        logo_path: string,
-        name: string,
-        origin_country: string
-    }[],
-    production_countries: {
-        iso_3166_1: string,
-        name: string,
-    }[],
+    production_companies: Company[],
+    production_countries: Country[],
     release_date: string,
     revenue: number,
     runtime: number,
-    spoken_languages: {
-        english_name: string,
-        iso_639_w1: string,
-        name: string,
-    },
+    spoken_languages: Language[],
     status: string,
     tagline: string,
     title: string,
@@ -42,15 +34,15 @@ export default interface Film {
     vote_average: number,
     vote_count: number,
     keywords: {
-        keywords: {
-            id: number,
-            name: string,
-        }[]
+        keywords: KeyWord[]
     },
     recommendations: FilmDiscover,
-    release_dates: object,
+    release_dates: ReleaseDate[],
     similar: FilmDiscover,
-    credits: object
+    credits: {
+        cast: Cast[],
+        crew: Crew[],
+    }
 };
 
 
