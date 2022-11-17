@@ -6,7 +6,7 @@ import convertToWinSize from "./Utils/ConvertToWinSize";
 import FilmDiscover from './data/model/FilmDiscover';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import config from './data/datasource/config';
-import Browse from './ui/Browse/Browse';
+import Browse from './ui/Browse/BrowseTrending';
 
 const HomeScreen = React.lazy(() => import('./ui/Home/HomeScreen'))
 const About = React.lazy(() => import('./ui/About/About'))
@@ -53,11 +53,12 @@ function App() {
                         </React.Suspense>
                     } />
                     
-                    <Route path='browse' element={ 
-                        <React.Suspense fallback={<>Loading</>}>
-                            <Browse />
-                        </React.Suspense>
-                     } />
+                    <Route path='browse'>
+                        <Route path='trending' element={ <>Browse Trending</> } />
+                        <Route path='discover' element={ <>Browse discover</> } />
+                        <Route path='upcoming' element={<>Browse upcoming</>} />
+                        <Route path='*' element={<h1>404</h1>}></Route>
+                    </Route>
 
                     <Route path='auth' element={
                         <React.Suspense fallback={<>Loading</>}>
@@ -89,6 +90,7 @@ function App() {
                         </React.Suspense>
                     } />
 
+                    <Route path='*' element={<NotFound/>}></Route>
                 </Route>
             </Routes>
         </QueryClientProvider>

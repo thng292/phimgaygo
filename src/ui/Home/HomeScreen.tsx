@@ -14,38 +14,33 @@ const HomeScreen: FC<{}> = (props) => {
     let dataUpComing = getUpcoming()
     let dataDiscover = getDiscover()
     return <div style={{
-        display: 'flex',
-        justifyContent: 'center',
+        maxWidth: '1400px'
     }}>
-        <div style={{
-            maxWidth: '1400px'
-        }}>
-            <BigBanner films={dataTrending.data?.results} />
-            <TitlesRow
-                films={dataNowplaying.data?.results}
-                title={"Now Playing"}
-                onFavorite={() => { }}
-                onInfo={id => { }}
-                onPlay={id => { }}
-                onShowAll={() => { }}
-            />
-            <TitlesRow
-                title='Up Coming'
-                films={dataUpComing.data?.results}
-                onFavorite={() => { }}
-                onInfo={id => { }}
-                onPlay={id => { }}
-                onShowAll={() => { }}
-            />
-            <TitlesGrid
-                films={dataDiscover.data?.results}
-                title={"Discover"}
-                onFavorite={id => { }}
-                onInfo={id => { }}
-                onPlay={id => { }}
-                onShowAll={() => { }}
-            />
-        </div>
+        <BigBanner films={dataTrending.data?.results} />
+        <TitlesRow
+            films={dataNowplaying.data?.results}
+            title={"Now Playing"}
+            onFavorite={() => { }}
+            onInfo={id => { }}
+            onPlay={id => { }}
+            onShowAll={() => { }}
+        />
+        <TitlesRow
+            title='Up Coming'
+            films={dataUpComing.data?.results}
+            onFavorite={() => { }}
+            onInfo={id => { }}
+            onPlay={id => { }}
+            onShowAll={() => { }}
+        />
+        <TitlesGrid
+            films={dataDiscover.data?.results}
+            title={"Discover"}
+            onFavorite={id => { }}
+            onInfo={id => { }}
+            onPlay={id => { }}
+            onShowAll={() => { }}
+        />
     </div>
 }
 

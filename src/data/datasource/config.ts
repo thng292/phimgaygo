@@ -5,9 +5,11 @@ const config = {
     backDropUrl: 'https://image.tmdb.org/t/p/w1280',
     language: "vi",
     region: "vn",
-    timeWindow: 'week' as 'day' | 'week',
+    timeWindow: 'week' as TimeWindow,
     timeLong: 1000 * 60 * 30,
     timeShort: 1000 * 60 * 4,
 }
+
+export type TimeWindow = "day" | "week"
 
 export default config

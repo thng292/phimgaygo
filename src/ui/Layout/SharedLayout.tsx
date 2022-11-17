@@ -12,7 +12,12 @@ export default function SharedLayout() {
         }}>
             NavBar
         </nav>
-        <Outlet />
+        <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+        }}>
+            <Outlet />
+        </div>
         <footer>
             Footer
         </footer>
