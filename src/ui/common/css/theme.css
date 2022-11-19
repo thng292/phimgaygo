@@ -16,7 +16,7 @@
 .desc {
     font-family: sans-serif;
     font-weight: lighter;
-    color: white;
+    color: #f9f9f9;
     width: 30vw;
     min-width: 500px;
 }
@@ -32,5 +32,21 @@
 }
 
 .shadow {
-    box-shadow: 0 0 10px rgb(0 0 0 / 18%);
+    /* box-shadow: 0 0 10px rgb(0 0 0 / 18%); */
+    box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;
+    border: 1px solid rgba(240, 46, 170, 0.4);
+}
+
+button {
+    background-color: rgb(240, 46, 170);
+    border: 0;
+    padding: 10px 15px;
+    margin: 5px;
+    width: 10vw;
+    max-width: 120px;
+    border-radius: 40px;
+}
+
+.secondary {
+    background-color: #ddd;
 }

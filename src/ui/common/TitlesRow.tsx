@@ -13,8 +13,7 @@ const TitlesRow: FC<{
     if (props.films !== undefined) {
         return (<div>
             <p
-                style={{
-                    color: 'white',
+                style={{    
                     fontFamily: 'sans-serif',
                     fontSize: '1.8rem',
                     fontWeight: 'bold',

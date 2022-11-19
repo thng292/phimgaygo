@@ -14,12 +14,17 @@ const HomeScreen: FC<{}> = (props) => {
     let dataUpComing = getUpcoming()
     let dataDiscover = getDiscover()
     return <div style={{
-        maxWidth: '1400px'
+        maxWidth: '1400px',
     }}>
-        <BigBanner films={dataTrending.data?.results} />
+        <BigBanner
+            films={dataTrending.data?.results}
+            onCart={id => { }}
+            onClick={id => { }}
+            onFavorite={id => { }}
+        />
         <TitlesRow
             films={dataNowplaying.data?.results}
-            title={"Now Playing"}
+            title={"In Theather"}
             onFavorite={() => { }}
             onInfo={id => { }}
             onPlay={id => { }}

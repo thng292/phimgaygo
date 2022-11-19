@@ -12,4 +12,8 @@ const config = {
 
 export type TimeWindow = "day" | "week"
 
+export type SortedBy = "release_date" | "popularity" | "revenue" | "vote_average" | "primary_release_date"
+
+export type Order = "asc" | "desc"
+
 export default config

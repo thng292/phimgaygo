@@ -15,7 +15,6 @@ const TitlesGrid: FC<{
         return (<div>
             <p
                 style={{
-                    color: 'white',
                     fontFamily: 'sans-serif',
                     fontSize: '1.8rem',
                     fontWeight: 'bold',
@@ -30,7 +29,7 @@ const TitlesGrid: FC<{
             }}>
                 {props.films.map((val) => {
                     //console.log(val)
-                    return <Title key={val.id} title={val.title} posterPath={val.poster_path} onPlay={() => { }} onFavorite={() => { }} onInfo={() => { }}></Title>
+                    return <Title key={val.id} title={val.title} posterPath={val.poster_path} onPlay={() => props.onPlay(val.id)} onFavorite={() => props.onFavorite(val.id)} onInfo={() => props.onInfo(val.id)}></Title>
                 })}
             </div>
         </div>)

@@ -6,11 +6,12 @@ export default function SharedLayout() {
         <nav style={{
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'space-between',
+            justifyContent: 'space-evenly',
             alignItems: 'center',
             height: '48px',
         }}>
-            NavBar
+            <Link to='/'>Home</Link>
+            <Link to='/discover/1'>Discover</Link>
         </nav>
         <div style={{
             display: 'flex',

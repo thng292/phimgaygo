@@ -3,12 +3,12 @@ import './App.css'
 import { Route, Routes } from "react-router-dom";
 import SharedLayout from './ui/Layout/SharedLayout';
 import convertToWinSize from "./Utils/ConvertToWinSize";
-import FilmDiscover from './data/model/FilmDiscover';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import config from './data/datasource/config';
-import Browse from './ui/Browse/BrowseTrending';
+import NotFound from './ui/Layout/NotFound';
 
 const HomeScreen = React.lazy(() => import('./ui/Home/HomeScreen'))
+const Discover = React.lazy(() => import('./ui/Discover/Discover'))
 const About = React.lazy(() => import('./ui/About/About'))
 const Auth = React.lazy(() => import('./ui/Auth/Auth'))
 const CheckOut = React.lazy(() => import('./ui/CheckOut/CheckOut'))
@@ -48,17 +48,16 @@ function App() {
                 <Route path='/' element={<SharedLayout />}>
 
                     <Route index element={
-                        <React.Suspense fallback={<>loading</>}>
+                        <React.Suspense fallback={<>Loading</>}>
                             <HomeScreen />
                         </React.Suspense>
                     } />
                     
-                    <Route path='browse'>
-                        <Route path='trending' element={ <>Browse Trending</> } />
-                        <Route path='discover' element={ <>Browse discover</> } />
-                        <Route path='upcoming' element={<>Browse upcoming</>} />
-                        <Route path='*' element={<h1>404</h1>}></Route>
-                    </Route>
+                    <Route path='discover/:page' element={
+                        <React.Suspense fallback={<>Loading</>}>
+                            <Discover />
+                        </React.Suspense>
+                    } />
 
                     <Route path='auth' element={
                         <React.Suspense fallback={<>Loading</>}>
