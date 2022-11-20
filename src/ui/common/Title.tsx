@@ -59,8 +59,10 @@ const Title: FC<{
             fontFamily: 'sans-serif',
             textAlign: 'center',
             width: '100%',
+            height: '2.6rem',
             fontSize: '1.2rem',
-            textOverflow: 'ellipsis'
+            textOverflow: 'ellipsis',
+            paddingTop: '10px',
         }}>{props.title}</p>
     </div>)
 }

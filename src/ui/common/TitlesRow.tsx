@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useMemo, useRef, useState } from 'react'
 import FilmOverview from '../../data/model/FilmOverview'
 import Title from './Title'
 import './css/hideScrollber.css'
@@ -13,7 +13,7 @@ const TitlesRow: FC<{
     if (props.films !== undefined) {
         return (<div>
             <p
-                style={{    
+                style={{
                     fontFamily: 'sans-serif',
                     fontSize: '1.8rem',
                     fontWeight: 'bold',
@@ -21,13 +21,12 @@ const TitlesRow: FC<{
                 }}
                 onClick={props.onShowAll}
             >{props.title}</p>
-            <div className={"disable-scrollbars"}
+            <div className={"disable-scrollbars row"}
                 style={{
-                    display: 'flex',
-                    flexDirection: 'row',
                     overflowX: 'scroll',
-                }}>
-                {props.films.map((val: FilmOverview) => <Title
+                }}
+            >
+                {props.films.map((val: FilmOverview, index: number) => <Title
                     key={val.id}
                     style={{
                         flexBasis: '20%',

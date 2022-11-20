@@ -45,6 +45,7 @@ button {
     width: 10vw;
     max-width: 120px;
     border-radius: 40px;
+    cursor: pointer;
 }
 
 .secondary {

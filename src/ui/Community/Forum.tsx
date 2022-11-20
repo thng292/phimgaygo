@@ -1,11 +1,7 @@
 import React from "react";
 
 function Forum() {
-    return <div style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-    }}>
+    return <div className='center-child'>
         <p style={{
             fontFamily: 'sans-serif',
             fontWeight: 'bolder',

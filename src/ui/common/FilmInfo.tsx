@@ -19,11 +19,10 @@ const FilmInfo: FC<{
 }> = (props) => {
     return <div style={props.style ? props.style : {}} >
         <div
+            className="row"
             style={{
                 position: "absolute",
                 bottom: '20px',
-                display: 'flex',
-                flexDirection: 'row',
                 cursor: 'pointer'
             }}
             onClick={() => props.onClick()}
@@ -39,10 +38,7 @@ const FilmInfo: FC<{
                 <p className="title p10">{props.title}</p>
                 <p className="ogtitle title p10">{props.original_title}</p>
                 <p className="desc p10 fade"><span>Genres: </span>{props.genres}</p>
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                }}>
+                <div className="row">
                     <p className="desc fade p10"><span className="fade">Release: </span>{props.release_date}</p>
                     <p className="desc fade p10"><span>Rating: </span>{props.vote_avg.toPrecision(2)} on <a href={`https://www.themoviedb.org/${props.id}`}>TMDB</a></p>
                 </div>

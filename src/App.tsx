@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import './App.css'
 import { Route, Routes } from "react-router-dom";
 import SharedLayout from './ui/Layout/SharedLayout';
@@ -14,6 +14,7 @@ const Auth = React.lazy(() => import('./ui/Auth/Auth'))
 const CheckOut = React.lazy(() => import('./ui/CheckOut/CheckOut'))
 const Contact = React.lazy(() => import('./ui/Contact/Contact'))
 const FAQ = React.lazy(() => import('./ui/FAQ/FAQ'))
+const Forum = React.lazy(() => import('./ui/Community/Forum'))
 
 //let filmRepo = new FilmRepo()
 // function DDdebug() {
@@ -52,8 +53,8 @@ function App() {
                             <HomeScreen />
                         </React.Suspense>
                     } />
-                    
-                    <Route path='discover/:page' element={
+
+                    <Route path='discover' element={
                         <React.Suspense fallback={<>Loading</>}>
                             <Discover />
                         </React.Suspense>
@@ -64,32 +65,38 @@ function App() {
                             <Auth />
                         </React.Suspense>
                     } />
-                    
+
                     <Route path='about' element={
                         <React.Suspense fallback={<>Loading</>}>
                             <About />
                         </React.Suspense>
                     } />
-                    
+
                     <Route path='checkcut' element={
                         <React.Suspense fallback={<>Loading</>}>
                             <CheckOut />
                         </React.Suspense>
                     } />
-                    
+
                     <Route path='contact' element={
                         <React.Suspense fallback={<>Loading</>}>
                             <Contact />
                         </React.Suspense>
                     } />
-                    
+
                     <Route path='FAQ' element={
                         <React.Suspense fallback={<>Loading</>}>
                             <FAQ />
                         </React.Suspense>
                     } />
 
-                    <Route path='*' element={<NotFound/>}></Route>
+                    <Route path='forum' element={
+                        <React.Suspense fallback={<>Loading</>}>
+                            <Forum />
+                        </React.Suspense>
+                    } />
+
+                    <Route path='*' element={<NotFound />}></Route>
                 </Route>
             </Routes>
         </QueryClientProvider>

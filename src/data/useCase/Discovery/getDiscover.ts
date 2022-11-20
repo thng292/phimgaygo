@@ -7,15 +7,20 @@ export default function getDiscover(
     page: number = 1,
     sortedBy: string = 'popularity.desc',
     includeAdult: boolean = false,
-    //year: number,
-    //genres: string,
-    //keywords: string,
+    year?: number,
+    genres?: string,
+    keywords?: string,
+    people?: string,
     language: string = config.language,
 ) {
-    return useQuery(["trending", { page, sortedBy, includeAdult, language }], () => 
+    let withYear = (year !== undefined) ? `&year=${year}` : ''
+    let withGenre = (genres !== undefined) ? `&with_genres=${genres}` : ''
+    let withPeople = (people !== undefined) ? `&with_people=${people}` : ''
+    let withKeyword = (keywords!==undefined) ? `&with_keywords=${keywords}` : ''
+    return useQuery(["trending", { page, sortedBy, includeAdult, language, year, genres, keywords, people }], () => 
         DatasourceInstance
             .get(
-                `/discover/movie?api_key=${config.key}&language=vi&sort_by=${sortedBy}&include_adult=${includeAdult}&page=${page}&language=${language}`, 
+                `/discover/movie?api_key=${config.key}&language=vi&sort_by=${sortedBy}&include_adult=${includeAdult}&page=${page}&language=${language}${withYear}${withPeople}${withGenre}${withKeyword}`, 
             ).then((val) => (val.data as FilmDiscover))
     , {
         cacheTime: config.timeLong,

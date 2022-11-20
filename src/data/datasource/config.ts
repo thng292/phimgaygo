@@ -4,7 +4,7 @@ const config = {
     posterUrl: 'https://image.tmdb.org/t/p/w342',
     backDropUrl: 'https://image.tmdb.org/t/p/w1280',
     language: "vi",
-    region: "vn",
+    region: "US     ",
     timeWindow: 'week' as TimeWindow,
     timeLong: 1000 * 60 * 30,
     timeShort: 1000 * 60 * 4,
@@ -12,7 +12,7 @@ const config = {
 
 export type TimeWindow = "day" | "week"
 
-export type SortedBy = "release_date" | "popularity" | "revenue" | "vote_average" | "primary_release_date"
+export type SortedBy = "release_date" | "popularity" | "revenue" | "vote_average"
 
 export type Order = "asc" | "desc"
 
