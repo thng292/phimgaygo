@@ -1,26 +1,19 @@
 import React, { FC } from 'react'
 import FilmOverview from '../../data/model/FilmOverview'
 import Title from './Title'
-import './css/hideScrollber.css'
+
 const TitlesGrid: FC<{
     title: string,
     films: FilmOverview[] | undefined,
     onPlay: (id: number) => void,
     onFavorite: (id: number) => void,
     onInfo: (id: number) => void,
-    onShowAll: () => void,
 }> = (props) => {
     //console.log("From TitlesGrid",props.films)
     if (props.films !== undefined) {
         return (<div>
             <p
-                style={{
-                    fontFamily: 'sans-serif',
-                    fontSize: '1.8rem',
-                    fontWeight: 'bold',
-                    padding: '10px 20px'
-                }}
-                onClick={props.onShowAll}
+                className='category'
             >{props.title}</p>
             <div style={{
                 display: 'grid',

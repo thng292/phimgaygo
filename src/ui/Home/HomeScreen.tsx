@@ -6,6 +6,9 @@ import getTrending from '../../data/useCase/Discovery/getTrending'
 import getNowPlaying from '../../data/useCase/Discovery/getNowPlaying'
 import getUpcoming from '../../data/useCase/Discovery/getUpcoming'
 import getDiscover from '../../data/useCase/Discovery/getDiscover'
+import SeeMoreBtn from '../common/SeeMoreBtn'
+import { useNavigate } from 'react-router-dom'
+import FilmOverview from '../../data/model/FilmOverview'
 
 
 const HomeScreen: FC<{}> = (props) => {
@@ -13,6 +16,7 @@ const HomeScreen: FC<{}> = (props) => {
     let dataNowplaying = getNowPlaying()
     let dataUpComing = getUpcoming()
     let dataDiscover = getDiscover()
+    const navigate = useNavigate()
     return <div style={{
         maxWidth: '1400px',
     }}>
@@ -28,7 +32,6 @@ const HomeScreen: FC<{}> = (props) => {
             onFavorite={() => { }}
             onInfo={id => { }}
             onPlay={id => { }}
-            onShowAll={() => { }}
         />
         <TitlesRow
             title='Up Coming'
@@ -36,7 +39,6 @@ const HomeScreen: FC<{}> = (props) => {
             onFavorite={() => { }}
             onInfo={id => { }}
             onPlay={id => { }}
-            onShowAll={() => { }}
         />
         <TitlesGrid
             films={dataDiscover.data?.results}
@@ -44,8 +46,10 @@ const HomeScreen: FC<{}> = (props) => {
             onFavorite={id => { }}
             onInfo={id => { }}
             onPlay={id => { }}
-            onShowAll={() => { }}
         />
+        <div className="center-child">
+            <SeeMoreBtn onClick={()=>navigate('/discover')} isLoading={false} />
+        </div>
     </div>
 }
 

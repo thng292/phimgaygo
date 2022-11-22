@@ -1,32 +1,26 @@
-import React, { FC, useMemo, useRef, useState } from 'react'
+import { FC } from 'react'
 import FilmOverview from '../../data/model/FilmOverview'
 import Title from './Title'
-import './css/hideScrollber.css'
+
 const TitlesRow: FC<{
     title: string,
     films: FilmOverview[] | undefined,
     onPlay: (id: number) => void,
     onFavorite: (id: number) => void,
     onInfo: (id: number) => void,
-    onShowAll: () => void,
 }> = (props) => {
     if (props.films !== undefined) {
         return (<div>
             <p
-                style={{
-                    fontFamily: 'sans-serif',
-                    fontSize: '1.8rem',
-                    fontWeight: 'bold',
-                    padding: '10px 20px'
-                }}
-                onClick={props.onShowAll}
+                className='category'
             >{props.title}</p>
             <div className={"disable-scrollbars row"}
                 style={{
                     overflowX: 'scroll',
+                    overflowY: 'hidden'
                 }}
             >
-                {props.films.map((val: FilmOverview, index: number) => <Title
+                {props.films.map((val: FilmOverview) => <Title
                     key={val.id}
                     style={{
                         flexBasis: '20%',

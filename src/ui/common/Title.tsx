@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react'
 import config from '../../data/datasource/config'
-import './css/theme.css'
-import SVG_Favorite from './svg/SVG_Favorite'
+import SVG_AddToCard from './svg/SVG_AddToCart'
 import SVG_Info from './svg/SVG_Info'
 import SVG_Play from './svg/SVG_Play'
 
@@ -15,7 +14,10 @@ const Title: FC<{
 }> = (props) => {
     let [hover, setHover] = useState(false)
     //console.log(props.width)
-    return (<div style={props.style}>
+    return (<div
+        style={props.style}
+    >
+
         <div
             className={"shadow"}
             style={{
@@ -32,28 +34,36 @@ const Title: FC<{
             }}
             onMouseLeave={() => {
                 setHover(false)
-            }}>
-            {hover ? (<div style={{
+            }}
+        >
+            {hover ? <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                backgroundColor: '#00000077',
                 width: '100%',
                 height: '100%',
-                display: 'flex',
+                borderRadius: '15px',
                 justifyContent: 'center',
                 alignItems: 'center',
-                flexDirection: 'column',
-                borderRadius: '15px',
-                backgroundColor: '#00000077',
             }}>
-                <button onClick={() => props.onPlay()}>
+                <button
+                    onClick={() => props.onPlay()}
+                >
                     <SVG_Play />
                 </button>
-                <button onClick={() => props.onFavorite()} className="secondary">
-                    <SVG_Favorite />
+                <button
+                    onClick={() => props.onFavorite()}
+                    className="secondary"
+                >
+                    <SVG_AddToCard />
                 </button>
-                <button onClick={() => props.onInfo()} className="secondary">
+                <button
+                    onClick={() => props.onInfo()}
+                    className="secondary"
+                >
                     <SVG_Info />
                 </button>
-
-            </div>) : ""}
+            </div> : ''}
         </div>
         <p style={{
             fontFamily: 'sans-serif',

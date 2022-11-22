@@ -1,3 +1,7 @@
+:root {
+    --ternary: rgba(255, 74, 183, 0.9)
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -21,9 +25,131 @@ a {
     flex-direction: row;
 }
 
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
 .center-child {
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
+.text-bold {
+    font-weight: bold;
+}
+
+.disable-scrollbars::-webkit-scrollbar {
+    background: transparent; /* Chrome/Safari/Webkit */
+    width: 0px;
+}
+
+.disable-scrollbars {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+}
+
+.logo {
+    background: #f953c6;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #b91d73, #f953c6);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #b91d73, #f953c6);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    /* font-stretch: semi-condensed; */
+}
+
+.title {
+    font-size: 1.8rem;
+    font-family: sans-serif;
+    font-weight: bold;
+    color: white;
+    width: 30vw;
+    min-width: 500px;
+    max-lines: 1;
+}
+
+.ogtitle {
+    font-size: 1.2rem!important;
+    font-weight: normal!important;
+}
+
+.desc {
+    font-family: sans-serif;
+    font-weight: lighter;
+    color: #f9f9f9;
+    width: 30vw;
+    min-width: 500px;
+}
+
+.fade {
+    color: #a3a3a3!important;
+    min-width: 0px!important;
+    width: auto!important;
+}
+
+.p10 {
+    padding: 5px 10px;
+}
+
+.shadow {
+    /* box-shadow: 0 0 10px rgb(0 0 0 / 18%); */
+    box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;
+    border: 1px solid rgba(240, 46, 170, 0.4);
+}
+
+button {
+    background-color: var(--ternary);
+    border: 0;
+    padding: 10px 15px;
+    margin: 5px;
+    width: 10vw;
+    max-width: 120px;
+    border-radius: 40px;
+    cursor: pointer;
+}
+
+.secondary {
+    background-color: #ddd;
+}
+
+.outlinebtn {
+    border: 3px solid rgba(240, 46, 170, 0.4);
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100px;
+}
+
+.category {
+    font-family: sans-serif;
+    font-size: 1.8rem;
+    font-weight: bold;
+    padding: 10px 20px;
+}
+
+input[type="checkbox"] {
+    padding: 5px;
+}
+
+input[type="checkbox"]:checked {
+    background-color: var(--ternary);
+}
+
+select {
+    margin: 5px;
+    padding: 5px;
+    border: 3px solid rgba(240, 46, 170, 0.4);
+    border-radius: 40px;
+}
+
+.cart {
+    margin-right: 20px;
+    margin-left: 10px;
+    padding: 6px 20px;
+    width: fit-content;
+}

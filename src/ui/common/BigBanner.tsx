@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from 'react'
 import config from '../../data/datasource/config'
 import FilmOverview from '../../data/model/FilmOverview'
 import FilmInfo from './FilmInfo'
-import './css/theme.css'
+
 import getGenres from '../../data/useCase/getGenres'
 
 const BigBanner: FC<{

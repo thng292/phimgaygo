@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Outlet, Link, useNavigate } from 'react-router-dom'
+import CartItem from '../../data/model/CartItem'
+import FilmOverview from '../../data/model/FilmOverview'
 import Logo from '../common/Logo'
+import SVG_Cart from '../common/svg/SVG_Cart'
 import SVG_Search from '../common/svg/SVG_Search'
+import CartCard from './CartCard'
 
 const linkStyle: React.CSSProperties = {
     width: '100px',
@@ -9,17 +13,10 @@ const linkStyle: React.CSSProperties = {
     fontWeight: 'bold',
 }
 
-const outLinedBtn: React.CSSProperties = {
-    border: '3px solid rgba(240, 46, 170, 0.4)',
-    borderRadius: '40px',
-    cursor: 'pointer',
-    fontWeight: 'bold',
-    width: '100px',
-
-}
-
 export default function SharedLayout() {
     let navigate = useNavigate()
+    const [cart, updateCart] = useState<CartItem<FilmOverview>[]>([])
+    const [cartVisibility, changeCartVisibility] = useState(false)
     return (<>
         <nav
             className='row center-child'
@@ -45,11 +42,10 @@ export default function SharedLayout() {
                         cursor: 'pointer',
                         userSelect: 'none',
                     }}
-                    onClick={() => navigate('/')}
+                    onClick={() => navigate('/', {  })}
                 >
                     <Logo />
-                    <div className='row center-child' style={{
-                        ...outLinedBtn,
+                    <div className='row center-child outlinebtn' style={{
                         padding: '5px',
                         marginLeft: '20px'
                     }}>
@@ -58,12 +54,18 @@ export default function SharedLayout() {
                     </div>
                 </div>
                 <div className='row center-child'>
-                    <Link className='center-child' style={linkStyle} to='/discover'><p>Discover</p></Link>
-                    <Link className='center-child' style={linkStyle} to='/forum'><p>Forum</p></Link>
+                    <Link className='center-child' style={linkStyle} to='/discover' reloadDocument><p>Discover</p></Link>
+                    <Link className='center-child' style={linkStyle} to='/forum' reloadDocument><p>Forum</p></Link>
+                    <Link className='center-child' style={linkStyle} to='/about' reloadDocument><p>About Us</p></Link>
                     <div
-                        className='row center-child' style={{
-                            ...outLinedBtn,
-                            height: '38px'
+                        className="outlinebtn center-child cart"
+                        onClick={() => changeCartVisibility(true)}
+                    >
+                        <SVG_Cart />
+                    </div>
+                    <div
+                        className='row center-child outlinebtn' style={{
+                            height: '38px',
                         }}
                     //onClick={() => navigate()}
                     >
@@ -77,6 +79,7 @@ export default function SharedLayout() {
             justifyContent: 'center',
             marginTop: '60px'
         }}>
+            Contex
             <Outlet />
         </div>
         <footer>

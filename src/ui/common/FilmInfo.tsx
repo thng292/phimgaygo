@@ -1,5 +1,5 @@
 import React, { FC } from "react"
-import './css/theme.css'
+
 import SVG_AddToCart from "./svg/SVG_AddToCart"
 import SVG_Favorite from "./svg/SVG_Favorite"
 

@@ -16,15 +16,16 @@ export default function getDiscover(
     let withYear = (year !== undefined) ? `&year=${year}` : ''
     let withGenre = (genres !== undefined) ? `&with_genres=${genres}` : ''
     let withPeople = (people !== undefined) ? `&with_people=${people}` : ''
-    let withKeyword = (keywords!==undefined) ? `&with_keywords=${keywords}` : ''
-    return useQuery(["trending", { page, sortedBy, includeAdult, language, year, genres, keywords, people }], () => 
+    let withKeyword = (keywords !== undefined) ? `&with_keywords=${keywords}` : ''
+    // console.log("Query: ", `/discover/movie?api_key=${config.key}&language=vi&sort_by=${sortedBy}&include_adult=${includeAdult}&page=${page}&language=${language}${withYear}${withPeople}${withGenre}${withKeyword}`)
+    return useQuery(["trending", { page, sortedBy, includeAdult, language, year, genres, keywords, people }], () =>
         DatasourceInstance
             .get(
-                `/discover/movie?api_key=${config.key}&language=vi&sort_by=${sortedBy}&include_adult=${includeAdult}&page=${page}&language=${language}${withYear}${withPeople}${withGenre}${withKeyword}`, 
+                `/discover/movie?api_key=${config.key}&language=vi&sort_by=${sortedBy}&include_adult=${includeAdult}&page=${page}&language=${language}${withYear}${withPeople}${withGenre}${withKeyword}`,
             ).then((val) => (val.data as FilmDiscover))
-    , {
-        cacheTime: config.timeLong,
-        refetchOnMount: true,
-        staleTime: config.timeLong,
-    })
+        , {
+            cacheTime: config.timeLong,
+            refetchOnMount: true,
+            staleTime: config.timeLong,
+        })
 }
