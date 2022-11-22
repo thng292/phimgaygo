@@ -1,0 +1,1 @@
+import{h as e}from"./index.497a1cfc.js";function n(){return e("div",{style:{display:"flex",justifyContent:"center",alignItems:"center"},children:e("p",{style:{fontFamily:"sans-serif",fontWeight:"bolder",fontSize:"4rem"},children:"FAQ"})})}export{n as default};

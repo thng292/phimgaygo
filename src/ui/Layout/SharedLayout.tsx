@@ -16,6 +16,19 @@ const linkStyle: React.CSSProperties = {
 export default function SharedLayout() {
     let navigate = useNavigate()
     const [cart, updateCart] = useState<CartItem<FilmOverview>[]>([])
+    const addItemToCart = (item: FilmOverview, price: number, quantity: number = 1) => {
+        updateCart(old => [...old, {
+            mainItem: item,
+            quantity: quantity,
+            price: price
+        }])
+    }
+    const removeItemFormCart = (id: number) => {
+        let tmp = cart.map(val => val)
+        tmp.splice(tmp.findIndex(val => (val.mainItem.id === id)), 1)
+        updateCart(tmp)
+    }
+    const AddToCartContext = React.createContext(addItemToCart)
     const [cartVisibility, changeCartVisibility] = useState(false)
     return (<>
         <nav
@@ -42,7 +55,7 @@ export default function SharedLayout() {
                         cursor: 'pointer',
                         userSelect: 'none',
                     }}
-                    onClick={() => navigate('/', {  })}
+                    onClick={() => navigate('/', {})}
                 >
                     <Logo />
                     <div className='row center-child outlinebtn' style={{
@@ -79,8 +92,7 @@ export default function SharedLayout() {
             justifyContent: 'center',
             marginTop: '60px'
         }}>
-            Contex
-            <Outlet />
+            <Outlet context={addItemToCart} />
         </div>
         <footer>
             Footer

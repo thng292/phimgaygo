@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useContext } from 'react'
 import TitlesGrid from '../common/TitlesGrid'
 import TitlesRow from '../common/TitlesRow'
 import BigBanner from '../common/BigBanner'
@@ -7,11 +7,12 @@ import getNowPlaying from '../../data/useCase/Discovery/getNowPlaying'
 import getUpcoming from '../../data/useCase/Discovery/getUpcoming'
 import getDiscover from '../../data/useCase/Discovery/getDiscover'
 import SeeMoreBtn from '../common/SeeMoreBtn'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useOutletContext } from 'react-router-dom'
 import FilmOverview from '../../data/model/FilmOverview'
 
 
 const HomeScreen: FC<{}> = (props) => {
+    let AddToCart = useOutletContext()
     let dataTrending = getTrending()
     let dataNowplaying = getNowPlaying()
     let dataUpComing = getUpcoming()
@@ -22,7 +23,7 @@ const HomeScreen: FC<{}> = (props) => {
     }}>
         <BigBanner
             films={dataTrending.data?.results}
-            onCart={id => { }}
+            onCart={id => { AddToCart(id); console.log("Added to cart: ",id)}}
             onClick={id => { }}
             onFavorite={id => { }}
         />
