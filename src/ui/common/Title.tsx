@@ -36,7 +36,7 @@ const Title: FC<{
                 setHover(false)
             }}
         >
-            {hover ? <div style={{
+            <div style={{
                 display: 'flex',
                 flexDirection: 'column',
                 backgroundColor: '#00000077',
@@ -45,6 +45,8 @@ const Title: FC<{
                 borderRadius: '15px',
                 justifyContent: 'center',
                 alignItems: 'center',
+                transition: '.2s ease-in-out',
+                opacity: hover ? '100%' : '0%'
             }}>
                 <button
                     onClick={() => props.onPlay()}
@@ -63,7 +65,7 @@ const Title: FC<{
                 >
                     <SVG_Info />
                 </button>
-            </div> : ''}
+            </div>
         </div>
         <p style={{
             fontFamily: 'sans-serif',

@@ -6,7 +6,7 @@ const TitlesRow: FC<{
     title: string,
     films: FilmOverview[] | undefined,
     onPlay: (id: number) => void,
-    onFavorite: (id: number) => void,
+    onCart: (id: FilmOverview) => void,
     onInfo: (id: number) => void,
 }> = (props) => {
     if (props.films !== undefined) {
@@ -28,7 +28,7 @@ const TitlesRow: FC<{
                     }}
                     title={val.title}
                     posterPath={val.poster_path}
-                    onFavorite={() => props.onFavorite(val.id)}
+                    onFavorite={() => props.onCart(val)}
                     onInfo={() => props.onInfo(val.id)}
                     onPlay={() => props.onPlay(val.id)}
                 />)}

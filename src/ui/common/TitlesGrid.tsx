@@ -6,7 +6,7 @@ const TitlesGrid: FC<{
     title: string,
     films: FilmOverview[] | undefined,
     onPlay: (id: number) => void,
-    onFavorite: (id: number) => void,
+    onCart: (id: FilmOverview) => void,
     onInfo: (id: number) => void,
 }> = (props) => {
     //console.log("From TitlesGrid",props.films)
@@ -22,7 +22,7 @@ const TitlesGrid: FC<{
             }}>
                 {props.films.map((val) => {
                     //console.log(val)
-                    return <Title key={val.id} title={val.title} posterPath={val.poster_path} onPlay={() => props.onPlay(val.id)} onFavorite={() => props.onFavorite(val.id)} onInfo={() => props.onInfo(val.id)}></Title>
+                    return <Title key={val.id} title={val.title} posterPath={val.poster_path} onPlay={() => props.onPlay(val.id)} onFavorite={() => props.onCart(val)} onInfo={() => props.onInfo(val.id)}></Title>
                 })}
             </div>
         </div>)

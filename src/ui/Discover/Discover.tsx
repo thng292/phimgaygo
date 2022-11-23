@@ -1,14 +1,15 @@
-import React, { FC, useState, useEffect, ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
+import { FC, useState, useEffect } from "react";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { Order, SortedBy } from "../../data/datasource/config";
 import getDiscover from "../../data/useCase/Discovery/getDiscover";
 import TitlesGrid from "../common/TitlesGrid";
 import getGenres from "../../data/useCase/getGenres";
-import Genre from "../../data/model/Genre";
 import FilmOverview from "../../data/model/FilmOverview";
 import ToTopBtn from "../common/ToTopBtn";
 import SeeMoreBtn from "../common/SeeMoreBtn";
 import PageIndicator from "../common/PageIndicator";
+import ContextProps from "../Layout/ContextProps";
+import price from "../../data/datasource/price";
 
 const dayTime = new Date()
 
@@ -23,6 +24,7 @@ function yearOptions() {
 }
 
 const Discover: FC<{}> = () => {
+    let { addItemToCart } = useOutletContext<ContextProps>()
     const [adult, setAdult] = useState(false)
     const [sortedBy, setSortedBy] = useState<SortedBy>('popularity')
     const [order, setOrder] = useState<Order>("desc")
@@ -72,7 +74,6 @@ const Discover: FC<{}> = () => {
         if (genre.find(curr => curr === id) === undefined) {
             setGenre(old => [...old, id])
         } else {
-            //TODO: remove from selected genre list
             setGenre(old => {
                 let tmp = old.map(val => val)
                 tmp.splice(tmp.findIndex(curr => curr === id), 1)
@@ -189,7 +190,8 @@ const Discover: FC<{}> = () => {
         <TitlesGrid
             title="Discover"
             films={films}
-            onFavorite={id => { }}
+            //TODO: Need to change [price]
+            onCart={item => { addItemToCart(item, price.FullHD, 1) }}
             onInfo={id => { }}
             onPlay={id => { }}
         />

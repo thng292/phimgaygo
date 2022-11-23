@@ -1,7 +1,7 @@
 import React, { FC } from "react"
 
 import SVG_AddToCart from "./svg/SVG_AddToCart"
-import SVG_Favorite from "./svg/SVG_Favorite"
+import SVG_Info from "./svg/SVG_Info"
 
 const FilmInfo: FC<{
     id: number,
@@ -14,7 +14,6 @@ const FilmInfo: FC<{
     poster_path: string,
     onClick: () => void,
     onCart: () => void,
-    onFavorite: () => void,
     style: React.CSSProperties | null
 }> = (props) => {
     return <div style={props.style ? props.style : {}} >
@@ -23,10 +22,8 @@ const FilmInfo: FC<{
             style={{
                 position: "absolute",
                 bottom: '20px',
-                cursor: 'pointer'
             }}
-            onClick={() => props.onClick()}
-        >
+            >
             <img className="p10" src={props.poster_path} alt={props.title} style={{
                 maxWidth: '20vw',
                 minHeight: '280px',
@@ -54,8 +51,11 @@ const FilmInfo: FC<{
                     <button onClick={() => props.onCart()} >
                         <SVG_AddToCart />
                     </button>
-                    <button className="secondary">
-                        <SVG_Favorite />
+                    <button
+                        className="secondary"
+                        onClick={props.onClick}
+                    >
+                        <SVG_Info />
                     </button>
                 </div>
             </div>

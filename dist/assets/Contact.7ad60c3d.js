@@ -1,1 +1,0 @@
-import{h as t}from"./index.497a1cfc.js";function n(){return t("div",{style:{display:"flex",justifyContent:"center",alignItems:"center"},children:t("p",{style:{fontFamily:"sans-serif",fontWeight:"bolder",fontSize:"4rem"},children:"Contact"})})}export{n as default};

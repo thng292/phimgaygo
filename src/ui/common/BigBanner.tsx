@@ -8,8 +8,7 @@ import getGenres from '../../data/useCase/getGenres'
 const BigBanner: FC<{
     films: FilmOverview[] | undefined,
     onClick: (id: number) => void;
-    onCart: (id: number) => void;
-    onFavorite: (id: number) => void;
+    onCart: (id: FilmOverview) => void;
 }> = (props) => {
     if (props.films !== undefined) {
         let [currentIndex, setIndex] = useState(0)
@@ -79,8 +78,7 @@ const BigBanner: FC<{
                     padding: '0 60px',
                 }}
                 onClick={() => props.onClick(currFilm.id)}
-                onCart={() => props.onCart(currFilm.id)}
-                onFavorite={() => props.onFavorite(currFilm.id)}
+                onCart={() => props.onCart(currFilm)}
             />
 
         </div>

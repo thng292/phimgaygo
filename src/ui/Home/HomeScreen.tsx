@@ -9,42 +9,44 @@ import getDiscover from '../../data/useCase/Discovery/getDiscover'
 import SeeMoreBtn from '../common/SeeMoreBtn'
 import { useNavigate, useOutletContext } from 'react-router-dom'
 import FilmOverview from '../../data/model/FilmOverview'
+import price from '../../data/datasource/price'
+import ContextProps from '../Layout/ContextProps'
 
 
-const HomeScreen: FC<{}> = (props) => {
-    let AddToCart = useOutletContext()
+const HomeScreen: FC<{}> = () => {
+    let { addItemToCart } = useOutletContext<ContextProps>()
     let dataTrending = getTrending()
     let dataNowplaying = getNowPlaying()
     let dataUpComing = getUpcoming()
     let dataDiscover = getDiscover()
     const navigate = useNavigate()
+    //TODO: Need to change: [Price]
     return <div style={{
         maxWidth: '1400px',
     }}>
         <BigBanner
             films={dataTrending.data?.results}
-            onCart={id => { AddToCart(id); console.log("Added to cart: ",id)}}
+            onCart={item => { addItemToCart(item, price.FullHD, 1); console.log("Added to cart: ",item.title)}}
             onClick={id => { }}
-            onFavorite={id => { }}
         />
         <TitlesRow
             films={dataNowplaying.data?.results}
             title={"In Theather"}
-            onFavorite={() => { }}
+            onCart={item => { addItemToCart(item, price.FullHD, 1); console.log("Added to cart: ", item.title) }}
             onInfo={id => { }}
             onPlay={id => { }}
         />
         <TitlesRow
             title='Up Coming'
             films={dataUpComing.data?.results}
-            onFavorite={() => { }}
+            onCart={item => { addItemToCart(item, price.FullHD, 1); console.log("Added to cart: ",item.title) }}
             onInfo={id => { }}
             onPlay={id => { }}
         />
         <TitlesGrid
             films={dataDiscover.data?.results}
             title={"Discover"}
-            onFavorite={id => { }}
+            onCart={item => { addItemToCart(item, price.FullHD, 1); console.log("Added to cart: ",item.title) }}
             onInfo={id => { }}
             onPlay={id => { }}
         />

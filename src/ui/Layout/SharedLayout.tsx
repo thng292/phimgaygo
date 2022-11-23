@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Outlet, Link, useNavigate } from 'react-router-dom'
 import CartItem from '../../data/model/CartItem'
 import FilmOverview from '../../data/model/FilmOverview'
+import ProductOption from '../../data/model/ProductOption'
 import Logo from '../common/Logo'
 import SVG_Cart from '../common/svg/SVG_Cart'
 import SVG_Search from '../common/svg/SVG_Search'
@@ -16,20 +17,52 @@ const linkStyle: React.CSSProperties = {
 export default function SharedLayout() {
     let navigate = useNavigate()
     const [cart, updateCart] = useState<CartItem<FilmOverview>[]>([])
-    const addItemToCart = (item: FilmOverview, price: number, quantity: number = 1) => {
-        updateCart(old => [...old, {
-            mainItem: item,
-            quantity: quantity,
-            price: price
-        }])
+    //TODO: Fix duplicate item
+    const cartLogic = {
+        addItemToCart: (item: FilmOverview, price: number, quantity: number = 1, productOptions: ProductOption[] = []) => {
+            let tmp = cart.findIndex((val) => val.mainItem.id === item.id)
+            if (tmp != -1) {
+                let tmpCart = cart.map(val => val)
+                tmpCart[tmp].quantity++
+                updateCart(tmpCart)
+            } else {
+                updateCart(old => [...old, {
+                    mainItem: item,
+                    quantity: quantity,
+                    price: price,
+                    productOptions,
+                }])
+            }
+
+        },
+        removeItemFormCart: (id: number) => {
+            let tmp = cart.map(val => val)
+            tmp.splice(tmp.findIndex(val => (val.mainItem.id === id)), 1)
+            updateCart(tmp)
+        },
+        changeQuantity: (id: number, newQuantity: number) => {
+            let tmp = cart.map(val => val)
+            tmp[tmp.findIndex(val => (val.mainItem.id === id))].quantity = newQuantity
+            updateCart(tmp)
+        },
+
+        removeAllItem: () => {
+            updateCart([])
+            localStorage.setItem("Cart", JSON.stringify([]))
+        }
+
     }
-    const removeItemFormCart = (id: number) => {
-        let tmp = cart.map(val => val)
-        tmp.splice(tmp.findIndex(val => (val.mainItem.id === id)), 1)
-        updateCart(tmp)
-    }
-    const AddToCartContext = React.createContext(addItemToCart)
     const [cartVisibility, changeCartVisibility] = useState(false)
+    useEffect(() => {
+        updateCart(JSON.parse(localStorage.getItem("Cart") ?? '[]') as CartItem<FilmOverview>[])
+        // console.log("Restoring Cart")
+        // console.table(JSON.parse(localStorage.getItem("Cart") ?? '[]'))
+    }, [])
+    useEffect(() => {
+        if (cart.length) {
+            localStorage.setItem("Cart", JSON.stringify(cart))
+        }
+    }, [cart])
     return (<>
         <nav
             className='row center-child'
@@ -67,13 +100,27 @@ export default function SharedLayout() {
                     </div>
                 </div>
                 <div className='row center-child'>
-                    <Link className='center-child' style={linkStyle} to='/discover' reloadDocument><p>Discover</p></Link>
-                    <Link className='center-child' style={linkStyle} to='/forum' reloadDocument><p>Forum</p></Link>
-                    <Link className='center-child' style={linkStyle} to='/about' reloadDocument><p>About Us</p></Link>
+                    <Link className='center-child' style={linkStyle} to='/discover'><p>Discover</p></Link>
+                    <Link className='center-child' style={linkStyle} to='/forum'><p>Forum</p></Link>
+                    <Link className='center-child' style={linkStyle} to='/about'><p>About Us</p></Link>
                     <div
                         className="outlinebtn center-child cart"
-                        onClick={() => changeCartVisibility(true)}
+                        onClick={() => changeCartVisibility(old => !old)}
                     >
+                        {cartVisibility ?
+                            <CartCard
+                                listItem={cart}
+                                onClose={() => changeCartVisibility(false)}
+                                changeQuantityHandler={cartLogic.changeQuantity}
+                                removeItemHandler={cartLogic.removeItemFormCart}
+                                clearAllItemHandler={cartLogic.removeAllItem}
+                                onProductClicked={() => { }}
+                                onCheckout={() => { }}
+                            />
+                            : ''}
+                        {cart.length ? <div className='noti-dot center-child'>
+                            {cart.length}
+                        </div> : ''}
                         <SVG_Cart />
                     </div>
                     <div
@@ -92,7 +139,7 @@ export default function SharedLayout() {
             justifyContent: 'center',
             marginTop: '60px'
         }}>
-            <Outlet context={addItemToCart} />
+            <Outlet context={{ addItemToCart: cartLogic.addItemToCart }} />
         </div>
         <footer>
             Footer
