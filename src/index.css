@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
 
 :root {
     --ternary: rgba(255, 74, 183, 0.9)
@@ -9,103 +9,24 @@
     padding: 0;
 }
 
-body {
-    background-color: #f9f9f9;
-    overflow-x: hidden;
-    color: black;
-    font-family: sans-serif;
-    font-family: 'Poppins', sans-serif;
-}
-
 a {
     color: inherit;
     text-decoration: inherit;
     /* no underline */
 }
 
-.row {
-    display: flex;
-    flex-direction: row;
+body {
+    background-color: #f9f9f9;
+    overflow-x: hidden;
+    color: black;
+    font-family: sans-serif;
+    font-family: 'Roboto', sans-serif;
 }
 
-.column {
-    display: flex;
-    flex-direction: column;
-}
-
-.center-child {
+.tbutton {
     display: flex;
     align-items: center;
     justify-content: center;
-}
-
-.text-bold {
-    font-weight: bold;
-}
-
-.disable-scrollbars::-webkit-scrollbar {
-    background: transparent; /* Chrome/Safari/Webkit */
-    width: 0px;
-}
-
-.disable-scrollbars {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE 10+ */
-}
-
-.logo {
-    background: #f953c6;
-    /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #b91d73, #f953c6);
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #b91d73, #f953c6);
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    font-weight: bold;
-    /* font-stretch: semi-condensed; */
-}
-
-.title {
-    font-size: 1.8rem;
-    font-family: sans-serif;
-    font-weight: bold;
-    color: white;
-    width: 30vw;
-    min-width: 500px;
-    max-lines: 1;
-}
-
-.ogtitle {
-    font-size: 1.2rem!important;
-    font-weight: normal!important;
-}
-
-.desc {
-    font-family: sans-serif;
-    font-weight: lighter;
-    color: #f9f9f9;
-    width: 30vw;
-    min-width: 500px;
-}
-
-.fade {
-    width: auto!important;
-    color: #a3a3a3!important;
-    min-width: 0px!important;
-}
-
-.p10 {
-    padding: 5px 10px;
-}
-
-.shadow {
-    /* box-shadow: 0 0 10px rgb(0 0 0 / 18%); */
-    box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;
-    border: 1px solid rgba(240, 46, 170, 0.4);
-}
-
-button {
     background-color: var(--ternary);
     border: 0;
     padding: 10px 15px;
@@ -114,25 +35,7 @@ button {
     max-width: 120px;
     border-radius: 40px;
     cursor: pointer;
-}
-
-.secondary {
-    background-color: #ddd;
-}
-
-.outlinebtn {
-    border: 3px solid rgba(240, 46, 170, 0.4);
-    border-radius: 40px;
-    cursor: pointer;
-    font-weight: bold;
-    width: 100px;
-}
-
-.category {
-    font-family: sans-serif;
-    font-size: 1.8rem;
-    font-weight: bold;
-    padding: 10px 20px;
+    min-width: 60px;
 }
 
 input[type="checkbox"] {
@@ -150,17 +53,22 @@ select {
     border-radius: 40px;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .cart {
     margin-right: 20px;
     margin-left: 10px;
-    padding: 6px 20px;
-    width: fit-content;
+    padding: 5px 20px;
+    width: fit-content !important;
     position: relative;
     cursor: default;
+    transition: all .2s ease-in-out;
 }
 
 .cart .faded {
-    color: #333!important;
+    color: #333 !important;
 }
 
 .cart-card {
@@ -170,20 +78,14 @@ select {
     background-color: white;
     border-radius: 10px;
     width: fit-content;
-    min-width: 200px;
+    min-width: 500px;
     padding: 30px;
     max-width: 30vw;
-    transition: '.2s ease-in-out',
+    transition: .2s ease-in-out;
 }
 
-.cart-row img {
-    height: 120px;
-    aspect-ratio: 2/3;
-    border-radius: 5px;
-}
-
-.cart-card p {
-    max-width: 12vw;
+.cart-card .title {
+    min-width: auto !important;
 }
 
 .cart-row {
@@ -197,12 +99,111 @@ select {
     border-bottom: 1px solid #ddd;
 }
 
-.bold {
+.cart-row img {
+    height: 120px;
+    aspect-ratio: 2/3;
+    border-radius: 5px;
+}
+
+.category {
+    font-family: sans-serif;
+    font-size: 1.8rem;
     font-weight: bold;
+    padding: 10px 20px;
+}
+
+.center-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.column {
+    display: flex;
+    flex-direction: column;
+}
+
+.desc {
+    font-family: sans-serif;
+    font-weight: lighter;
+    color: #f9f9f9;
+    max-width: 30vw;
+    /*min-width: 500px;*/
+}
+
+.disable-scrollbars {
+    scrollbar-width: 3px;
+    ms-scrollbar-track-color: #f9f9f9;
+    /* Firefox */
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    /* IE 10+ */
+    overflow: hidden;
+}
+
+.disable-scrollbars:hover {
+    overflow: scroll hidden;
+}
+
+.disable-scrollbars::-webkit-scrollbar {
+    background: #f9f9f9;
+    /* Chrome/Safari/Webkit */
+    width: 3px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+    height: 3px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: rgba(240, 46, 170, 0.4);
+    border-radius: 20px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/*.disable-scrollbars:hover + .disable-scrollbars::-webkit-scrollbar {*/
+/*    overflow-x: auto;*/
+/*    scrollbar-width: 5px;*/
+/*    background: #000000;*/
+/*    width: 5px;*/
+/*}*/
+
+.fade {
+    width: auto !important;
+    color: #a3a3a3 !important;
+    min-width: 0px !important;
+}
+
+.fullscreen {
+    width: 100vw;
+    height: 100vh;
 }
 
 .light-border {
     border: 1px solid #333;
+}
+
+.logo {
+    background: #f953c6;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #b91d73, #f953c6);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #b91d73, #f953c6);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    /* font-stretch: semi-condensed; */
+}
+
+.non-selectable {
+    user-select: none;
 }
 
 .noti-dot {
@@ -217,22 +218,131 @@ select {
     transform: translate(50%, -50%);
 }
 
+.ogtitle {
+    font-size: 1.2rem !important;
+    font-weight: normal !important;
+}
+
+.outlinebtn {
+    border: 3px solid rgba(240, 46, 170, 0.4);
+    border-radius: 40px;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100px;
+}
+
+.p10 {
+    padding: 5px 10px;
+}
+
+.productOption {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: lighter;
+    padding: 3px;
+    font-size: 1rem;
+    margin-left: 10px;
+}
+
 .quantity {
     border: 1px solid #ddd;
     border-radius: 8px;
     width: fit-content;
 }
 
-.quantity div {
-    display: inline-block;
-    padding: 0 10px;
-}
-
 .quantity .mid {
     border-left: 1px solid #ddd;
     border-right: 1px solid #ddd;
+    cursor: default;
 }
 
-/* .cart-card select {
+.quantity > div {
+    display: inline-block;
+    padding: 3px 10px;
+}
 
-} */
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.row-half-grid {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+}
+
+.row-half-grid h3 {
+    width: 100%;
+    text-align: center;
+}
+
+.secondary {
+    background-color: #ddd;
+}
+
+.user-img {
+    position: relative;
+    box-sizing: border-box;
+    height: 40px;
+    width: 40px;
+    background-position: center!important;
+    background-size: cover!important;
+    border-radius: 9999px;
+}
+
+.user-menu {
+    position: absolute;
+    top: 54px;
+    right:  0px;
+    width: fit-content;
+    padding: 1rem 0;
+    background-color: white;
+    border-radius: 1rem;
+}
+
+.user-menu p {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.user-menu p:hover {
+    background-color: #ddd;
+}
+
+.tshadow {
+    /* box-shadow: 0 0 10px rgb(0 0 0 / 18%); */
+    box-shadow: rgba(240, 46, 170, 0.4) 5px 5px, rgba(240, 46, 170, 0.3) 10px 10px, rgba(240, 46, 170, 0.2) 15px 15px, rgba(240, 46, 170, 0.1) 20px 20px, rgba(240, 46, 170, 0.05) 25px 25px;
+    border: 1px solid rgba(240, 46, 170, 0.4);
+}
+
+.text-bold {
+    font-weight: bold;
+}
+
+.title {
+    font-size: 1.8rem;
+    font-family: sans-serif;
+    font-weight: bold;
+    color: white;
+    max-width: 30vw;
+    height: 1.8rem;
+    min-width: 500px;
+    max-lines: 1;
+    overflow: hidden;
+}
+
+.search-input {
+    width: 100%;
+    border-radius: 40px;
+    font-size: 1.2rem;
+    padding: 0 20px;
+    box-shadow: none;
+    border: 2px solid rgba(240, 46, 170, 0.4);
+}
+
+.search-input:focus {
+    outline: none;
+    border: 2px solid rgba(240, 46, 170, 1);
+}

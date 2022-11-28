@@ -4,7 +4,8 @@ const SeeMoreBtn: FC<{
     onClick: () => void,
     isLoading: boolean,
 }> = ({ isLoading, onClick }) => {
-    return <button onClick={onClick}>
+    return <button className="tbutton"
+        onClick={onClick}>
         <h2>{isLoading ? "Loading..." : "More..."}</h2>
     </button>
     }

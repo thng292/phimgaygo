@@ -1,16 +1,17 @@
 import axios from 'axios'
 import config from './config'
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
 const DatasourceInstance = axios.create({
     baseURL: config.baseUrl,
     timeout: 2000,
 })
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -26,9 +27,10 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const FireBaseApp = initializeApp(firebaseConfig);
+const FireStore = getFirestore(FireBaseApp)
 console.log(FireBaseApp)
 //const analytics = getAnalytics(FireBaseApp);
 
-export { FireBaseApp };
+export { FireBaseApp, FireStore };
 
 export default DatasourceInstance

@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import FilmOverview from '../../data/model/FilmOverview'
+import FilmOverview from '../../data/model/Film/FilmOverview'
 import Title from './Title'
 
 const TitlesGrid: FC<{

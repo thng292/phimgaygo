@@ -1,8 +1,8 @@
-import ProductOption from "./ProductOption";
+import ProductOption from "./firestore/ProductOption";
 
 export default interface CartItem<Type> {
     mainItem: Type,
     quantity: number,
-    price: number,
-    productOptions: ProductOption[]
+    currentOption: number,
+    productOptions: ProductOption[],
 }

@@ -2,6 +2,7 @@ import SVG_ArrowUpward from "./svg/SVG_ArrowUpward";
 
 export default function ToTopBtn() {
     return <button
+        className="tbutton"
         style={{
             position: 'fixed',
             bottom: '30px',

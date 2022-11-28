@@ -26,7 +26,7 @@ const FilmInfo: FC<{
             >
             <img className="p10" src={props.poster_path} alt={props.title} style={{
                 maxWidth: '20vw',
-                minHeight: '280px',
+                minHeight: '16rem',
                 height: '30vh',
             }} />
             <div style={{
@@ -40,19 +40,21 @@ const FilmInfo: FC<{
                     <p className="desc fade p10"><span>Rating: </span>{props.vote_avg.toPrecision(2)} on <a href={`https://www.themoviedb.org/${props.id}`}>TMDB</a></p>
                 </div>
                 <p className="p10 desc" style={{
-                    maxHeight: '45px',
+                    maxHeight: '5.2rem',
                     overflow: 'hidden'
                 }}>{props.overview}</p>
-                <div style={{
+                <div
+                    className="row center-child"
+                    style={{
                         position: 'absolute',
                         margin: '10px',
                         bottom: '0'
                     }}>
-                    <button onClick={() => props.onCart()} >
+                    <button className="tbutton" onClick={() => props.onCart()} >
                         <SVG_AddToCart />
                     </button>
                     <button
-                        className="secondary"
+                        className="tbutton secondary"
                         onClick={props.onClick}
                     >
                         <SVG_Info />

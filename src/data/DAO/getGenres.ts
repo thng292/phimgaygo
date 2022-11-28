@@ -1,7 +1,7 @@
 import DatasourceInstance from "../datasource/DatasourceInstance"
 import config from "../datasource/config"
 import { useQuery } from "react-query"
-import Genre from "../model/Genre"
+import Genre from "../model/Film/Genre"
 
 export default function getGenres(
     language: string = config.language

@@ -1,6 +1,6 @@
 import DatasourceInstance from "../../datasource/DatasourceInstance"
 import config from "../../datasource/config"
-import FilmDiscover from "../../model/FilmDiscover"
+import FilmDiscover from "../../model/Film/FilmDiscover"
 import { useQuery } from "react-query"
 
 export default function getTrending(

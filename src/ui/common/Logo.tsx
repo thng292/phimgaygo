@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 
-const Logo: FC<{ style?: React.CSSProperties}> =(props) => {
-    return <h1 className="logo" style={props.style}>
+const Logo: FC<{ style?: React.CSSProperties, classN?: string}> =(props) => {
+    return <h1 className={"logo " + props.classN} style={props.style}>
         PHIMGAYGO
     </h1>
 }

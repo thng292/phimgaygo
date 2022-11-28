@@ -5,7 +5,7 @@ import Crew from "./Crew"
 import FilmDiscover from "./FilmDiscover"
 import Genre from "./Genre"
 import KeyWord from "./KeyWord"
-import Language from "./Language"
+import Language from "../Language"
 import ReleaseDate from "./ReleaseDate"
 export default interface Film {
     adult: boolean,

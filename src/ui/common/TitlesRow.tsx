@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import FilmOverview from '../../data/model/FilmOverview'
+import FilmOverview from '../../data/model/Film/FilmOverview'
 import Title from './Title'
 
 const TitlesRow: FC<{
@@ -15,10 +15,6 @@ const TitlesRow: FC<{
                 className='category'
             >{props.title}</p>
             <div className={"disable-scrollbars row"}
-                style={{
-                    overflowX: 'scroll',
-                    overflowY: 'hidden'
-                }}
             >
                 {props.films.map((val: FilmOverview) => <Title
                     key={val.id}

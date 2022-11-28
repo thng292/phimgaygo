@@ -19,7 +19,7 @@ const Title: FC<{
     >
 
         <div
-            className={"shadow"}
+            className={"tshadow"}
             style={{
                 margin: '10px',
                 backgroundImage: `url(${config.posterUrl + props.posterPath})`,
@@ -48,20 +48,20 @@ const Title: FC<{
                 transition: '.2s ease-in-out',
                 opacity: hover ? '100%' : '0%'
             }}>
-                <button
+                <button className='tbutton'
                     onClick={() => props.onPlay()}
                 >
                     <SVG_Play />
                 </button>
                 <button
                     onClick={() => props.onFavorite()}
-                    className="secondary"
+                    className="tbutton secondary"
                 >
                     <SVG_AddToCard />
                 </button>
                 <button
                     onClick={() => props.onInfo()}
-                    className="secondary"
+                    className="tbutton secondary"
                 >
                     <SVG_Info />
                 </button>
@@ -71,10 +71,11 @@ const Title: FC<{
             fontFamily: 'sans-serif',
             textAlign: 'center',
             width: '100%',
-            height: '2.6rem',
+            height: '1.2rem',
             fontSize: '1.2rem',
             textOverflow: 'ellipsis',
             paddingTop: '10px',
+            overflow: 'hidden'
         }}>{props.title}</p>
     </div>)
 }
