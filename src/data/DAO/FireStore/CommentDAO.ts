@@ -18,19 +18,40 @@ const commentsCollectionRef = collection(FireStore, 'comments')
 
 export default function createComment(userID: string, content: string) {
     const commentsCollectionDocRef = doc(commentsCollectionRef)
-    return setDoc(commentsCollectionDocRef, {
-        author: userID,
-        comments: [],
-        content: content,
-        time: firebase.firestore.FieldValue.serverTimestamp(),
-        down_vote_count: 0,
-        up_vote_count: 0,
+    return new Promise((resolve: (cmt: Comment)=>void, reject) => {
+        setDoc(commentsCollectionDocRef, {
+            author: userID,
+            comments: [],
+            content: content,
+            time: firebase.firestore.FieldValue.serverTimestamp(),
+            down_vote_count: 0,
+            up_vote_count: 0,
+        }).then(()=>{
+            resolve({
+                author: userID,
+                comments: [],
+                content: content,
+                time: '0',
+                down_vote_count: 0,
+                up_vote_count: 0,
+                id: commentsCollectionDocRef.id,
+            })
+        })
+            .catch(e=>{
+                reject(e)
+            })
     })
 }
 
 //TODO: Impl Pagination
 export function getComments(CommentsID: string[], getLimit: number = 20) {
-    const getQuery = query(commentsCollectionRef, where(firebase.firestore.FieldPath.documentId(), 'in', CommentsID), orderBy('time', 'desc'), limit(getLimit))
+    //console.log("CommentIDs are: ", CommentsID)
+    if (CommentsID.length === 0) {
+        return new Promise((resolve: (data: Comment[]) => void, reject: (code: string, message: string) => void) => {
+            resolve([])
+        })
+    }
+    const getQuery = query(commentsCollectionRef, where(firebase.firestore.FieldPath.documentId(), 'in', CommentsID), limit(getLimit))
     return new Promise((resolve: (data: Comment[]) => void, reject: (code: string, message: string) => void) => {
         getDocs(getQuery)
             .then(snapshot => {
@@ -65,6 +86,6 @@ export function upVoteComment(commentID: string) {
 export function downVoteComment(commentID: string) {
     const commentDocRef = doc(commentsCollectionRef, commentID)
     return updateDoc(commentDocRef, {
-        up_vote_count: firebase.firestore.FieldValue.increment(-1)
+        down_vote_count: firebase.firestore.FieldValue.increment(1)
     })
 }

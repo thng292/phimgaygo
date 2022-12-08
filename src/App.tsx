@@ -5,6 +5,8 @@ import SharedLayout from './ui/Layout/SharedLayout';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import config from './data/datasource/config';
 import NotFound from './ui/Layout/NotFound';
+import BillView from "./ui/CheckOut/BillView";
+import LoadingSpinner from "./ui/common/LoadingSpinner";
 
 // Lazy import
 const HomeScreen = React.lazy(() => import('./ui/Home/HomeScreen'))
@@ -22,9 +24,9 @@ const Detail = React.lazy(()=>import('./ui/Details/Detail'))
 //let filmRepo = new FilmRepo()
 // function DDdebug() {
 //     let data = getTrending()
-//     console.log(data)
+//     //console.log(data)
 //     if (data.isSuccess) {
-//         console.log("Success", data.data)
+//         //console.log("Success", data.data)
 //     }
 //     return <>
 //         {data.isLoading && <p>Loading Data</p>}
@@ -52,13 +54,13 @@ function App() {
                 <Route path='/' element={<SharedLayout/>}>
 
                     <Route index element={
-                        <React.Suspense fallback={<>Loading</>}>
+                        <React.Suspense fallback={<LoadingSpinner />}>
                             <HomeScreen/>
                         </React.Suspense>
                     }/>
 
                     <Route path='discover' element={
-                        <React.Suspense fallback={<>Loading</>}>
+                        <React.Suspense fallback={<LoadingSpinner />}>
                             <Discover/>
                         </React.Suspense>
                     }/>
@@ -70,43 +72,49 @@ function App() {
                     }/>
 
                     <Route path='search' element={
-                        <React.Suspense fallback={<>Loading</>}>
+                        <React.Suspense fallback={<LoadingSpinner />}>
                             <Search />
                         </React.Suspense>
                     }/>
 
                     <Route path='auth' element={
-                        <React.Suspense fallback={<>Loading</>}>
+                        <React.Suspense fallback={<LoadingSpinner />}>
                             <Auth/>
                         </React.Suspense>
                     }/>
 
                     <Route path='about' element={
-                        <React.Suspense fallback={<>Loading</>}>
+                        <React.Suspense fallback={<LoadingSpinner />}>
                             <About/>
                         </React.Suspense>
                     }/>
 
-                    <Route path='checkcut' element={
-                        <React.Suspense fallback={<>Loading</>}>
+                    <Route path='checkout' element={
+                        <React.Suspense fallback={<LoadingSpinner />}>
                             <CheckOut/>
                         </React.Suspense>
                     }/>
 
+                    <Route path='bill/:billId' element={
+                        <React.Suspense>
+                            <BillView />
+                        </React.Suspense>
+                    } />
+
                     <Route path='contact' element={
-                        <React.Suspense fallback={<>Loading</>}>
+                        <React.Suspense fallback={<LoadingSpinner />}>
                             <Contact/>
                         </React.Suspense>
                     }/>
 
                     <Route path='FAQ' element={
-                        <React.Suspense fallback={<>Loading</>}>
+                        <React.Suspense fallback={<LoadingSpinner />}>
                             <FAQ/>
                         </React.Suspense>
                     }/>
 
                     <Route path='forum' element={
-                        <React.Suspense fallback={<>Loading</>}>
+                        <React.Suspense fallback={<LoadingSpinner />}>
                             <Forum/>
                         </React.Suspense>
                     }/>

@@ -15,7 +15,7 @@ export default function getTrailer(
         ).then((val)=>(val.data as Video)),
         {
             cacheTime: config.timeLong,
-            refetchOnMount: true,
+            refetchOnMount: false,
             staleTime: config.timeLong,
             enabled: enable,
         }

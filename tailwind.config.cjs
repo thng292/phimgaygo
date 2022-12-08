@@ -10,6 +10,9 @@ module.exports = {
         'main': {
           400: 'rgba(240, 46, 170, 0.4)',
           1000: 'rgba(240, 46, 170, 1)'
+        },
+        'containerBG': {
+          1000: '#f9f9f9'
         }
       }
 

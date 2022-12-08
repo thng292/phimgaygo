@@ -11,6 +11,7 @@ const CartCard: FC<{
     listItem: CartItem<FilmOverview>[];
     show: boolean;
     changeQuantityHandler: (id: number, newQuantity: number) => void;
+    changeOptionHandler: (id: number, option: number) =>void;
     removeItemHandler: (id: number) => void;
     clearAllItemHandler: () => void;
     onClose: () => void;
@@ -20,6 +21,7 @@ const CartCard: FC<{
     listItem,
     show,
     changeQuantityHandler,
+    changeOptionHandler,
     clearAllItemHandler,
     onProductClicked,
     onClose,
@@ -31,7 +33,7 @@ const CartCard: FC<{
             style={{
                 transition: ".2s ease-in-out",
                 opacity: show ? "100%" : "0%",
-                display: show ? 'block' : 'none'
+                visibility: show ? 'visible' : 'hidden'
             }}
             onClick={(e) => e.stopPropagation()}
         >
@@ -132,13 +134,14 @@ const CartCard: FC<{
                                             onClick={e=>{
                                                 e.stopPropagation()
                                             }}
+                                            value={item.currentOption}
+                                            onChange={event => {
+                                                changeOptionHandler(item.mainItem.id, Number(event.currentTarget.value))
+                                            }}
                                         >
-                                            <option
-                                                value='1'
-                                                selected
-                                            >
-                                                Test
-                                            </option>
+                                            {item.productOptions.map((value, index) => {
+                                                return <option value={index}>{value.title}</option>
+                                            })}
                                         </select>
                                     </div>
                                 </div>
@@ -178,7 +181,7 @@ const CartCard: FC<{
                     </button>
                 </div>
             ) : (
-                ""
+                "There is nothing in your cart."
             )}
         </div>
     );

@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.aspect-portrait {
+    aspect-ratio: 3/4;
+}
+
+.min-h-8 {
+    min-height: 2rem;
+}
+
+.max-w-8xl {
+    max-width: 100rem;
+}
+
+.max-w-9xl {
+    max-width: 110rem;
+}
+
+.grid-cols-3\/2 {
+    grid-template-columns: 3fr 2fr;
+}
+
+.checkedLabel:checked + label {
+    background: #dddddd;
+}
+
+.grid-cols-bill {
+    grid-template-columns: 1fr 6fr 1fr 1fr 1fr;
+}

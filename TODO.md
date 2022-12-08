@@ -1,5 +1,16 @@
 # 1. Note
 
-1. Add firebase
 1. For watch movie: https://www.2embed.to/
-1. In `BigBanner`: user can only click on the `FilmInfo`
+
+# 2. TODO
+
+1. Check out screen (Done)
+2. Profile screen
+3. Post
+4. Design the fucking footer
+5. Detail Screen (In progress)
+   + Need to redesign the comment
+6. Admin Center
+   + Chat
+   + Change role
+   + Edit product

@@ -3,7 +3,6 @@ import {FireStore} from "../../datasource/DatasourceInstance";
 import ProductOption from "../../model/firestore/ProductOption";
 import Bill from "../../model/firestore/Bill";
 import firebase from "firebase/compat";
-import Comment from "../../model/firestore/Comment";
 
 const billCollectionRef = collection(FireStore, 'bills')
 
@@ -11,11 +10,11 @@ export interface createBillProps {
     discount: number,
     productList: {
         productID: number,
+        productName: string,
         quantity: number,
         productOption: ProductOption,
     }[],
     tax: number,
-    time: string,
     total: number,
     userID: string,
 }
@@ -23,7 +22,10 @@ export interface createBillProps {
 const createBill = (props: createBillProps) => {
     const billDocRef = doc(billCollectionRef)
     return new Promise((resolve: (billID: string) => void, reject: (code: string, message: string) => void) => {
-        setDoc(billDocRef, props)
+        setDoc(billDocRef, {
+            ...props,
+            time: firebase.firestore.FieldValue.serverTimestamp(),
+        })
             .then(() => {
                 resolve(billDocRef.id)
             })
@@ -37,10 +39,15 @@ export function getBillDetail(billID: string) {
         getDoc(billDocRef)
             .then(snapshot => {
                 //TODO: watch out!
-                resolve({
-                    id: billID,
-                    ...snapshot.data(),
-                } as Bill)
+                if (snapshot.exists()) {
+
+                    resolve({
+                        id: billID,
+                        ...snapshot.data(),
+                    } as Bill)
+                } else {
+                    reject('404', 'Not Found')
+                }
             })
             .catch((e) =>
                 reject(e.code, e.message)
@@ -50,7 +57,7 @@ export function getBillDetail(billID: string) {
 
 
 export function getUserBills(userID: string, resultLimit: number = 20) {
-    const getQuery = query(billCollectionRef, where('userID','==',userID), orderBy(firebase.firestore.FieldPath.documentId()), orderBy('time',"desc"), limit(resultLimit))
+    const getQuery = query(billCollectionRef, where('userID', '==', userID), orderBy(firebase.firestore.FieldPath.documentId()), orderBy('time', "desc"), limit(resultLimit))
     return new Promise((resolve: (data: Bill[]) => void, reject: (code: string, message: string) => void) => {
         getDocs(getQuery)
             .then(snapshot => {

@@ -11,6 +11,10 @@ import SVG_Search from "../common/svg/SVG_Search";
 import ToTopBtn from "../common/ToTopBtn";
 import CartCard from "./CartCard";
 import getAdditionalMovieInfo from "../../data/DAO/FireStore/AdditionalMovieInfoDAO";
+import ContextProps from "./ContextProps";
+import SVG_CopiedToClipBoard from "../common/svg/SVG_CopiedToClipBoard";
+import getAdditionalUserInfo from "../../data/DAO/FireStore/AdditionalUserInfoDAO";
+import UserAdditionData from "../../data/model/firestore/UserAdditionData";
 
 const linkStyle: React.CSSProperties = {
     width: "100px",
@@ -26,16 +30,23 @@ export default function SharedLayout() {
     const [cart, updateCart] = useState<CartItem<FilmOverview>[]>([]);
     const [showUserMenu, changeUserMenu] = useState(false);
     const [user, setUser] = useState<User | null>(null);
+    const [additionalUserInfo, setAdditionalUserInfo] = useState<UserAdditionData>()
+    const [checkoutStuff, setCheckoutStuff] = useState<CartItem<FilmOverview>[]>([]);
+    const [cartVisibility, changeCartVisibility] = useState(false);
+    const [Toast, setToast] = useState('')
+    // Cart logic stuff
+    //#region
     const cartLogic = {
         addItemToCart: (
             item: FilmOverview,
             option: number = 0,
-            productOptions?: ProductOption[]
+            quantity: number = 1,
+            productOptions?: ProductOption[],
         ) => {
             let tmp = cart.findIndex((val) => val.mainItem.id === item.id);
-            if (tmp != -1) {
+            if (tmp != -1 && cart[tmp].currentOption === option) {
                 let tmpCart = cart.map((val) => val);
-                tmpCart[tmp].quantity++;
+                tmpCart[tmp].quantity += quantity;
                 updateCart(tmpCart);
             } else {
                 //TODO: Get product options and price from Firebase
@@ -82,39 +93,62 @@ export default function SharedLayout() {
                 newQuantity;
             updateCart(tmp);
         },
+        changeOption: (id: number, option: number) => {
+            let tmpCart = cart.map(value => value)
+            let item = tmpCart.findIndex(value => {
+                return value.mainItem.id === id
+            })
+            tmpCart[item].currentOption = option
+            updateCart(tmpCart)
+        },
         removeAllItem: () => {
             updateCart([]);
             localStorage.setItem("Cart", JSON.stringify([]));
         },
     };
-    const [cartVisibility, changeCartVisibility] = useState(false);
-
+    //#endregion
+    // useEffect stuff
+    //#region
     // Waiting for firebase to check user login state
     useEffect(() => {
         let tmp = setInterval(() => {
-            console.log("Try to get user detail");
-            if (AuthLogic.getUser())
-                setUser(AuthLogic.getUser());
+            //console.log("Try to get user detail");
+            let tmpUser = AuthLogic.getUser()
+            if (tmpUser) {
+                getAdditionalUserInfo(tmpUser.uid, tmpUser)
+                    .then(data => {
+                        setUser(tmpUser)
+                        setAdditionalUserInfo(data)
+                        //console.log("User additional data:",data)
+                    })
+            }
         }, 1000);
         setTimeout(() => {
             setGettingUser(false);
             clearInterval(tmp);
-            console.log("interval cleared")
+            //console.log("interval cleared")
         }, 4000);
         return () => {
             clearInterval(tmp)
         };
-    }, []);
-
-    //Auto save cart to local storage
-    //#region
+    }, [])
+    // Toast
+    useEffect(() => {
+        const tmp = setTimeout(() => {
+            setToast('')
+        }, 3000)
+        return () => {
+            clearTimeout(tmp)
+        }
+    }, [Toast])
+    // Auto save cart to local storage
     useEffect(() => {
         updateCart(
             JSON.parse(
                 localStorage.getItem("Cart") ?? "[]"
             ) as CartItem<FilmOverview>[]
         );
-        // console.log("Restoring Cart")
+        // //console.log("Restoring Cart")
         // console.table(JSON.parse(localStorage.getItem("Cart") ?? '[]'))
     }, []);
     useEffect(() => {
@@ -125,6 +159,8 @@ export default function SharedLayout() {
     //#endregion
     return (
         <>
+            {//#region
+            }
             <nav
                 className='row center-child'
                 style={{
@@ -133,7 +169,7 @@ export default function SharedLayout() {
                     top: "0",
                     width: "100vw",
                     background: "white",
-                    zIndex: "1",
+                    zIndex: "100",
                 }}
             >
                 <div
@@ -202,11 +238,17 @@ export default function SharedLayout() {
                                 onClose={() => changeCartVisibility(false)}
                                 changeQuantityHandler={cartLogic.changeQuantity}
                                 removeItemHandler={cartLogic.removeItemFormCart}
+                                changeOptionHandler={cartLogic.changeOption}
                                 clearAllItemHandler={cartLogic.removeAllItem}
                                 onProductClicked={productId => {
+                                    changeCartVisibility(false)
                                     navigate(`/detail/${productId}`)
                                 }}
                                 onCheckout={() => {
+                                    setCheckoutStuff(cart)
+                                    cartLogic.removeAllItem()
+                                    changeCartVisibility(false)
+                                    navigate('/checkout')
                                 }}
                             />
                             {cart.length ? (
@@ -265,6 +307,8 @@ export default function SharedLayout() {
                     </div>
                 </div>
             </nav>
+            {//#endregion
+            }
             <div
                 style={{
                     display: "flex",
@@ -272,17 +316,47 @@ export default function SharedLayout() {
                     marginTop: "60px",
                 }}
             >
+                <h3
+                    id={'Toast'}
+                    className={'tshadow bold outlinebtn center-child'}
+                    style={{
+                        position: "fixed",
+                        transition: '.2s ease-in-out',
+                        zIndex: '100',
+                        background: 'white',
+                        visibility: (Toast !== '') ? 'visible' : 'hidden',
+                        opacity: (Toast !== '') ? '100%' : '0%',
+                        width: "max-content",
+                        padding: '10px'
+                    }}
+                ><SVG_CopiedToClipBoard/><span
+                    style={{
+                        paddingLeft: '5px'
+                    }}
+                >{Toast}</span>
+                </h3>
                 <Outlet
                     context={{
                         addItemToCart: cartLogic.addItemToCart,
+                        clearAllCartItem: cartLogic.removeAllItem,
+                        checkoutStuff,
+                        setCheckoutStuff,
+                        additionalUserInfo,
+                        cart,
                         user,
                         setUser,
                         navController: navigate,
-                    }}
+                        displayToast: (text: string) => setToast(text),
+                    } as ContextProps}
                 />
             </div>
             <ToTopBtn/>
-            <footer>Footer</footer>
+            <footer className={'bg-white'}>
+                <p>Phimgaygo</p>
+                <p>by Nguyễn Quang Thông</p>
+                <p>nguyenquangthong292@gmail.com</p>
+                <p>This website is for learning purpose</p>
+            </footer>
         </>
     );
 }

@@ -2,6 +2,7 @@ import { FC } from 'react'
 import FilmOverview from '../../data/model/Film/FilmOverview'
 import Title from './Title'
 import config from "../../data/datasource/config";
+import LoadingSpinner from "./LoadingSpinner";
 
 const TitleList: FC<{
     title: string,
@@ -41,7 +42,7 @@ const TitleList: FC<{
                 </div>)}
             </div>
         </div>)
-    } else return <>Loading</>
+    } else return <LoadingSpinner />
 }
 
 export default TitleList

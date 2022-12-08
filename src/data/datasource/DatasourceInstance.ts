@@ -2,8 +2,10 @@ import axios from 'axios'
 import config from './config'
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import {connectFirestoreEmulator, getFirestore } from "firebase/firestore";
+import {connectStorageEmulator, getStorage } from 'firebase/storage'
 import { getAnalytics } from "firebase/analytics";
+import {connectAuthEmulator, getAuth} from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -28,9 +30,15 @@ const firebaseConfig = {
 // Initialize Firebase
 const FireBaseApp = initializeApp(firebaseConfig);
 const FireStore = getFirestore(FireBaseApp)
-console.log(FireBaseApp)
+const FireStorage = getStorage(FireBaseApp)
+const FireAuth = getAuth(FireBaseApp)
+//console.log(FireBaseApp)
 //const analytics = getAnalytics(FireBaseApp);
 
-export { FireBaseApp, FireStore };
+// connectFirestoreEmulator(FireStore, 'localhost', 8080)
+// connectStorageEmulator(FireStorage, 'localhost', 9199)
+// connectAuthEmulator(FireAuth, 'http://localhost:9099')
+
+export { FireBaseApp, FireStore, FireStorage, FireAuth };
 
 export default DatasourceInstance

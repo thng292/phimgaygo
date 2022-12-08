@@ -6,6 +6,7 @@ import "../tailwindTemplate.css";
 import CheckValidEmail from "../../Utils/CheckValidEmail";
 import { useOutletContext } from "react-router-dom";
 import ContextProps from "../Layout/ContextProps";
+import getAdditionalUserInfo from "../../data/DAO/FireStore/AdditionalUserInfoDAO";
 
 const auth = new Authenticate()
 
@@ -76,8 +77,12 @@ function Auth() {
                             onClick={() => {
                                 auth.signInEmail(email, password).then(
                                     (user) => {
-                                        console.log("this is you: ", user);
-                                        setUser(user)
+                                        getAdditionalUserInfo(user.uid, user)
+                                            .then(()=> {
+                                                setUser(user)
+                                                navController('/')
+                                            })
+                                            .catch(()=>console.log("Fuck Error"))
                                     }
                                 );
                             }}
@@ -123,10 +128,14 @@ function Auth() {
                         </div>
                         <button
                             onClick={() => {
-                                auth.signUpEmail(email, password).then(
+                                auth.signUpEmail(email, password, displayName).then(
                                     (user) => {
-                                        console.log("this is you: ", user);
-                                        setUser(user)
+                                        //console.log("this is you: ", user);
+                                        getAdditionalUserInfo(user.uid, user).then(()=> {
+                                            setUser(user)
+                                            navController('/')
+                                        })
+
                                     }
                                 );
                             }}
@@ -142,8 +151,10 @@ function Auth() {
                     onClick={() =>
                         auth.signInGoogle()
                             .then((user) => {
-                                console.log("this is you", user)
+                                //console.log("this is you", user)
+                                getAdditionalUserInfo(user.uid, user).then(console.log)
                                 setUser(user)
+                                navController('/')
                             })
                             .catch((err) => console.log(err))
                     }

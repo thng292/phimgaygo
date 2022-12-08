@@ -6,7 +6,7 @@ import {
     limit,
     orderBy,
     query,
-    setDoc,
+    setDoc, updateDoc,
     where
 } from "firebase/firestore";
 import {FireStore} from "../../datasource/DatasourceInstance";
@@ -24,6 +24,7 @@ export default function createPost(userID: string, title: string, content: HTMLE
         comments: [],
         down_vote_count: 0,
         up_vote_count: 0,
+        views: 0,
         time: firebase.firestore.FieldValue.serverTimestamp(),
     })
 }
@@ -81,5 +82,26 @@ export function getAllPosts(resultLimit: number) {
                 resolve(results)
             })
             .catch(e => reject(e.code, e.message))
+    })
+}
+
+export function upVotePost(postID: string) {
+    const postDocRef = doc(postCollectionRef, postID)
+    return updateDoc(postDocRef, {
+        up_vote_count: firebase.firestore.FieldValue.increment(1)
+    })
+}
+
+export function downVotePost(postID: string) {
+    const postDocRef = doc(postCollectionRef, postID)
+    return updateDoc(postDocRef, {
+        down_vote_count: firebase.firestore.FieldValue.increment(1)
+    })
+}
+
+export function addView(postID: string) {
+    const postDocRef = doc(postCollectionRef, postID)
+    return updateDoc(postDocRef, {
+        views: firebase.firestore.FieldValue.increment(1)
     })
 }

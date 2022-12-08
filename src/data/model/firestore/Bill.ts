@@ -4,6 +4,7 @@ export default interface Bill {
     discount: number,
     productList: {
         productID: number,
+        productName: string,
         quantity: number,
         productOption: ProductOption,
     }[],

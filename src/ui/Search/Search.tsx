@@ -88,7 +88,7 @@ const Search: FC<{}> = () => {
                                 checked={adult}
                             />
                         </div>
-                        <p>Year</p>
+                        <p className={'p10'}>Year</p>
                         <select
                             name='year'
                             id='3'
@@ -129,8 +129,8 @@ const Search: FC<{}> = () => {
                     onInfo={id => {
                         navController(`/detail/${id}`)
                     }}
-                    onCart={(id) => addItemToCart(id)}
-                    onPlay={id => {
+                    onCart={(id) => addItemToCart(id, 0, 1)}
+                    onShare={id => {
                         navController(`/detail/${id}`)
                     }}
                 /> : ''}

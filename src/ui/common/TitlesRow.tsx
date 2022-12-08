@@ -1,13 +1,15 @@
 import { FC } from 'react'
 import FilmOverview from '../../data/model/Film/FilmOverview'
 import Title from './Title'
+import LoadingSpinner from "./LoadingSpinner";
 
 const TitlesRow: FC<{
     title: string,
     films: FilmOverview[] | undefined,
-    onPlay: (id: number) => void,
+    onShare: (id: number) => void,
     onCart: (id: FilmOverview) => void,
     onInfo: (id: number) => void,
+    visibleCol?: number,
 }> = (props) => {
     if (props.films !== undefined) {
         return (<div>
@@ -19,18 +21,18 @@ const TitlesRow: FC<{
                 {props.films.map((val: FilmOverview) => <Title
                     key={val.id}
                     style={{
-                        flexBasis: '20%',
+                        flexBasis: `${100 / (props.visibleCol ?? 5)}%`,
                         flexShrink: '0',
                     }}
                     title={val.title}
                     posterPath={val.poster_path}
                     onFavorite={() => props.onCart(val)}
                     onInfo={() => props.onInfo(val.id)}
-                    onPlay={() => props.onPlay(val.id)}
+                    onShare={() => props.onShare(val.id)}
                 />)}
             </div>
         </div>)
-    } else return <>Loading</>
+    } else return <LoadingSpinner />
 }
 
 export default TitlesRow

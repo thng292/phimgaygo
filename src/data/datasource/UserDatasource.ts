@@ -14,10 +14,10 @@ import {
     updateProfile,
     User,
 } from 'firebase/auth'
-import {FireBaseApp} from './DatasourceInstance'
+import {FireAuth, FireBaseApp} from './DatasourceInstance'
 
 export default class Authenticate {
-    #auth = getAuth(FireBaseApp)
+    #auth = FireAuth
     #providerGoogle = new GoogleAuthProvider()
 
     constructor() {
@@ -36,10 +36,14 @@ export default class Authenticate {
 
     // Sign in, sign up and sign out
     //#region 
-    signUpEmail(email: string, password: string) {
+    signUpEmail(email: string, password: string, displayName: string) {
         return new Promise((resolve: (user: User) => void, reject: (errorCode: string, errorMessage: string) => void) => {
             createUserWithEmailAndPassword(this.#auth, email, password)
                 .then((userCredential) => {
+                    this.#auth.currentUser &&
+                    updateProfile(this.#auth.currentUser, {
+                        displayName,
+                    })
                     resolve(userCredential.user)
                 })
                 .catch((error) => {

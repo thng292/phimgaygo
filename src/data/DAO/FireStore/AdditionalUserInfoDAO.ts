@@ -1,32 +1,56 @@
 import {arrayUnion, collection, doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
 import {FireStore} from "../../datasource/DatasourceInstance";
-import UserAdditionDataModel from "../../model/firestore/UserAdditionDataModel";
+import UserAdditionData from "../../model/firestore/UserAdditionData";
+import {User} from "firebase/auth";
+import config from "../../datasource/config";
 
 const usersCollectionRef = collection(FireStore, 'users')
 
-const defaultData: UserAdditionDataModel = {
+const defaultData = {
     library: [],
     bills: [],
     points: 0,
     posts: [],
+    role: 'member',
 }
 //TODO: Add delete additional user content
-function createAdditionalUserInfo(userID: string) {
+function createAdditionalUserInfo(userID: string, user: User) {
     const usersCollectionDocRef = doc(usersCollectionRef, userID)
-    return setDoc(usersCollectionDocRef, defaultData)
+    return setDoc(usersCollectionDocRef, {
+        ...defaultData,
+        photoURL: user.photoURL ?? config.StorageURL(config.defaultAvatar),
+        displayName: user.displayName,
+    })
 }
 
-export default function getAdditionalUserInfo(userID: string) {
+export default function getAdditionalUserInfo(userID: string, user?: User) {
     const usersCollectionDocRef = doc(usersCollectionRef, userID)
-    return new Promise((resolve: (data: UserAdditionDataModel) => void, reject: (code: string, message: string) => void) => {
+    return new Promise((resolve: (data: UserAdditionData) => void, reject: (code: string, message: string) => void) => {
         const usersCollectionSnap = getDoc(usersCollectionDocRef)
         usersCollectionSnap.then((snapshot) => {
             if (snapshot.exists()) {
-                resolve(snapshot.data() as UserAdditionDataModel)
+                const data = snapshot.data()
+                //@ts-ignore
+                let tmp = data.library.map(value => {
+                    return {
+                        id: Number(Object.keys(value)[0]),
+                        option: Object.values(value)[0],
+                    }
+                })
+                // const tmp2: UserAdditionData = {...data}
+                resolve({...data, library: tmp} as UserAdditionData)
             } else {
-                createAdditionalUserInfo(userID)
-                    .then(() => resolve(defaultData))
-                    .catch(e => reject(e.code, e.message))
+                if (user!==undefined) {
+                    createAdditionalUserInfo(userID, user)
+                        .then(() => resolve({
+                            ...defaultData,
+                            photoURL: user.photoURL,
+                            displayName: user.displayName
+                        } as UserAdditionData))
+                        .catch(e => reject(e.code, e.message))
+                } else {
+                    reject('Idk','')
+                }
             }
         })
             .catch((e) => {
@@ -42,10 +66,10 @@ export function addBills(userID: string, billID: string) {
     })
 }
 
-export function addToLibrary(userID: string, movieID: number) {
+export function addToLibrary(userID: string, movieID: number, option: string) {
     const usersCollectionDocRef = doc(usersCollectionRef, userID)
     return updateDoc(usersCollectionDocRef, {
-        library: arrayUnion(movieID)
+        library: arrayUnion({[movieID] : option})
     })
 }
 

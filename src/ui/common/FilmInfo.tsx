@@ -2,6 +2,7 @@ import React, { FC } from "react"
 
 import SVG_AddToCart from "./svg/SVG_AddToCart"
 import SVG_Info from "./svg/SVG_Info"
+import SVG_Share from "./svg/SVG_Share";
 
 const FilmInfo: FC<{
     id: number,
@@ -14,9 +15,10 @@ const FilmInfo: FC<{
     poster_path: string,
     onClick: () => void,
     onCart: () => void,
-    style: React.CSSProperties | null
+    onShare: () => void,
+    style?: React.CSSProperties
 }> = (props) => {
-    return <div style={props.style ? props.style : {}} >
+    return <div style={props.style} >
         <div
             className="row"
             style={{
@@ -58,6 +60,12 @@ const FilmInfo: FC<{
                         onClick={props.onClick}
                     >
                         <SVG_Info />
+                    </button>
+                    <button
+                        className="tbutton secondary"
+                        onClick={props.onShare}
+                    >
+                        <SVG_Share />
                     </button>
                 </div>
             </div>

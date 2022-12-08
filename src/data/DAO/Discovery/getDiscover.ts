@@ -17,7 +17,7 @@ export default function getDiscover(
     let withGenre = (genres !== undefined) ? `&with_genres=${genres}` : ''
     let withPeople = (people !== undefined) ? `&with_people=${people}` : ''
     let withKeyword = (keywords !== undefined) ? `&with_keywords=${keywords}` : ''
-    // console.log("Query: ", `/discover/movie?api_key=${config.key}&language=vi&sort_by=${sortedBy}&include_adult=${includeAdult}&page=${page}&language=${language}${withYear}${withPeople}${withGenre}${withKeyword}`)
+    // //console.log("Query: ", `/discover/movie?api_key=${config.key}&language=vi&sort_by=${sortedBy}&include_adult=${includeAdult}&page=${page}&language=${language}${withYear}${withPeople}${withGenre}${withKeyword}`)
     return useQuery(["trending", { page, sortedBy, includeAdult, language, year, genres, keywords, people }], () =>
         DatasourceInstance
             .get(

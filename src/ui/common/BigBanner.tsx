@@ -6,18 +6,20 @@ import FilmInfo from './FilmInfo'
 import getGenres from '../../data/DAO/getGenres'
 import SVG_NavForward from './svg/SVG_NavForward'
 import SVG_NavBack from './svg/SVG_NavBack'
+import LoadingSpinner from "./LoadingSpinner";
 
 const BigBanner: FC<{
     films: FilmOverview[] | undefined,
     onClick: (id: number) => void;
     onCart: (id: FilmOverview) => void;
+    onShare: (id: number) => void;
     style?: React.CSSProperties;
 }> = (props) => {
     if (props.films !== undefined) {
         let [currentIndex, setIndex] = useState(0)
         let [willChangeBg, setWillChangeBg] = useState(true)
         let genres = getGenres()
-        //console.log(props.films)
+        ////console.log(props.films)
         useEffect(() => {
             const autoChangeBannerTimer = setInterval(() => {
                 if (willChangeBg) {
@@ -46,22 +48,26 @@ const BigBanner: FC<{
             }}
             onPointerEnter={() => {
                 setWillChangeBg(false)
-                console.log("Pointer enter")
+                // //console.log("Pointer enter")
             }}
             onPointerLeave={() => {
                 setWillChangeBg(true)
-                console.log("Pointer leave")
+                // //console.log("Pointer leave")
             }}
         >
             <button
-                className='tbutton'
+                // className='tbutton'
                 style={{
                     position: 'absolute',
+                    background: "transparent",
+                    border: '0',
                     right: '0',
                     top: '50%',
-                    transform: 'translate(0,-50%)',
-                    width: 'fit-content',
-                    height: 'fit-content'
+                    left: '100%',
+                    transform: 'translate(100,-50%)',
+                    width: '48px',
+                    height: '48px',
+                    cursor: "pointer",
                 }}
                 onClick={() => {
                     setIndex((prevState: number) =>
@@ -72,14 +78,18 @@ const BigBanner: FC<{
                 <SVG_NavForward />
             </button>
             <button
-                className='tbutton'
+                // className='tbutton'
                 style={{
+                    background: "transparent",
+                    border: '0',
                     position: 'absolute',
                     left: '0',
                     top: '50%',
-                    transform: 'translate(0,-50%)',
-                    width: 'fit-content',
-                    height: 'fit-content'
+                    right: '100%',
+                    transform: 'translate(-100%  ,-50%)',
+                    width: '48px',
+                    height: '48px',
+                    cursor: "pointer",
                 }}
                 onClick={() => {
                     setIndex((prevState: number) =>
@@ -113,9 +123,10 @@ const BigBanner: FC<{
                 }}
                 onClick={() => props.onClick(currFilm.id)}
                 onCart={() => props.onCart(currFilm)}
+                onShare={() => props.onShare(currFilm.id)}
             />
 
         </div>
-    } else return <>Loading</>
+    } else return <LoadingSpinner />
 }
 export default BigBanner;

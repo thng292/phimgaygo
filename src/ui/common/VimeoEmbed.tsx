@@ -1,8 +1,9 @@
 import {FC} from "react";
 
 const VimeoEmbed: FC<{
-    url: string,
+    url?: string,
 }> = ({url}) => {
+    if (url === undefined) return <></>
     return <div>
         <div style={{
             padding: '41.89 % 0 0 0',

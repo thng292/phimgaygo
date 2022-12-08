@@ -19,7 +19,7 @@ export default function convertToWinSize(length: number): WindowSize {
 //     React.useEffect(() => {
 //         window.addEventListener("resize", () => {
 //             setWindowSize(oldVal => {
-//                 console.log({
+//                 //console.log({
 //                     width: convertSize(window.innerWidth), height: convertSize(window.innerHeight)
 //                 })
 //                 return {

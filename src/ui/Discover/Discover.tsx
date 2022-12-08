@@ -8,6 +8,8 @@ import FilmOverview from "../../data/model/Film/FilmOverview";
 import SeeMoreBtn from "../common/SeeMoreBtn";
 import PageIndicator from "../common/PageIndicator";
 import ContextProps from "../Layout/ContextProps";
+import ShareLinkToClipboard from "../../Utils/ShareLinkToClipboard";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 const dayTime = new Date()
 
@@ -22,7 +24,7 @@ function yearOptions() {
 }
 
 const Discover: FC<{}> = () => {
-    let { addItemToCart } = useOutletContext<ContextProps>()
+    let { addItemToCart, displayToast } = useOutletContext<ContextProps>()
     const [adult, setAdult] = useState(false)
     const [sortedBy, setSortedBy] = useState<SortedBy>('popularity')
     const [order, setOrder] = useState<Order>("desc")
@@ -55,7 +57,7 @@ const Discover: FC<{}> = () => {
     }, []) */
     useEffect(() => {
         if (data.data !== undefined) {
-            console.log(data)
+            //console.log(data)
             updateFilms(old => {
                 // let shouldOverwrite = false
                 // let n = films.length
@@ -68,7 +70,7 @@ const Discover: FC<{}> = () => {
     }, [data.data])
 
     const handleGenre = (id: number) => {
-        console.log(id)
+        //console.log(id)
         if (genre.find(curr => curr === id) === undefined) {
             setGenre(old => [...old, id])
         } else {
@@ -90,7 +92,7 @@ const Discover: FC<{}> = () => {
                 opacity: data.isLoading ? '100%' : '0%',
                 display: data.isLoading ? 'block' : 'none'
             }}
-        >Loading...</h1>
+        ><LoadingSpinner/></h1>
         <div
             style={{
                 maxWidth: "1400px",
@@ -135,7 +137,7 @@ const Discover: FC<{}> = () => {
                         name="sortedBy" id="1"
                         onChange={(e) => {
                             //updateFilms([])
-                            console.log(e.currentTarget.value as SortedBy)
+                            //console.log(e.currentTarget.value as SortedBy)
                             setSortedBy(e.currentTarget.value as SortedBy)
                         }}
                         defaultValue='release_date'
@@ -204,13 +206,14 @@ const Discover: FC<{}> = () => {
                 title="Discover"
                 films={films}
                 onCart={item => {
-                    addItemToCart(item)
+                    addItemToCart(item,0,1)
                 }}
                 onInfo={id => {
                     navigate(`/detail/${id}`)
                 }}
-                onPlay={id => {
-                    navigate(`/detail/${id}`)
+                onShare={id => {
+                    ShareLinkToClipboard(id)
+                        .then(()=>displayToast("Copied link to clipboard"))
                 }}
             />
             <div

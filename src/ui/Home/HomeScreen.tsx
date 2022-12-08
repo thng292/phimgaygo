@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import {FC} from 'react'
 import TitlesGrid from '../common/TitlesGrid'
 import TitlesRow from '../common/TitlesRow'
 import BigBanner from '../common/BigBanner'
@@ -7,12 +7,13 @@ import getNowPlaying from '../../data/DAO/Discovery/getNowPlaying'
 import getUpcoming from '../../data/DAO/Discovery/getUpcoming'
 import getDiscover from '../../data/DAO/Discovery/getDiscover'
 import SeeMoreBtn from '../common/SeeMoreBtn'
-import { useOutletContext } from 'react-router-dom'
+import {useOutletContext} from 'react-router-dom'
 import ContextProps from '../Layout/ContextProps'
+import ShareLinkToClipboard from "../../Utils/ShareLinkToClipboard";
 
 
 const HomeScreen: FC<{}> = () => {
-    let { addItemToCart } = useOutletContext<ContextProps>()
+    let {addItemToCart, displayToast} = useOutletContext<ContextProps>()
     let dataTrending = getTrending()
     let dataNowplaying = getNowPlaying()
     let dataUpComing = getUpcoming()
@@ -42,11 +43,15 @@ const HomeScreen: FC<{}> = () => {
             <BigBanner
                 films={dataTrending.data?.results}
                 onCart={item => {
-                    addItemToCart(item);
-                    console.log("Added to cart: ", item.title)
+                    addItemToCart(item, 0 ,1);
+                    //console.log("Added to cart: ", item.title)
                 }}
                 onClick={id => {
                     navigate(`/detail/${id}`)
+                }}
+                onShare={id => {
+                    ShareLinkToClipboard(id)
+                        .then(() => displayToast("Copied link to clipboard"))
                 }}
                 style={{
                     margin: '40px 0',
@@ -55,43 +60,49 @@ const HomeScreen: FC<{}> = () => {
             <TitlesRow
                 films={dataNowplaying.data?.results}
                 title={"In Theather"}
+                visibleCol={6}
                 onCart={item => {
-                    addItemToCart(item);
-                    console.log("Added to cart: ", item.title)
+                    addItemToCart(item,0,1);
+                    //console.log("Added to cart: ", item.title)
                 }}
                 onInfo={id => {
                     navigate(`/detail/${id}`)
                 }}
-                onPlay={id => {
-                    navigate(`/detail/${id}`)
+                onShare={id => {
+                    ShareLinkToClipboard(id)
+                        .then(() => displayToast("Copied link to clipboard"))
                 }}
             />
             <TitlesRow
                 title='Up Coming'
                 films={dataUpComing.data?.results}
+                visibleCol={6}
                 onCart={item => {
-                    addItemToCart(item);
-                    console.log("Added to cart: ", item.title)
+                    addItemToCart(item, 0, 1);
+                    //console.log("Added to cart: ", item.title)
                 }}
                 onInfo={id => {
                     navigate(`/detail/${id}`)
                 }}
-                onPlay={id => {
-                    navigate(`/detail/${id}`)
+                onShare={id => {
+                    ShareLinkToClipboard(id)
+                        .then(() => displayToast("Copied link to clipboard"))
                 }}
             />
             <TitlesGrid
                 films={dataDiscover.data?.results}
                 title={"Discover"}
+                visibleCol={6}
                 onCart={item => {
-                    addItemToCart(item);
-                    console.log("Added to cart: ", item.title)
+                    addItemToCart(item, 0, 1);
+                    //console.log("Added to cart: ", item.title)
                 }}
                 onInfo={id => {
                     navigate(`/detail/${id}`)
                 }}
-                onPlay={id => {
-                    navigate(`/detail/${id}`)
+                onShare={id => {
+                    ShareLinkToClipboard(id)
+                        .then(() => displayToast("Copied link to clipboard"))
                 }}
             />
             <div className="center-child">

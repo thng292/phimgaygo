@@ -7,4 +7,5 @@ export default interface Post {
     up_vote_count: number,
     time: string,
     id: string,
+    views: number,
 }

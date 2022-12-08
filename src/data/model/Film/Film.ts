@@ -10,7 +10,7 @@ import ReleaseDate from "./ReleaseDate"
 export default interface Film {
     adult: boolean,
     backdrop_path: string,
-    belongs_to_collection: object | null,
+    belongs_to_collection: object | null, 
     budget: number,
     genres: Genre[],
     homepage: string,
@@ -37,7 +37,12 @@ export default interface Film {
         keywords: KeyWord[]
     },
     recommendations: FilmDiscover,
-    release_dates: ReleaseDate[],
+    release_dates: {
+        results: {
+            iso_3166_1: string,
+            release_dates: ReleaseDate[]
+        }[]
+    },
     similar: FilmDiscover,
     credits: {
         cast: Cast[],
