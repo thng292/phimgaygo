@@ -163,16 +163,18 @@ const Detail: FC<{}> = () => {
         </section>
         <div className={'bg-containerBG-1000 z-40 w-screen flex justify-center items-center px-8'}>
             <div className={'max-w-8xl w-full'}>
-                {((additionalUserInfo?.library ?? []).find(value => value.id === Number(movieId))) && <section className={'p-4'}>
-                    <h2 className={'font-bold subpixel-antialiased text-3xl py-4'}>Watch:</h2>
-                    <div className={'w-full flex justify-center'}>
-                        <iframe
-                            src={`https://www.2embed.to/embed/tmdb/movie?id=${movieId}`}
-                            allowFullScreen
-                            className={'max-w-6xl aspect-video w-full'}
-                        />
-                    </div>
-                </section>}
+                {//((additionalUserInfo?.library ?? []).find(value => value.id === Number(movieId))) &&
+                    <section className={'p-4'}>
+                        <h2 className={'font-bold subpixel-antialiased text-3xl py-4'}>Watch:</h2>
+                        <div className={'w-full flex justify-center'}>
+                            <iframe
+                                src={`https://www.2embed.to/embed/tmdb/movie?id=${movieId}`}
+                                allowFullScreen
+                                className={'max-w-6xl aspect-video w-full'}
+                            />
+                        </div>
+                    </section>
+                }
                 {(videos.data !== undefined && videos.data.results.length !== 0) ?
                     <section className={'p-4'}>
                         <h2 className={'font-bold subpixel-antialiased text-3xl py-4'}>Trailer:</h2>
@@ -319,7 +321,7 @@ const Detail: FC<{}> = () => {
                 </section>
             </div>
         </div>
-    </div> : (data.error ? <>Error</> : <LoadingSpinner />)
+    </div> : (data.error ? <>Error</> : <LoadingSpinner/>)
 }
 
 export default Detail
