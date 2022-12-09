@@ -44,7 +44,7 @@ export default function getAdditionalUserInfo(userID: string, user?: User) {
                     createAdditionalUserInfo(userID, user)
                         .then(() => resolve({
                             ...defaultData,
-                            photoURL: user.photoURL,
+                            photoURL: user.photoURL ?? config.StorageURL(config.defaultAvatar),
                             displayName: user.displayName
                         } as UserAdditionData))
                         .catch(e => reject(e.code, e.message))

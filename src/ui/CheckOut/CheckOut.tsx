@@ -15,7 +15,6 @@ const CheckOut: FunctionComponent<{}> = (props) => {
     //False: point, True: card
     const [PaymentMethod, changePaymentMethod] = useState(false)
     const currTax = .1;
-    const currDiscount = .05;
     useEffect(() => {
         let tmp = 0;
         checkoutStuff.every(value => {
@@ -182,11 +181,21 @@ const CheckOut: FunctionComponent<{}> = (props) => {
                                         //TODO: Add movie to user library, add bill to user data, change point
                                         checkoutStuff.every(value => {
                                             addToLibrary(user.uid, value.mainItem.id, value.productOptions[value.currentOption].title)
+                                                .then(()=>{
+                                                    additionalUserInfo.library.push({
+                                                        id: value.mainItem.id,
+                                                        option: value.productOptions[value.currentOption].title,
+                                                    })
+                                                })
+                                                .catch(console.log)
                                         })
-                                        addBills(user.uid, val);
-                                        (!PaymentMethod) && updatePoint(user.uid, additionalUserInfo.points - total)
-                                        setCheckoutStuff([])
-                                        navController(`bill/${val}`)
+                                        addBills(user.uid, val)
+                                            .then(()=>{
+                                                (!PaymentMethod) && updatePoint(user.uid, additionalUserInfo.points - total)
+                                                setCheckoutStuff([])
+                                                navController(`bill/${val}`)
+                                            })
+                                            .catch(console.log)
                                     })
                             }}
                         >

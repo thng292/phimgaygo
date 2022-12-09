@@ -35,9 +35,12 @@ const FireAuth = getAuth(FireBaseApp)
 //console.log(FireBaseApp)
 //const analytics = getAnalytics(FireBaseApp);
 
-// connectFirestoreEmulator(FireStore, 'localhost', 8080)
-// connectStorageEmulator(FireStorage, 'localhost', 9199)
-// connectAuthEmulator(FireAuth, 'http://localhost:9099')
+if (!import.meta.env.PROD) {
+
+    connectFirestoreEmulator(FireStore, 'localhost', 8080)
+    connectStorageEmulator(FireStorage, 'localhost', 9199)
+    connectAuthEmulator(FireAuth, 'http://localhost:9099')
+}
 
 export { FireBaseApp, FireStore, FireStorage, FireAuth };
 

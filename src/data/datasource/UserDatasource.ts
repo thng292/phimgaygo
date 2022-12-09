@@ -25,13 +25,7 @@ export default class Authenticate {
         this.#providerGoogle.setCustomParameters({
             'login_hint': 'user@example.com',
         });
-
-        // Connect to emulator
-        //#region
-        //connectAuthEmulator(this.#auth, "http://localhost:9099");
-        //#endregion
     }
-
     getUser = () => this.#auth.currentUser
 
     // Sign in, sign up and sign out

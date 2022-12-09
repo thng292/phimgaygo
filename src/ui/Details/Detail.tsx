@@ -1,4 +1,4 @@
-import React, {FC, useEffect, useState} from "react";
+import React, {FC, useEffect, useMemo, useState} from "react";
 import getDetail from "../../data/DAO/Detail/getDetail";
 import {Link, useOutletContext, useParams} from "react-router-dom";
 import getTrailer from "../../data/DAO/Detail/getTrailer";
@@ -24,11 +24,15 @@ import LoadingSpinner from "../common/LoadingSpinner";
 //TODO: Movie detail and watch
 const Detail: FC<{}> = () => {
     const {movieId} = useParams()
+    const {addItemToCart, displayToast, navController, user, additionalUserInfo, setCheckoutStuff} = useOutletContext<ContextProps>()
     const data = getDetail(Number(movieId))
     const videos = getTrailer(Number(movieId), data.isSuccess)
     const [additionMovieInfo, setAdditionMovieInfo] = useState<AdditionalMovieInfo>()
     const [quantity, changeQuantity] = useState(1)
     const [currentOption, changeOption] = useState(0)
+    const ownThis = useMemo(() => (additionalUserInfo?.library ?? []).some(value => {
+        return value.id === Number(movieId)
+    }), [additionalUserInfo])
     useEffect(() => {
         getAdditionalMovieInfo(Number(movieId)).then(data => {
             setAdditionMovieInfo(data)
@@ -40,7 +44,6 @@ const Detail: FC<{}> = () => {
                 .catch(console.log)
         }).catch(console.log)
     }, [])
-    const {addItemToCart, displayToast, navController, user, additionalUserInfo} = useOutletContext<ContextProps>()
     const [userComment, changeUserComment] = useState("")
     const [comments, setComments] = useState<Comment[]>([])
     if (data.error) {
@@ -94,17 +97,20 @@ const Detail: FC<{}> = () => {
                     <button
                         className="tbutton secondary"
                         onClick={() => {
-                            if ((additionalUserInfo.library ?? []).find(val => val.id === Number(movieId))) {
+                            if (ownThis) {
                                 //TODO: Play the movie
                                 window.scrollTo({
                                     top: window.innerHeight,
                                     behavior: "smooth",
                                 })
                             } else {
-                                window.scrollTo({
-                                    top: window.innerHeight,
-                                    behavior: "smooth",
-                                })
+                                setCheckoutStuff([{
+                                    mainItem: data.data as unknown as FilmOverview,
+                                    quantity: quantity,
+                                    currentOption: currentOption,
+                                    productOptions: additionMovieInfo?.options ?? [],
+                                }])
+                                navController('/checkout')
                                 //TODO: Buy the movie
                             }
                             //TODO: Check bought and play may act as a buy now button
@@ -140,7 +146,7 @@ const Detail: FC<{}> = () => {
                             className={'cursor-pointer'}
                             onClick={(e) => {
                                 e.stopPropagation()
-                                changeQuantity(curr => curr - 1)
+                                changeQuantity(curr => Math.max(1,curr - 1))
                             }}
                         >
                             -
@@ -163,7 +169,7 @@ const Detail: FC<{}> = () => {
         </section>
         <div className={'bg-containerBG-1000 z-40 w-screen flex justify-center items-center px-8'}>
             <div className={'max-w-8xl w-full'}>
-                {//((additionalUserInfo?.library ?? []).find(value => value.id === Number(movieId))) &&
+                {(ownThis) &&
                     <section className={'p-4'}>
                         <h2 className={'font-bold subpixel-antialiased text-3xl py-4'}>Watch:</h2>
                         <div className={'w-full flex justify-center'}>
@@ -200,26 +206,22 @@ const Detail: FC<{}> = () => {
                             }).join(', ')}</p>
                         </div>
                         <div>
-                            <p className={'text-gray-500 pb-1'}>Budget:</p>
-                            <p>{AddSpaceToNumber(data.data.budget)}$</p>
-                        </div>
-                        <div>
-                            <p className={'text-gray-500 pb-1'}>Revenue:</p>
-                            <p>{AddSpaceToNumber(data.data.revenue)}$</p>
-                        </div>
-                        <div>
                             <p className={'text-gray-500 pb-1'}>Country:</p>
                             <p>{data.data.production_countries.map(value => {
                                 return value.name
                             }).join(', ')}</p>
                         </div>
                         <div>
+                            <p className={'text-gray-500 pb-1'}>Revenue:</p>
+                            <p>{AddSpaceToNumber(data.data.revenue)}$</p>
+                        </div>
+                        <div className={'col-span-2 max-w-2xl'}>
                             <p className={'text-gray-500 pb-1'}>Company:</p>
                             <p>{data.data.production_companies.map(value => {
                                 return value.name
                             }).join(', ')}</p>
                         </div>
-                        <div>
+                        <div className={'col-span-2 max-w-2xl'}>
                             <p className={'text-gray-500 pb-1'}>Keywords:</p>
                             <p>{data.data.keywords.keywords.map(value => {
                                 return value.name[0].toUpperCase() + value.name.slice(1)
@@ -263,7 +265,7 @@ const Detail: FC<{}> = () => {
                     visibleCol={8}
                 />
                 <section className={'w-full'}>
-                    {user && (additionalUserInfo.library.findIndex(val => val.id === Number(movieId)) !== -1) ?
+                    {ownThis ?
                         <div className={' w-3/4 mx-4 flex flex-row items-center'}>
                             <img
                                 className={'w-12 h-12 rounded-full border-2 border-main-400'}
@@ -282,7 +284,7 @@ const Detail: FC<{}> = () => {
                             <button
                                 className={'bg-main-400 rounded-full p-2'}
                                 onClick={() => {
-                                    createComment(user?.uid, userComment).then((data) => {
+                                    user && createComment(user.uid, userComment).then((data) => {
                                         setComments(old => [data, ...old])
                                         changeUserComment("")
                                         addComments(Number(movieId), data.id).catch(console.log)

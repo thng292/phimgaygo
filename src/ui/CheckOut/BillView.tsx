@@ -1,5 +1,5 @@
 import React, {FunctionComponent, useState} from 'react';
-import {useOutletContext, useParams, Link} from "react-router-dom";
+import {useOutletContext, useParams} from "react-router-dom";
 import ContextProps from "../Layout/ContextProps";
 import '../tailwindTemplate.css'
 import {getBillDetail} from "../../data/DAO/FireStore/BillDAO";
@@ -17,7 +17,6 @@ const BillView: FunctionComponent<{}> = (props) => {
         getBillDetail(billId)
             .then(data => {
                 changeBillDetail(data)
-
             })
             // @ts-ignore
             .catch((code, msg) => {
@@ -63,7 +62,12 @@ const BillView: FunctionComponent<{}> = (props) => {
                     <p className={'text-right'}>{AddSpaceToNumber(billDetail.total)} VND</p>
                 </div>
                 <p className={'w-full text-center text-xl'}>Thank you for using our service!</p>
-                <Link className={'w-full text-center hover:text-main-400    '} to={'/'}>Return to home page.</Link>
+                <p
+                    className={'w-full text-center hover:text-main-400'}
+                    onClick={() => navController(-2)}
+                >
+                    Return to last page.
+                </p>
             </div>
         </div>
     } else {

@@ -297,7 +297,7 @@ select {
     position: absolute;
     top: 54px;
     right:  0px;
-    width: fit-content;
+    width: max-content;
     padding: 1rem 0;
     background-color: white;
     border-radius: 1rem;

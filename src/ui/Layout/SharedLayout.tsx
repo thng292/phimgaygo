@@ -1,4 +1,4 @@
-import {User} from "firebase/auth";
+import {onAuthStateChanged, User} from "firebase/auth";
 import React, {useEffect, useState} from "react";
 import {Link, Outlet, useNavigate} from "react-router-dom";
 import Authenticate from "../../data/datasource/UserDatasource";
@@ -15,6 +15,8 @@ import ContextProps from "./ContextProps";
 import SVG_CopiedToClipBoard from "../common/svg/SVG_CopiedToClipBoard";
 import getAdditionalUserInfo from "../../data/DAO/FireStore/AdditionalUserInfoDAO";
 import UserAdditionData from "../../data/model/firestore/UserAdditionData";
+import {FireAuth} from "../../data/datasource/DatasourceInstance";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 const linkStyle: React.CSSProperties = {
     width: "100px",
@@ -34,6 +36,24 @@ export default function SharedLayout() {
     const [checkoutStuff, setCheckoutStuff] = useState<CartItem<FilmOverview>[]>([]);
     const [cartVisibility, changeCartVisibility] = useState(false);
     const [Toast, setToast] = useState('')
+    //Watch for user state
+    useEffect(()=>{
+        const userSubcribe = onAuthStateChanged(FireAuth, USER => {
+            console.log(USER)
+            if (USER !== null) {
+                getAdditionalUserInfo(USER.uid, USER)
+                    .then(setAdditionalUserInfo)
+                    .catch(err=>console.log(err))
+                setUser(USER)
+                setGettingUser(false)
+            } else {
+                setUser(null)
+            }
+        })
+    }, [])
+    useEffect(()=>{
+        setTimeout(()=> setGettingUser(false), 2000)
+    }, [])
     // Cart logic stuff
     //#region
     const cartLogic = {
@@ -106,41 +126,6 @@ export default function SharedLayout() {
             localStorage.setItem("Cart", JSON.stringify([]));
         },
     };
-    //#endregion
-    // useEffect stuff
-    //#region
-    // Waiting for firebase to check user login state
-    useEffect(() => {
-        let tmp = setInterval(() => {
-            //console.log("Try to get user detail");
-            let tmpUser = AuthLogic.getUser()
-            if (tmpUser) {
-                getAdditionalUserInfo(tmpUser.uid, tmpUser)
-                    .then(data => {
-                        setUser(tmpUser)
-                        setAdditionalUserInfo(data)
-                        //console.log("User additional data:",data)
-                    })
-            }
-        }, 1000);
-        setTimeout(() => {
-            setGettingUser(false);
-            clearInterval(tmp);
-            //console.log("interval cleared")
-        }, 4000);
-        return () => {
-            clearInterval(tmp)
-        };
-    }, [])
-    // Toast
-    useEffect(() => {
-        const tmp = setTimeout(() => {
-            setToast('')
-        }, 3000)
-        return () => {
-            clearTimeout(tmp)
-        }
-    }, [Toast])
     // Auto save cart to local storage
     useEffect(() => {
         updateCart(
@@ -157,6 +142,15 @@ export default function SharedLayout() {
         }
     }, [cart]);
     //#endregion
+    // Toast
+    useEffect(() => {
+        const tmp = setTimeout(() => {
+            setToast('')
+        }, 3000)
+        return () => {
+            clearTimeout(tmp)
+        }
+    }, [Toast])
     return (
         <>
             {//#region
@@ -260,15 +254,17 @@ export default function SharedLayout() {
                             )}
                         </div>
                         {gettingUser ? (
-                            <div className='outlinebtn'>Loading</div>
+                            <div style={{
+                                scale: '.4',
+                            }}><LoadingSpinner /></div>
                         ) : user ? (
                             <div
-                                className='outlinebtn user-img'
+                                className='user-img'
                                 onClick={() => {
                                     changeUserMenu((old) => !old);
                                 }}
                                 style={{
-                                    background: `url(${user.photoURL})`,
+                                    background: `url(${additionalUserInfo?.photoURL})`,
                                 }}
                             >
                                 <div
@@ -281,7 +277,7 @@ export default function SharedLayout() {
                                     }}
                                 >
                                     <p>Account</p>
-                                    <p>Balance</p>
+                                    <p>You have: {additionalUserInfo?.points} points</p>
                                     <p
                                         onClick={() =>
                                             AuthLogic.signUserOut().then(() =>
@@ -314,6 +310,7 @@ export default function SharedLayout() {
                     display: "flex",
                     justifyContent: "center",
                     marginTop: "60px",
+                    minHeight: '100vh',
                 }}
             >
                 <h3
@@ -351,11 +348,12 @@ export default function SharedLayout() {
                 />
             </div>
             <ToTopBtn/>
-            <footer className={'bg-white'}>
-                <p>Phimgaygo</p>
+            <footer className={'bg-white flex flex-col justify-center items-center p-8'}>
+                <Logo />
                 <p>by Nguyễn Quang Thông</p>
-                <p>nguyenquangthong292@gmail.com</p>
+                <a href={'mailto: nguyenquangthong292@gmail.com'}>nguyenquangthong292@gmail.com</a>
                 <p>This website is for learning purpose</p>
+                <a href="https://github.com/thng292/phimgaygo">Link to the source code.</a>
             </footer>
         </>
     );

@@ -24,7 +24,7 @@ function yearOptions() {
 }
 
 const Discover: FC<{}> = () => {
-    let { addItemToCart, displayToast } = useOutletContext<ContextProps>()
+    let {addItemToCart, displayToast} = useOutletContext<ContextProps>()
     const [adult, setAdult] = useState(false)
     const [sortedBy, setSortedBy] = useState<SortedBy>('popularity')
     const [order, setOrder] = useState<Order>("desc")
@@ -167,8 +167,13 @@ const Discover: FC<{}> = () => {
                     </select>
                 </div>
                 <p className="category">Genres</p>
-                <div className="row" style={{flexWrap: 'wrap'}}>
-                    {(genres.data !== undefined) ? genres.data?.genres.map((value) => <div
+                <div
+                    style={{
+                        display: "grid",
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))'
+                    }}
+                >
+                    {(genres.data !== undefined) && genres.data?.genres.map((value) => <div
                         className="row p10"
                         onClick={() => {
                             handleGenre(value.id)
@@ -184,7 +189,7 @@ const Discover: FC<{}> = () => {
                             checked={(genre.find(curr => (curr === value.id)) !== undefined)}
                         />
                         <p style={{padding: '10px'}}>{value.name}</p>
-                    </div>) : ''}
+                    </div>)}
                 </div>
                 <button
                     className="tbutton"
@@ -205,15 +210,16 @@ const Discover: FC<{}> = () => {
             <TitlesGrid
                 title="Discover"
                 films={films}
+                visibleCol={6}
                 onCart={item => {
-                    addItemToCart(item,0,1)
+                    addItemToCart(item, 0, 1)
                 }}
                 onInfo={id => {
                     navigate(`/detail/${id}`)
                 }}
                 onShare={id => {
                     ShareLinkToClipboard(id)
-                        .then(()=>displayToast("Copied link to clipboard"))
+                        .then(() => displayToast("Copied link to clipboard"))
                 }}
             />
             <div
