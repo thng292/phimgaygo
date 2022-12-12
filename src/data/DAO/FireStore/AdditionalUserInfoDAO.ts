@@ -9,7 +9,7 @@ const usersCollectionRef = collection(FireStore, 'users')
 const defaultData = {
     library: [],
     bills: [],
-    points: 0,
+    points: 500000,
     posts: [],
     role: 'member',
 }

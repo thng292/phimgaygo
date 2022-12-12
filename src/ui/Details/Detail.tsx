@@ -110,7 +110,9 @@ const Detail: FC<{}> = () => {
                                     currentOption: currentOption,
                                     productOptions: additionMovieInfo?.options ?? [],
                                 }])
-                                navController('/checkout')
+                                navController('/checkout',{
+                                    preventScrollReset: false,
+                                })
                                 //TODO: Buy the movie
                             }
                             //TODO: Check bought and play may act as a buy now button

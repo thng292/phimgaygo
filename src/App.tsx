@@ -4,11 +4,9 @@ import {Route, Routes} from "react-router-dom";
 import SharedLayout from './ui/Layout/SharedLayout';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import config from './data/datasource/config';
-import NotFound from './ui/Layout/NotFound';
-import BillView from "./ui/CheckOut/BillView";
-import LoadingSpinner from "./ui/common/LoadingSpinner";
 
 // Lazy import
+// #Region
 const HomeScreen = React.lazy(() => import('./ui/Home/HomeScreen'))
 const Discover = React.lazy(() => import('./ui/Discover/Discover'))
 const Search = React.lazy(() => import("./ui/Search/Search"))
@@ -18,8 +16,10 @@ const CheckOut = React.lazy(() => import('./ui/CheckOut/CheckOut'))
 const Contact = React.lazy(() => import('./ui/Contact/Contact'))
 const FAQ = React.lazy(() => import('./ui/FAQ/FAQ'))
 const Forum = React.lazy(() => import('./ui/Community/Forum'))
-const Detail = React.lazy(()=>import('./ui/Details/Detail'))
-// Lazy import
+const Detail = React.lazy(() => import('./ui/Details/Detail'))
+const BillView = React.lazy(() => import('./ui/CheckOut/BillView'))
+const NotFound = React.lazy(() => import('./ui/Layout/NotFound'))
+// #endRegion
 
 //let filmRepo = new FilmRepo()
 // function DDdebug() {
@@ -45,81 +45,49 @@ const queryClient = new QueryClient({
 })
 
 function App() {
-
     return (
-
         <QueryClientProvider client={queryClient}>
             <Routes>
                 {/* <Route path='/debug' element={<DDdebug />} /> */}
                 <Route path='/' element={<SharedLayout/>}>
 
                     <Route index element={
-                        <React.Suspense fallback={<LoadingSpinner />}>
-                            <HomeScreen/>
-                        </React.Suspense>
+                        <HomeScreen/>
                     }/>
 
                     <Route path='discover' element={
-                        <React.Suspense fallback={<LoadingSpinner />}>
-                            <Discover/>
-                        </React.Suspense>
+                        <Discover/>
                     }/>
-
                     <Route path='detail/:movieId' element={
-                        <React.Suspense>
-                            <Detail />
-                        </React.Suspense>
+                        <Detail/>
                     }/>
-
                     <Route path='search' element={
-                        <React.Suspense fallback={<LoadingSpinner />}>
-                            <Search />
-                        </React.Suspense>
+                        <Search/>
                     }/>
-
                     <Route path='auth' element={
-                        <React.Suspense fallback={<LoadingSpinner />}>
-                            <Auth/>
-                        </React.Suspense>
+                        <Auth/>
                     }/>
-
                     <Route path='about' element={
-                        <React.Suspense fallback={<LoadingSpinner />}>
-                            <About/>
-                        </React.Suspense>
+                        <About/>
                     }/>
-
                     <Route path='checkout' element={
-                        <React.Suspense fallback={<LoadingSpinner />}>
-                            <CheckOut/>
-                        </React.Suspense>
+                        <CheckOut/>
                     }/>
-
                     <Route path='bill/:billId' element={
-                        <React.Suspense>
-                            <BillView />
-                        </React.Suspense>
-                    } />
-
+                        <BillView/>
+                    }/>
                     <Route path='contact' element={
-                        <React.Suspense fallback={<LoadingSpinner />}>
-                            <Contact/>
-                        </React.Suspense>
+                        <Contact/>
                     }/>
-
                     <Route path='FAQ' element={
-                        <React.Suspense fallback={<LoadingSpinner />}>
-                            <FAQ/>
-                        </React.Suspense>
+                        <FAQ/>
                     }/>
-
                     <Route path='forum' element={
-                        <React.Suspense fallback={<LoadingSpinner />}>
-                            <Forum/>
-                        </React.Suspense>
+                        <Forum/>
                     }/>
-
-                    <Route path='*' element={<NotFound/>}></Route>
+                    <Route path='*' element={
+                        <NotFound/>
+                    }></Route>
                 </Route>
             </Routes>
         </QueryClientProvider>

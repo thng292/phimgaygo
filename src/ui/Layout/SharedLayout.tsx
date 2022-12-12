@@ -1,7 +1,6 @@
 import {onAuthStateChanged, User} from "firebase/auth";
 import React, {useEffect, useState} from "react";
 import {Link, Outlet, useNavigate} from "react-router-dom";
-import Authenticate from "../../data/datasource/UserDatasource";
 import CartItem from "../../data/model/CartItem";
 import FilmOverview from "../../data/model/Film/FilmOverview";
 import ProductOption from "../../data/model/firestore/ProductOption";
@@ -10,7 +9,6 @@ import SVG_Cart from "../common/svg/SVG_Cart";
 import SVG_Search from "../common/svg/SVG_Search";
 import ToTopBtn from "../common/ToTopBtn";
 import CartCard from "./CartCard";
-import getAdditionalMovieInfo from "../../data/DAO/FireStore/AdditionalMovieInfoDAO";
 import ContextProps from "./ContextProps";
 import SVG_CopiedToClipBoard from "../common/svg/SVG_CopiedToClipBoard";
 import getAdditionalUserInfo from "../../data/DAO/FireStore/AdditionalUserInfoDAO";
@@ -24,8 +22,6 @@ const linkStyle: React.CSSProperties = {
     fontWeight: "bold",
 };
 
-const AuthLogic = new Authenticate();
-
 export default function SharedLayout() {
     let navigate = useNavigate();
     const [gettingUser, setGettingUser] = useState(true);
@@ -37,13 +33,13 @@ export default function SharedLayout() {
     const [cartVisibility, changeCartVisibility] = useState(false);
     const [Toast, setToast] = useState('')
     //Watch for user state
-    useEffect(()=>{
-        const userSubcribe = onAuthStateChanged(FireAuth, USER => {
+    useEffect(() => {
+        onAuthStateChanged(FireAuth, USER => {
             console.log(USER)
             if (USER !== null) {
                 getAdditionalUserInfo(USER.uid, USER)
                     .then(setAdditionalUserInfo)
-                    .catch(err=>console.log(err))
+                    .catch(err => console.log(err))
                 setUser(USER)
                 setGettingUser(false)
             } else {
@@ -51,8 +47,8 @@ export default function SharedLayout() {
             }
         })
     }, [])
-    useEffect(()=>{
-        setTimeout(()=> setGettingUser(false), 2000)
+    useEffect(() => {
+        setTimeout(() => setGettingUser(false), 2000)
     }, [])
     // Cart logic stuff
     //#region
@@ -81,17 +77,20 @@ export default function SharedLayout() {
                         }
                     ])
                 } else {
-                    getAdditionalMovieInfo(item.id)
-                        .then(data => {
-                            updateCart((old) => [
-                                ...old,
-                                {
-                                    mainItem: item,
-                                    quantity: 1,
-                                    productOptions: data.options,
-                                    currentOption: option,
-                                },
-                            ]);
+                    import('../../data/DAO/FireStore/AdditionalMovieInfoDAO')
+                        .then(DataSource => {
+                            DataSource.default(item.id)
+                                .then(data => {
+                                    updateCart((old) => [
+                                        ...old,
+                                        {
+                                            mainItem: item,
+                                            quantity: 1,
+                                            productOptions: data.options,
+                                            currentOption: option,
+                                        },
+                                    ]);
+                                })
                         })
                 }
             }
@@ -256,7 +255,7 @@ export default function SharedLayout() {
                         {gettingUser ? (
                             <div style={{
                                 scale: '.4',
-                            }}><LoadingSpinner /></div>
+                            }}><LoadingSpinner/></div>
                         ) : user ? (
                             <div
                                 className='user-img'
@@ -280,9 +279,11 @@ export default function SharedLayout() {
                                     <p>You have: {additionalUserInfo?.points} points</p>
                                     <p
                                         onClick={() =>
-                                            AuthLogic.signUserOut().then(() =>
-                                                navigate(0)
-                                            )
+                                            import('../../data/datasource/UserDatasource').then(AuthLogic => {
+                                                AuthLogic.signUserOut().then(() =>
+                                                    navigate(0)
+                                                )
+                                            })
                                         }
                                     >
                                         Sign out
@@ -332,24 +333,26 @@ export default function SharedLayout() {
                     }}
                 >{Toast}</span>
                 </h3>
-                <Outlet
-                    context={{
-                        addItemToCart: cartLogic.addItemToCart,
-                        clearAllCartItem: cartLogic.removeAllItem,
-                        checkoutStuff,
-                        setCheckoutStuff,
-                        additionalUserInfo,
-                        cart,
-                        user,
-                        setUser,
-                        navController: navigate,
-                        displayToast: (text: string) => setToast(text),
-                    } as ContextProps}
-                />
+                <React.Suspense fallback={<LoadingSpinner/>}>
+                    <Outlet
+                        context={{
+                            addItemToCart: cartLogic.addItemToCart,
+                            clearAllCartItem: cartLogic.removeAllItem,
+                            checkoutStuff,
+                            setCheckoutStuff,
+                            additionalUserInfo,
+                            cart,
+                            user,
+                            setUser,
+                            navController: navigate,
+                            displayToast: (text: string) => setToast(text),
+                        } as ContextProps}
+                    />
+                </React.Suspense>
             </div>
             <ToTopBtn/>
             <footer className={'bg-white flex flex-col justify-center items-center p-8'}>
-                <Logo />
+                <Logo/>
                 <p>by Nguyễn Quang Thông</p>
                 <a href={'mailto: nguyenquangthong292@gmail.com'}>nguyenquangthong292@gmail.com</a>
                 <p>This website is for learning purpose</p>

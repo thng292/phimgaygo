@@ -1,14 +1,12 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import Logo from "../common/Logo";
 import LogoGoogle from "/logo-google.jfif";
-import Authenticate from "../../data/datasource/UserDatasource";
+import { signInEmail, signInGoogle, signUpEmail } from "../../data/datasource/UserDatasource";
 import "../tailwindTemplate.css";
 import CheckValidEmail from "../../Utils/CheckValidEmail";
 import { useOutletContext } from "react-router-dom";
 import ContextProps from "../Layout/ContextProps";
 import getAdditionalUserInfo from "../../data/DAO/FireStore/AdditionalUserInfoDAO";
-
-const auth = new Authenticate()
 
 function Auth() {
     const { setUser, navController } = useOutletContext<ContextProps>();
@@ -75,7 +73,7 @@ function Auth() {
                         </div>
                         <button
                             onClick={() => {
-                                auth.signInEmail(email, password).then(
+                                signInEmail(email, password).then(
                                     (user) => {
                                         getAdditionalUserInfo(user.uid, user)
                                             .then(()=> {
@@ -128,7 +126,7 @@ function Auth() {
                         </div>
                         <button
                             onClick={() => {
-                                auth.signUpEmail(email, password, displayName).then(
+                                signUpEmail(email, password, displayName).then(
                                     (user) => {
                                         //console.log("this is you: ", user);
                                         getAdditionalUserInfo(user.uid, user).then(()=> {
@@ -149,7 +147,7 @@ function Auth() {
                 <div
                     className='flex flex-row p-3 px-4 bg-main-400 rounded-3xl cursor-pointer m-4'
                     onClick={() =>
-                        auth.signInGoogle()
+                        signInGoogle()
                             .then((user) => {
                                 //console.log("this is you", user)
                                 getAdditionalUserInfo(user.uid, user).then(console.log)
