@@ -240,7 +240,7 @@ const Detail: FC<{}> = () => {
                         </div>
                         <div className={'max-w-2xl'}>
                             <p className={'text-gray-500 pb-1'}>Keywords:</p>
-                            <p>{data.data.keywords.keywords.map(value => {
+                            <p>{data.data.keywords.keywords.map((value) => {
                                 return value.name[0].toUpperCase() + value.name.slice(1)
                             }).join(', ')}</p>
                         </div>

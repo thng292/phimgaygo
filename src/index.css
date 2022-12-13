@@ -57,10 +57,10 @@ body {
     background-color: var(--ternary);
     border: 0;
     padding: 0.5rem 1rem;
-    margin: 0.125rem;
+    margin: 0.25rem;
     width: 10vw;
     min-width: fit-content;
-    max-width: 8rem;
+    max-width: 7rem;
     border-radius: 3rem;
     cursor: pointer;
 }

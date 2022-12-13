@@ -18,7 +18,6 @@ const BigBanner: FC<{
         let [currentIndex, setIndex] = useState(0)
         let [willChangeBg, setWillChangeBg] = useState(true)
         let genres = getGenres()
-        ////console.log(props.films)
         useEffect(() => {
             const autoChangeBannerTimer = setInterval(() => {
                 if (willChangeBg) {
@@ -44,15 +43,13 @@ const BigBanner: FC<{
             }}
             onPointerEnter={() => {
                 setWillChangeBg(false)
-                // //console.log("Pointer enter")
             }}
             onPointerLeave={() => {
                 setWillChangeBg(true)
-                // //console.log("Pointer leave")
             }}
         >
             <button
-                className='hidden md:block absolute bg-transparent right-0 top-1/2 left-full w-16 h-16 cursor-pointer translate-x-1/2 -translate-y-1/2'
+                className='absolute top-1/2 right-0 left-full hidden h-16 w-16 translate-x-1/2 -translate-y-1/2 cursor-pointer bg-transparent md:block'
                 onClick={() => {
                     setIndex((prevState: number) =>
                         ((prevState + 1) % (props.films?.length ?? 1))
@@ -62,7 +59,7 @@ const BigBanner: FC<{
                 <SVG_NavForward />
             </button>
             <button
-                className='hidden md:block absolute bg-transparent right-0 top-1/2 right-full w-16 h-16 cursor-pointer -translate-y-1/2'
+                className='absolute top-1/2 right-0 right-full hidden h-16 w-16 -translate-y-1/2 cursor-pointer bg-transparent md:block'
                 onClick={() => {
                     setIndex((prevState: number) =>
                         ((prevState - 1 + (props.films?.length ?? 1)) % (props.films?.length ?? 1))

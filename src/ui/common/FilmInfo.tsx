@@ -24,7 +24,7 @@ const FilmInfo: FC<{
         }}
     >
         <div
-            className="absolute flex flex-row bottom-5"
+            className="absolute bottom-5 flex flex-row"
         >
             <img
 
@@ -37,16 +37,16 @@ const FilmInfo: FC<{
                 aspectRatio: '3/4',
             }}/>
             <div className={'relative'}>
-                <p className="font-bold text-3xl p-3 text-white">{props.title}</p>
-                <p className="hidden sm:block font-bold px-3 text-white">{props.original_title}</p>
+                <p className="p-3 text-3xl font-bold text-white">{props.title}</p>
+                <p className="hidden px-3 font-bold text-white sm:block">{props.original_title}</p>
                 <p className="px-3 text-white"><span className={'text-gray-300'}>Genres: </span>{props.genres}</p>
                 <div className="flex flex-row">
-                    <p className="px-3 text-white pb-20 sm:pb-0"><span className="text-gray-300">Release: </span>{props.release_date}</p>
-                    <p className="hidden sm:block px-3 text-white"><span className={'text-gray-300'}>Rating: </span>{props.vote_avg.toPrecision(2)} on <a
+                    <p className="px-3 pb-20 text-white sm:pb-0"><span className="text-gray-300">Release: </span>{props.release_date}</p>
+                    <p className="hidden px-3 text-white sm:block"><span className={'text-gray-300'}>Rating: </span>{props.vote_avg.toPrecision(2)} on <a
                         href={`https://www.themoviedb.org/${props.id}`}>TMDB</a></p>
                 </div>
                 <p
-                    className="hidden sm:block w-full p-3 text-white overflow-hidden md:w-1/2"
+                    className="hidden w-full overflow-hidden p-3 text-white sm:block md:w-1/2"
                     style={{
                         height: '30%',
                         minHeight: '90px',
@@ -54,7 +54,7 @@ const FilmInfo: FC<{
                     }}
                 >{props.overview}</p>
                 <div
-                    className="flex flex-row absolute z-20 w-full justify-center sm:justify-start m-2 bottom-0"
+                    className="absolute bottom-0 z-20 m-2 flex w-full flex-row justify-center sm:justify-start"
                 >
                     <button className="tbutton" onClick={() => props.onCart()}>
                         <SVG_AddToCart/>

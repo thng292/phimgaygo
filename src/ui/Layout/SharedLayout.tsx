@@ -89,7 +89,7 @@ export default function SharedLayout() {
                                 e.stopPropagation()
                                 navigate('/search')
                             }}
-                            className='flex flex-row justify-center items-center border-2 border-main-400 rounded-3xl p-1 ml-2'
+                            className='flex flex-row justify-center items-center border-2 border-main-400 rounded-3xl p-1 px-2 ml-2'
                         >
                             <SVG_Search/>
                             <Link to='/discover'>Search</Link>
@@ -218,7 +218,7 @@ export default function SharedLayout() {
                             </div>
                         ) : (
                             <div
-                                className='border-2 border-main-400 rounded-3xl p-1 mx-1 font-bold'
+                                className='border-2 border-main-400 rounded-3xl p-1 px-2 mx-1 font-bold'
                                 onClick={() => navigate("/auth")}
                             >
                                 Sign in
