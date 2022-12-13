@@ -33,8 +33,7 @@ const CartCard: FC<{
         <div
             className='fixed top-12 right-0 w-screen rounded-2xl bg-white p-6 shadow-2xl sm:absolute sm:top-14 sm:w-fit'
             style={{
-                minWidth: '600px',
-                maxWidth: '30vw',
+                minWidth: 'max-content',
                 transition: ".2s ease-in-out",
                 opacity: show ? "100%" : "0%",
                 visibility: show ? 'visible' : 'hidden'

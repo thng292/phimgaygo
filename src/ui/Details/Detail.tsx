@@ -66,7 +66,7 @@ const Detail: FC<{}> = () => {
                 paddingTop: '64px',
                 minHeight: '90vh',
                 width: '100vw',
-                background: `linear-gradient(90deg, rgba(249,249,249,1) 20%, rgba(249,249,249,0.6) 50%,rgba(0,0,0,0) 60% , rgba(0,0,0,0) 100%), url(${config.backDropUrl + data.data.backdrop_path})`,
+                background: `${(window.innerWidth > 750) ? 'linear-gradient(90deg, rgba(249,249,249,1) 20%, rgba(249,249,249,0.6) 50%,rgba(0,0,0,0) 60% , rgba(0,0,0,0) 100%),' : ''} url(${config.backDropUrl + data.data.backdrop_path})`,
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'right top',
@@ -74,7 +74,7 @@ const Detail: FC<{}> = () => {
         >
             <div className={'p-3 sm:p-20 max-w-3xl'}>
                 <img
-                    className={'w-1/3 rounded-2xl m-4'}
+                    className={'w-1/3 rounded-2xl m-4 shadow-2xl'}
                     src={config.posterUrl + data.data.poster_path}
                     alt={data.data.original_title}
                 />
