@@ -48,29 +48,16 @@ const Discover: FC<{}> = () => {
         (fetchArgs.genre.length > 0) ? fetchArgs.genre.join(',') : undefined,
     )
     const navigate = useOutletContext<ContextProps>().navController
-    /* useEffect(() => {
-        window.onscroll = () => {
-            if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight-100) {
-                setPage(old => ++old)
-            }
-        }
-    }, []) */
     useEffect(() => {
-        if (data.data !== undefined) {
-            //console.log(data)
-            updateFilms(old => {
-                // let shouldOverwrite = false
-                // let n = films.length
-                // for (let sample in data.data.results) {
-                //     if (sample ===)
-                // }
-                return [...old, ...(data.data?.results ?? [])]
-            })
-        }
+        if (data.data === undefined) return
+        console.log(data.data)
+        if (films.length && data.data.results[data.data.results.length - 1].id === films[films.length - 1].id) return;
+        updateFilms(old => {
+            return [...old, ...(data.data?.results ?? [])]
+        })
     }, [data.data])
 
     const handleGenre = (id: number) => {
-        //console.log(id)
         if (genre.find(curr => curr === id) === undefined) {
             setGenre(old => [...old, id])
         } else {
@@ -83,7 +70,7 @@ const Discover: FC<{}> = () => {
     }
 
     return <>
-        <h1
+        <div
             style={{
                 position: 'fixed',
                 left: '50%',
@@ -92,48 +79,40 @@ const Discover: FC<{}> = () => {
                 opacity: data.isLoading ? '100%' : '0%',
                 display: data.isLoading ? 'block' : 'none'
             }}
-        ><LoadingSpinner/></h1>
+        ><LoadingSpinner/></div>
         <div
             style={{
                 maxWidth: "1400px",
+                width: '80vw',
                 transition: '.2 ease-in-out',
                 opacity: data.isLoading ? '0%' : '100%',
                 visibility: data.isLoading ? 'hidden' : 'initial'
             }}
         >
 
-            <div className="column p10" style={{
-                width: '100%',
-
-            }}>
+            <div className="w-full flex flex-col p-2">
                 <div
-                    className="row p10"
-                    style={{
-                        alignItems: 'center',
-                        height: '64px'
-                    }}
+                    className="flex flex-row p-2 items-center h-16"
                 >
                     <div
-                        className="row p10"
+                        className="flex flex-row p-2 cursor-pointer"
                         onClick={() => {
                             //updateFilms([])
                             setAdult(old => !old)
                         }}
-                        style={{
-                            cursor: 'pointer'
-                        }}>
-                        <p style={{padding: '10px'}}>Contain Adult</p>
+                    >
+                        <p className={'p-2'}>Contain Adult</p>
                         <input
-                            className="p10"
+                            className="p-2"
                             type="checkbox"
                             name="adult"
                             id="0"
                             checked={adult}
                         />
                     </div>
-                    <p style={{padding: '10px'}}>Sort by:</p>
+                    <p className={'p-3'}>Sort by:</p>
                     <select
-                        className="p10"
+                        className={'p-1.5 rounded-3xl border-2 border-main-400'}
                         name="sortedBy" id="1"
                         onChange={(e) => {
                             //updateFilms([])
@@ -147,18 +126,19 @@ const Discover: FC<{}> = () => {
                         <option value="popularity">Popularity</option>
                         <option value="vote_average">Rating</option>
                     </select>
-                    <p className="p10">Order by</p>
-                    <div
-                        className="row p10"
-                        style={{cursor: 'pointer'}}>
-                        <select name="order" id="2" onChange={(e) => setOrder(e.currentTarget.value as Order)}>
-                            <option value="asc">ASC</option>
-                            <option value="desc">DESC</option>
-                        </select>
-
-                    </div>
-                    <p style={{padding: '10px'}}>In Year:</p>
+                    <p className={'p-3'}>Order by</p>
                     <select
+                        className={'p-1.5 rounded-3xl border-2 border-main-400'}
+                        name="order" id="2"
+                        onChange={(e) => setOrder(e.currentTarget.value as Order)}
+                    >
+                        <option value="asc">ASC</option>
+                        <option value="desc">DESC</option>
+                    </select>
+
+                    <p className={'p-3'}>In Year:</p>
+                    <select
+                        className={'p-1.5 rounded-3xl border-2 border-main-400'}
                         name="year" id="3"
                         value={year}
                         onChange={e => setYear(e.currentTarget.value)}
@@ -166,7 +146,7 @@ const Discover: FC<{}> = () => {
                         {yearOptions()}
                     </select>
                 </div>
-                <p className="category">Genres</p>
+                <p className="font-bold text-3xl p-4">Genres</p>
                 <div
                     style={{
                         display: "grid",
@@ -174,21 +154,19 @@ const Discover: FC<{}> = () => {
                     }}
                 >
                     {(genres.data !== undefined) && genres.data?.genres.map((value) => <div
-                        className="row p10"
+                        className="cursor-pointer"
                         onClick={() => {
                             handleGenre(value.id)
                         }}
-                        style={{
-                            cursor: 'pointer'
-                        }}>
+                    >
                         <input
-                            className="p10"
+                            className="p-3"
                             type="checkbox"
                             name={value.name}
                             id="0"
                             checked={(genre.find(curr => (curr === value.id)) !== undefined)}
                         />
-                        <p style={{padding: '10px'}}>{value.name}</p>
+                        <p className={'p-3 inline-block'}>{value.name}</p>
                     </div>)}
                 </div>
                 <button
@@ -223,9 +201,9 @@ const Discover: FC<{}> = () => {
                 }}
             />
             <div
-                className='center-child'
+                className='flex justify-center w-full p-4'
                 style={{
-                    display: (fetchArgs.page === data?.data?.total_pages) ? 'none' : 'block'
+                    display: (fetchArgs.page === data?.data?.total_pages) ? 'none' : 'flex'
                 }}
             >
                 <SeeMoreBtn onClick={() => updateFetchArgs(old => {

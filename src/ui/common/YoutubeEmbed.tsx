@@ -1,5 +1,4 @@
 import React, {FC} from "react";
-import '../tailwindTemplate.css'
 
 const YoutubeEmbed: FC<{
     url?: string,
@@ -11,7 +10,6 @@ const YoutubeEmbed: FC<{
         <iframe
             className={classname} style={style}
             src={"https://www.youtube.com/embed/" + url}
-            frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
         />

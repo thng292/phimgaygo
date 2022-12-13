@@ -1,15 +1,14 @@
 import React, {FunctionComponent, useState} from 'react';
 import {useOutletContext, useParams} from "react-router-dom";
 import ContextProps from "../Layout/ContextProps";
-import '../tailwindTemplate.css'
 import {getBillDetail} from "../../data/DAO/FireStore/BillDAO";
 import Bill from "../../data/model/firestore/Bill";
 import LoadingSpinner from "../common/LoadingSpinner";
 import Logo from "../common/Logo";
 import AddSpaceToNumber from "../../Utils/AddSpaceToNumber";
 
-const BillView: FunctionComponent<{}> = (props) => {
-    const {navController, user, additionalUserInfo} = useOutletContext<ContextProps>()
+const BillView: FunctionComponent<{}> = () => {
+    const {navController, user} = useOutletContext<ContextProps>()
     const {billId} = useParams()
     const [billDetail, changeBillDetail] = useState<Bill>()
     const [err, setErr] = useState<{ code: string, msg: string }>()

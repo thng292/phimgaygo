@@ -1,7 +1,7 @@
 import {User} from "firebase/auth";
 import {NavigateFunction} from "react-router-dom";
 import FilmOverview from "../../data/model/Film/FilmOverview";
-import CartItem from "../../data/model/CartItem";
+import CartItem from "../../data/model/Cart/CartItem";
 import ProductOption from "../../data/model/firestore/ProductOption";
 import UserAdditionData from "../../data/model/firestore/UserAdditionData";
 

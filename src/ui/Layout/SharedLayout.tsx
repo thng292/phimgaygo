@@ -1,14 +1,12 @@
 import {onAuthStateChanged, User} from "firebase/auth";
 import React, {useEffect, useState} from "react";
 import {Link, Outlet, useNavigate} from "react-router-dom";
-import CartItem from "../../data/model/CartItem";
+import CartItem from "../../data/model/Cart/CartItem";
 import FilmOverview from "../../data/model/Film/FilmOverview";
-import ProductOption from "../../data/model/firestore/ProductOption";
 import Logo from "../common/Logo";
 import SVG_Cart from "../common/svg/SVG_Cart";
 import SVG_Search from "../common/svg/SVG_Search";
 import ToTopBtn from "../common/ToTopBtn";
-import CartCard from "./CartCard";
 import ContextProps from "./ContextProps";
 import SVG_CopiedToClipBoard from "../common/svg/SVG_CopiedToClipBoard";
 import getAdditionalUserInfo from "../../data/DAO/FireStore/AdditionalUserInfoDAO";
@@ -16,11 +14,7 @@ import UserAdditionData from "../../data/model/firestore/UserAdditionData";
 import {FireAuth} from "../../data/datasource/DatasourceInstance";
 import LoadingSpinner from "../common/LoadingSpinner";
 
-const linkStyle: React.CSSProperties = {
-    width: "100px",
-    height: "100%",
-    fontWeight: "bold",
-};
+const CartCard = React.lazy(()=>import('./CartCard'))
 
 export default function SharedLayout() {
     let navigate = useNavigate();
@@ -39,7 +33,7 @@ export default function SharedLayout() {
             if (USER !== null) {
                 getAdditionalUserInfo(USER.uid, USER)
                     .then(setAdditionalUserInfo)
-                    .catch(err => console.log(err))
+                    .catch(console.log)
                 setUser(USER)
                 setGettingUser(false)
             } else {
@@ -50,81 +44,8 @@ export default function SharedLayout() {
     useEffect(() => {
         setTimeout(() => setGettingUser(false), 2000)
     }, [])
-    // Cart logic stuff
     //#region
-    const cartLogic = {
-        addItemToCart: (
-            item: FilmOverview,
-            option: number = 0,
-            quantity: number = 1,
-            productOptions?: ProductOption[],
-        ) => {
-            let tmp = cart.findIndex((val) => val.mainItem.id === item.id);
-            if (tmp != -1 && cart[tmp].currentOption === option) {
-                let tmpCart = cart.map((val) => val);
-                tmpCart[tmp].quantity += quantity;
-                updateCart(tmpCart);
-            } else {
-                //TODO: Get product options and price from Firebase
-                if (productOptions !== undefined) {
-                    updateCart((old) => [
-                        ...old,
-                        {
-                            mainItem: item,
-                            quantity: 1,
-                            productOptions: productOptions,
-                            currentOption: option,
-                        }
-                    ])
-                } else {
-                    import('../../data/DAO/FireStore/AdditionalMovieInfoDAO')
-                        .then(DataSource => {
-                            DataSource.default(item.id)
-                                .then(data => {
-                                    updateCart((old) => [
-                                        ...old,
-                                        {
-                                            mainItem: item,
-                                            quantity: 1,
-                                            productOptions: data.options,
-                                            currentOption: option,
-                                        },
-                                    ]);
-                                })
-                        })
-                }
-            }
-        },
-        removeItemFormCart: (id: number) => {
-            let tmp = cart.map((val) => val);
-            tmp.splice(
-                tmp.findIndex((val) => val.mainItem.id === id),
-                1
-            );
-            updateCart(tmp);
-        },
-        changeQuantity: (id: number, newQuantity: number) => {
-            if (newQuantity == 0) {
-                return cartLogic.removeItemFormCart(id);
-            }
-            let tmp = cart.map((val) => val);
-            tmp[tmp.findIndex((val) => val.mainItem.id === id)].quantity =
-                newQuantity;
-            updateCart(tmp);
-        },
-        changeOption: (id: number, option: number) => {
-            let tmpCart = cart.map(value => value)
-            let item = tmpCart.findIndex(value => {
-                return value.mainItem.id === id
-            })
-            tmpCart[item].currentOption = option
-            updateCart(tmpCart)
-        },
-        removeAllItem: () => {
-            updateCart([]);
-            localStorage.setItem("Cart", JSON.stringify([]));
-        },
-    };
+
     // Auto save cart to local storage
     useEffect(() => {
         updateCart(
@@ -132,8 +53,6 @@ export default function SharedLayout() {
                 localStorage.getItem("Cart") ?? "[]"
             ) as CartItem<FilmOverview>[]
         );
-        // //console.log("Restoring Cart")
-        // console.table(JSON.parse(localStorage.getItem("Cart") ?? '[]'))
     }, []);
     useEffect(() => {
         if (cart.length) {
@@ -155,31 +74,13 @@ export default function SharedLayout() {
             {//#region
             }
             <nav
-                className='row center-child'
-                style={{
-                    height: "64px",
-                    position: "fixed",
-                    top: "0",
-                    width: "100vw",
-                    background: "white",
-                    zIndex: "100",
-                }}
+                className={'flex flex-row items-center justify-center h-16 fixed top-0 w-screen bg-white z-40 px-6'}
             >
                 <div
-                    className='row'
-                    style={{
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                        width: "100%",
-                        padding: "0 60px",
-                    }}
+                    className='flex flex-row items-center justify-between w-full'
                 >
                     <div
-                        className='row center-child'
-                        style={{
-                            cursor: "pointer",
-                            userSelect: "none",
-                        }}
+                        className='flex flex-row items-center cursor-pointer select-none'
                         onClick={() => navigate('/')}
                     >
                         <Logo/>
@@ -188,66 +89,90 @@ export default function SharedLayout() {
                                 e.stopPropagation()
                                 navigate('/search')
                             }}
-                            className='row center-child outlinebtn'
-                            style={{
-                                padding: "5px",
-                                marginLeft: "20px",
-                            }}
+                            className='flex flex-row justify-center items-center border-2 border-main-400 rounded-3xl p-1 ml-2'
                         >
                             <SVG_Search/>
                             <Link to='/discover'>Search</Link>
                         </div>
                     </div>
-                    <div className='row center-child'>
+                    <div className='flex flex-row justify-center items-center'>
                         <Link
-                            className='center-child'
-                            style={linkStyle}
+                            className='hidden md:block font-bold w-24 text-center'
                             to='/discover'
                         >
                             <p>Discover</p>
                         </Link>
                         <Link
-                            className='center-child'
-                            style={linkStyle}
+                            className='hidden md:block font-bold w-24 text-center'
                             to='/forum'
                         >
                             <p>Forum</p>
                         </Link>
                         <Link
-                            className='center-child'
-                            style={linkStyle}
+                            className='hidden md:block font-bold w-24 text-center'
                             to='/about'
                         >
                             <p>About Us</p>
                         </Link>
                         <div
-                            className='outlinebtn center-child cart'
+                            className='border-2 border-main-400 rounded-3xl w-fits px-3 py-1 mx-2 relative'
                             onClick={() => changeCartVisibility((old) => !old)}
                         >
                             <SVG_Cart/>
-                            <CartCard
-                                listItem={cart}
-                                show={cartVisibility}
-                                onClose={() => changeCartVisibility(false)}
-                                changeQuantityHandler={cartLogic.changeQuantity}
-                                removeItemHandler={cartLogic.removeItemFormCart}
-                                changeOptionHandler={cartLogic.changeOption}
-                                clearAllItemHandler={cartLogic.removeAllItem}
-                                onProductClicked={productId => {
-                                    changeCartVisibility(false)
-                                    navigate(`/detail/${productId}`)
-                                }}
-                                onCheckout={() => {
-                                    setCheckoutStuff(cart)
-                                    cartLogic.removeAllItem()
-                                    changeCartVisibility(false)
-                                    navigate('/checkout')
-                                }}
-                            />
+                            {cartVisibility && <React.Suspense>
+                                <CartCard
+                                    listItem={cart}
+                                    show={cartVisibility}
+                                    onClose={() => changeCartVisibility(false)}
+                                    changeQuantityHandler={(id, newQuantity) => {
+                                        import('../../data/DAO/Cart/CartDAO')
+                                            .then(cartLogic => {
+                                                cartLogic.changeQuantity(cart, updateCart, id, newQuantity)
+                                            })
+                                            .catch(console.error)
+                                    }}
+                                    removeItemHandler={(id) => {
+                                        import('../../data/DAO/Cart/CartDAO')
+                                            .then(cartLogic => {
+                                                cartLogic.removeItemFormCart(cart, updateCart, id)
+                                            })
+                                            .catch(console.error)
+                                    }}
+                                    changeOptionHandler={(id, option) => {
+                                        import('../../data/DAO/Cart/CartDAO')
+                                            .then(cartLogic => {
+                                                cartLogic.changeOption(cart, updateCart, id, option)
+                                            })
+                                            .catch(console.error)
+                                    }}
+                                    clearAllItemHandler={() => {
+                                        import('../../data/DAO/Cart/CartDAO')
+                                            .then(cartLogic => {
+                                                cartLogic.removeAllItem(updateCart)
+                                            })
+                                            .catch(console.error)
+                                    }}
+                                    onProductClicked={productId => {
+                                        changeCartVisibility(false)
+                                        navigate(`/detail/${productId}`)
+                                    }}
+                                    onCheckout={() => {
+                                        setCheckoutStuff(cart)
+                                        import('../../data/DAO/Cart/CartDAO')
+                                            .then(cartLogic => {
+                                                cartLogic.removeAllItem(updateCart)
+                                            })
+                                            .catch(console.error)
+                                        changeCartVisibility(false)
+                                        navigate('/checkout')
+                                    }}
+                                />
+                            </React.Suspense>
+                            }
                             {cart.length ? (
-                                <div className='noti-dot center-child'>
+                                <p className='absolute top-0 right-0 z-50 w-4 h-4 text-center text-sm bg-main-400 rounded-full -translate-y-1/2 translate-x-1/2'>
                                     {cart.length}
-                                </div>
+                                </p>
                             ) : (
                                 ""
                             )}
@@ -258,26 +183,27 @@ export default function SharedLayout() {
                             }}><LoadingSpinner/></div>
                         ) : user ? (
                             <div
-                                className='user-img'
+                                className='w-11 h-11 cursor-pointer rounded-full relative bg-cover bg-center'
                                 onClick={() => {
                                     changeUserMenu((old) => !old);
                                 }}
                                 style={{
-                                    background: `url(${additionalUserInfo?.photoURL})`,
+                                    backgroundImage: `url(${additionalUserInfo?.photoURL})`,
                                 }}
                             >
                                 <div
                                     //TODO
-                                    className='user-menu tshadow'
+                                    className='absolute top-14 right-0 rounded-2xl shadow-2xl bg-white w-max py-2'
                                     style={{
                                         transition: ".2s ease-in-out",
                                         opacity: showUserMenu ? "100%" : "0%",
                                         display: showUserMenu ? 'block' : 'none'
                                     }}
                                 >
-                                    <p>Account</p>
-                                    <p>You have: {additionalUserInfo?.points} points</p>
-                                    <p
+                                    <p className={'py-2 px-4 font-bold border-b border-gray-200'}>Hello {user.displayName}!</p>
+                                    <p className={'py-2 px-4 font-bold hover:bg-gray-300 rounded-2xl'}>Account</p>
+                                    <p className={'py-2 px-4 font-bold hover:bg-gray-300 rounded-2xl'}>You have: {additionalUserInfo?.points} points</p>
+                                    <p className={'py-2 px-4 font-bold hover:bg-gray-300 rounded-2xl'}
                                         onClick={() =>
                                             import('../../data/datasource/UserDatasource').then(AuthLogic => {
                                                 AuthLogic.signUserOut().then(() =>
@@ -292,10 +218,7 @@ export default function SharedLayout() {
                             </div>
                         ) : (
                             <div
-                                className='row center-child outlinebtn'
-                                style={{
-                                    height: "40px",
-                                }}
+                                className='border-2 border-main-400 rounded-3xl p-1 mx-1 font-bold'
                                 onClick={() => navigate("/auth")}
                             >
                                 Sign in
@@ -307,37 +230,34 @@ export default function SharedLayout() {
             {//#endregion
             }
             <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginTop: "60px",
-                    minHeight: '100vh',
-                }}
+                className={'flex justify-center mt-16 min-h-screen'}
             >
                 <h3
                     id={'Toast'}
-                    className={'tshadow bold outlinebtn center-child'}
+                    className={'fixed z-50 bg-white p-2 w-max shadow-2xl font-bold border-2 border-main-400 rounded-3xl flex justify-center'}
                     style={{
-                        position: "fixed",
                         transition: '.2s ease-in-out',
-                        zIndex: '100',
-                        background: 'white',
                         visibility: (Toast !== '') ? 'visible' : 'hidden',
                         opacity: (Toast !== '') ? '100%' : '0%',
-                        width: "max-content",
-                        padding: '10px'
                     }}
                 ><SVG_CopiedToClipBoard/><span
-                    style={{
-                        paddingLeft: '5px'
-                    }}
+                    className={'pl-1'}
                 >{Toast}</span>
                 </h3>
                 <React.Suspense fallback={<LoadingSpinner/>}>
                     <Outlet
                         context={{
-                            addItemToCart: cartLogic.addItemToCart,
-                            clearAllCartItem: cartLogic.removeAllItem,
+                            addItemToCart: (item, option, quantity, productOptions) => {
+                                import('../../data/DAO/Cart/CartDAO')
+                                    .then(cartLogic => {
+                                        cartLogic.addItemToCart(cart, updateCart, item, option, quantity, productOptions)
+                                    })
+                                    .catch(console.error)
+                            },
+                            clearAllCartItem: () => {
+                                import('../../data/DAO/Cart/CartDAO')
+                                    .then(cartLogic => cartLogic.removeAllItem(updateCart))
+                            },
                             checkoutStuff,
                             setCheckoutStuff,
                             additionalUserInfo,

@@ -13,7 +13,6 @@ const BigBanner: FC<{
     onClick: (id: number) => void;
     onCart: (id: FilmOverview) => void;
     onShare: (id: number) => void;
-    style?: React.CSSProperties;
 }> = (props) => {
     if (props.films !== undefined) {
         let [currentIndex, setIndex] = useState(0)
@@ -34,17 +33,14 @@ const BigBanner: FC<{
         }, [willChangeBg])
         let currFilm = props.films[currentIndex]
         return <div
-            className={"tshadow"}
+            id={'bigbanner'}
+            className={"shadow-2xl relative sm:rounded-3xl mb-12 sm:mt-16"}
             style={{
-                backgroundImage: `url(${config.backDropUrl + currFilm.backdrop_path})`,
-                position: 'relative',
+                backgroundImage: `url(${window.innerWidth > 640 ? config.backDropUrl + currFilm.backdrop_path : config.posterUrl + currFilm.poster_path})`,
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'center',
                 backgroundSize: 'cover',
-                height: '60vh',
-                minHeight: '560px',
-                borderRadius: '20px',
-                ...props.style,
+                maxWidth: '1400px'
             }}
             onPointerEnter={() => {
                 setWillChangeBg(false)
@@ -56,19 +52,7 @@ const BigBanner: FC<{
             }}
         >
             <button
-                // className='tbutton'
-                style={{
-                    position: 'absolute',
-                    background: "transparent",
-                    border: '0',
-                    right: '0',
-                    top: '50%',
-                    left: '100%',
-                    transform: 'translate(100,-50%)',
-                    width: '48px',
-                    height: '48px',
-                    cursor: "pointer",
-                }}
+                className='hidden md:block absolute bg-transparent right-0 top-1/2 left-full w-16 h-16 cursor-pointer translate-x-1/2 -translate-y-1/2'
                 onClick={() => {
                     setIndex((prevState: number) =>
                         ((prevState + 1) % (props.films?.length ?? 1))
@@ -78,19 +62,7 @@ const BigBanner: FC<{
                 <SVG_NavForward />
             </button>
             <button
-                // className='tbutton'
-                style={{
-                    background: "transparent",
-                    border: '0',
-                    position: 'absolute',
-                    left: '0',
-                    top: '50%',
-                    right: '100%',
-                    transform: 'translate(-100%  ,-50%)',
-                    width: '48px',
-                    height: '48px',
-                    cursor: "pointer",
-                }}
+                className='hidden md:block absolute bg-transparent right-0 top-1/2 right-full w-16 h-16 cursor-pointer -translate-y-1/2'
                 onClick={() => {
                     setIndex((prevState: number) =>
                         ((prevState - 1 + (props.films?.length ?? 1)) % (props.films?.length ?? 1))
@@ -115,12 +87,6 @@ const BigBanner: FC<{
                     return ""
                 }).join(", ") : "Loading"}
                 poster_path={config.posterUrl + currFilm.poster_path}
-                style={{
-                    background: 'linear-gradient(to right, #222, #43434300)',
-                    height: '100%',
-                    borderRadius: '20px',
-                    padding: '0 60px',
-                }}
                 onClick={() => props.onClick(currFilm.id)}
                 onCart={() => props.onCart(currFilm)}
                 onShare={() => props.onShare(currFilm.id)}

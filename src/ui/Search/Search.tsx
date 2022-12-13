@@ -1,10 +1,11 @@
-import {FC, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import {useOutletContext} from "react-router-dom";
 import PageIndicator from "../common/PageIndicator";
 import SeeMoreBtn from "../common/SeeMoreBtn";
 import ContextProps from "../Layout/ContextProps";
 import getSearch from "../../data/DAO/Search/Search";
 import TitlesGrid from "../common/TitlesGrid";
+import FilmOverview from "../../data/model/Film/FilmOverview";
 
 const dayTime = new Date()
 
@@ -37,7 +38,25 @@ const Search: FC<{}> = () => {
         fetchArgs.page,
     );
     const {navController, addItemToCart} = useOutletContext<ContextProps>();
-
+    const [films, updateFilms] = useState<FilmOverview[]>([])
+    console.log(films)
+    useEffect(() => {
+        if (data.data === undefined) return
+        if (films.length && data.data.results[data.data.results.length - 1].id === films[films.length - 1].id) return;
+        updateFilms(old => {
+            return [...old, ...(data.data?.results ?? [])]
+        })
+    }, [data.data])
+    const handleArgsChange = () =>{
+        updateFetchArgs({
+            page: 1,
+            enable: true,
+            adult: adult,
+            year: year,
+            query: query,
+        });
+        updateFilms([])
+    }
     return (
         <>
             <h1
@@ -52,6 +71,7 @@ const Search: FC<{}> = () => {
             >Loading...</h1>
             <div
                 style={{
+                    width: '80vw',
                     maxWidth: "1400px",
                     transition: '.2 ease-in-out',
                     opacity: data.isLoading ? '0%' : '100%',
@@ -59,37 +79,28 @@ const Search: FC<{}> = () => {
                 }}
             >
 
-                <div className="column p10" style={{
-                    width: '100%'
-                }}>
+                <div className="flex flex-col p-3 w-full">
                     <div
-                        className='row p10'
-                        style={{
-                            alignItems: "center",
-                            height: "64px",
-                        }}
+                        className='flex flex-row p-3 items-center h-16'
                     >
                         <div
-                            className='row p10'
+                            className='flex flex-row p-3 cursor-pointer'
                             onClick={() => {
-                                //updateFilms([])
                                 setAdult((old) => !old);
                             }}
-                            style={{
-                                cursor: "pointer",
-                            }}
                         >
-                            <p style={{padding: "10px"}}>Contain Adult</p>
+                            <p className={'p-3'}>Contain Adult</p>
                             <input
-                                className='p10'
+                                className='p-3'
                                 type='checkbox'
                                 name='adult'
                                 id='0'
                                 checked={adult}
                             />
                         </div>
-                        <p className={'p10'}>Year</p>
+                        <p className={'p-3'}>Year</p>
                         <select
+                            className={'p-1 rounded-3xl border-2 border-main-400'}
                             name='year'
                             id='3'
                             value={year}
@@ -98,7 +109,7 @@ const Search: FC<{}> = () => {
                             {yearOptions()}
                         </select>
                     </div>
-                    <div className="row">
+                    <div className="flex flex-row">
                         <input
                             type="text" name="query" id="0"
                             placeholder={'Search for a movie'}
@@ -106,26 +117,23 @@ const Search: FC<{}> = () => {
                             onChange={(e) => {
                                 setQuery(e.currentTarget.value)
                             }}
-                            className='search-input'
+                            className='w-full rounded-3xl px-5 border-2 border-main-400 focus:border-main-1000 outline-0'
+                            onKeyDown={key => {
+                                if (key.key === 'Enter') {
+                                    handleArgsChange()
+                                }
+                            }}
                         />
                         <button
                             className='tbutton'
-                            onClick={() => {
-                                updateFetchArgs({
-                                    page: 1,
-                                    enable: true,
-                                    adult: adult,
-                                    year: year,
-                                    query: query,
-                                });
-                            }}
+                            onClick={handleArgsChange}
                         >
                             Search
                         </button>
                     </div>
                 </div>
-                {fetchArgs.enable ? <TitlesGrid
-                    films={data.data?.results} title={'Results'}
+                {films.length ? <TitlesGrid
+                    films={films} title={'Results'}
                     onInfo={id => {
                         navController(`/detail/${id}`)
                     }}
@@ -135,12 +143,12 @@ const Search: FC<{}> = () => {
                     }}
                 /> : ''}
                 <div
-                    className='center-child'
+                    className='flex justify-center items-center'
                     style={{
                         display: (fetchArgs.page === data?.data?.total_pages) ? 'none' : 'block'
                     }}
                 >
-                    {data.isSuccess ? <SeeMoreBtn
+                    {data.isSuccess && <SeeMoreBtn
                         onClick={() =>
                             updateFetchArgs((old) => {
                                 return {
@@ -150,7 +158,7 @@ const Search: FC<{}> = () => {
                             })
                         }
                         isLoading={data.isLoading}
-                    /> : ''}
+                    />}
                 </div>
                 <PageIndicator page={fetchArgs.page}/>
             </div>

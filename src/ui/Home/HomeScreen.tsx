@@ -1,6 +1,5 @@
 import {FC} from 'react'
 import TitlesGrid from '../common/TitlesGrid'
-import TitlesRow from '../common/TitlesRow'
 import BigBanner from '../common/BigBanner'
 import getTrending from '../../data/DAO/Discovery/getTrending'
 import getNowPlaying from '../../data/DAO/Discovery/getNowPlaying'
@@ -10,6 +9,7 @@ import SeeMoreBtn from '../common/SeeMoreBtn'
 import {useOutletContext} from 'react-router-dom'
 import ContextProps from '../Layout/ContextProps'
 import ShareLinkToClipboard from "../../Utils/ShareLinkToClipboard";
+import LoadingSpinner from "../common/LoadingSpinner";
 
 
 const HomeScreen: FC<{}> = () => {
@@ -20,19 +20,17 @@ const HomeScreen: FC<{}> = () => {
     let dataDiscover = getDiscover()
     const navigate = useOutletContext<ContextProps>().navController
     let isLoading = dataTrending.isLoading && dataDiscover.isLoading && dataUpComing.isLoading && dataNowplaying.isLoading
-//TODO: Need to change: [Price]
     return <>
         <h1
             style={{
                 position: 'fixed',
                 left: '50%',
                 transform: 'translateX(-50%)',
-                transition: '.2 ease-in-out',
-                opacity: isLoading ? '100%' : '0%',
                 display: isLoading ? 'block' : 'none'
             }}
-        >Loading...</h1>
+        ><LoadingSpinner /></h1>
         <div
+            // className={'flex flex-col items-center'}
             style={{
                 maxWidth: "1400px",
                 transition: '.2 ease-in-out',
@@ -53,11 +51,8 @@ const HomeScreen: FC<{}> = () => {
                     ShareLinkToClipboard(id)
                         .then(() => displayToast("Copied link to clipboard"))
                 }}
-                style={{
-                    margin: '40px 0',
-                }}
             />
-            <TitlesRow
+            <TitlesGrid
                 films={dataNowplaying.data?.results}
                 title={"In Theather"}
                 visibleCol={6}
@@ -73,7 +68,7 @@ const HomeScreen: FC<{}> = () => {
                         .then(() => displayToast("Copied link to clipboard"))
                 }}
             />
-            <TitlesRow
+            <TitlesGrid
                 title='Up Coming'
                 films={dataUpComing.data?.results}
                 visibleCol={6}
@@ -105,7 +100,7 @@ const HomeScreen: FC<{}> = () => {
                         .then(() => displayToast("Copied link to clipboard"))
                 }}
             />
-            <div className="center-child">
+            <div className="flex w-full justify-center p-4">
                 <SeeMoreBtn onClick={() => navigate('/discover')} isLoading={false}/>
             </div>
         </div>

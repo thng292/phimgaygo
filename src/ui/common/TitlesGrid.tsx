@@ -15,11 +15,11 @@ const TitlesGrid: FC<{
     if (props.films !== undefined) {
         return (<div>
             <p
-                className='category'
+                className='font-bold text-3xl p-2'
             >{props.title}</p>
             <div style={{
                 display: 'grid',
-                gridTemplateColumns: `repeat(${props.visibleCol ?? 5}, 1fr)`,
+                gridTemplateColumns: `repeat(auto-fit, minmax(180px, 1fr))`,
                 //flexWrap: 'wrap',
             }}>
                 {props.films.map((val) => {

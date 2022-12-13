@@ -3,14 +3,8 @@ import React, { FC } from "react";
 const PageIndicator: FC<{
     page: number,
 }> = ({ page }) => {
-    return <div className="center-child outlinebtn" style={{
-        position: 'fixed',
-        backgroundColor: 'white',
-        top: '100px',
-        right: '40px',
-        height: '40px',
-    }}>
-        <h3>Page: <span>{page}</span></h3>
+    return <div className="fixed bg-white right-4 top-20 p-2 border-2 border-main-400 rounded-3xl">
+        <p>Page: {page}</p>
     </div>
 }
 

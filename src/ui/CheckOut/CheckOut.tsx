@@ -1,14 +1,13 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {useOutletContext} from "react-router-dom";
 import ContextProps from "../Layout/ContextProps";
-import '../tailwindTemplate.css';
 import AddSpaceToNumber from "../../Utils/AddSpaceToNumber";
 import config from "../../data/datasource/config";
 import createBill from "../../data/DAO/FireStore/BillDAO";
 import LoadingSpinner from "../common/LoadingSpinner";
 import {addBills, addToLibrary, updatePoint} from "../../data/DAO/FireStore/AdditionalUserInfoDAO";
 
-const CheckOut: FunctionComponent<{}> = (props) => {
+const CheckOut: FunctionComponent<{}> = () => {
     const {navController, checkoutStuff, setCheckoutStuff, user, additionalUserInfo} = useOutletContext<ContextProps>();
     const [showSpinner, changeShowSpinner] = useState(false)
     const [total, changeTotal] = useState(0)

@@ -2,7 +2,6 @@ import { useState } from "react";
 import Logo from "../common/Logo";
 import LogoGoogle from "/logo-google.jfif";
 import { signInEmail, signInGoogle, signUpEmail } from "../../data/datasource/UserDatasource";
-import "../tailwindTemplate.css";
 import CheckValidEmail from "../../Utils/CheckValidEmail";
 import { useOutletContext } from "react-router-dom";
 import ContextProps from "../Layout/ContextProps";
@@ -20,7 +19,7 @@ function Auth() {
     return (
         <div className='flex justify-center items-center h-screen w-screen'>
             <div
-                className='max-w-lg flex flex-col justify-center items-center tshadow rounded-xl'
+                className='max-w-lg flex flex-col justify-center items-center shadow-xl rounded-xl'
                 style={{
                     minWidth: "20rem",
                     width: "fit-content",

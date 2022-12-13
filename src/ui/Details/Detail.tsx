@@ -3,7 +3,6 @@ import getDetail from "../../data/DAO/Detail/getDetail";
 import {Link, useOutletContext, useParams} from "react-router-dom";
 import getTrailer from "../../data/DAO/Detail/getTrailer";
 import getAdditionalMovieInfo, {addComments} from "../../data/DAO/FireStore/AdditionalMovieInfoDAO";
-import '../tailwindTemplate.css'
 import config from "../../data/datasource/config";
 import YoutubeEmbed from "../common/YoutubeEmbed";
 import ToHrsAndMin from "../../Utils/ToHrsAndMin";
@@ -24,7 +23,14 @@ import LoadingSpinner from "../common/LoadingSpinner";
 //TODO: Movie detail and watch
 const Detail: FC<{}> = () => {
     const {movieId} = useParams()
-    const {addItemToCart, displayToast, navController, user, additionalUserInfo, setCheckoutStuff} = useOutletContext<ContextProps>()
+    const {
+        addItemToCart,
+        displayToast,
+        navController,
+        user,
+        additionalUserInfo,
+        setCheckoutStuff
+    } = useOutletContext<ContextProps>()
     const data = getDetail(Number(movieId))
     const videos = getTrailer(Number(movieId), data.isSuccess)
     const [additionMovieInfo, setAdditionMovieInfo] = useState<AdditionalMovieInfo>()
@@ -55,18 +61,18 @@ const Detail: FC<{}> = () => {
     return data.data ? <div
         className={'relative'}
     >
-        <section className={'Big display'}
-                 style={{
-                     paddingTop: '64px',
-                     height: '90vh',
-                     width: '100vw',
-                     background: `linear-gradient(90deg, rgba(249,249,249,1) 20%, rgba(249,249,249,0.6) 50%,rgba(0,0,0,0) 60% , rgba(0,0,0,0) 100%), url(${config.backDropUrl + data.data.backdrop_path})`,
-                     backgroundSize: 'contain',
-                     backgroundRepeat: 'no-repeat',
-                     backgroundPosition: 'right top',
-                 }}
+        <section
+            style={{
+                paddingTop: '64px',
+                minHeight: '90vh',
+                width: '100vw',
+                background: `linear-gradient(90deg, rgba(249,249,249,1) 20%, rgba(249,249,249,0.6) 50%,rgba(0,0,0,0) 60% , rgba(0,0,0,0) 100%), url(${config.backDropUrl + data.data.backdrop_path})`,
+                backgroundSize: 'contain',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right top',
+            }}
         >
-            <div className={'p-20 max-w-3xl'}>
+            <div className={'p-3 sm:p-20 max-w-3xl'}>
                 <img
                     className={'w-1/3 rounded-2xl m-4'}
                     src={config.posterUrl + data.data.poster_path}
@@ -75,9 +81,9 @@ const Detail: FC<{}> = () => {
                 <p className={'font-extrabold text-3xl m-4'}>{data.data.title}</p>
                 <p className={'m-4'}>{data.data.tagline}</p>
                 <div className={'m-4 flex flex-row text-gray-400 tracking-wider'}>
-                    <p className={''}>{data.data.release_date.slice(0, 4)}</p>
+                    <p>{data.data.release_date.slice(0, 4)}</p>
                     <p className={'mx-2'}>|</p>
-                    <p className={''}>{data.data.release_dates.results.find(value => {
+                    <p>{data.data.release_dates.results.find(value => {
                         return value.iso_3166_1 === 'US'
                     })?.release_dates[0].certification ?? data.data.release_dates.results[0].release_dates[0].certification}
                     </p>
@@ -110,7 +116,7 @@ const Detail: FC<{}> = () => {
                                     currentOption: currentOption,
                                     productOptions: additionMovieInfo?.options ?? [],
                                 }])
-                                navController('/checkout',{
+                                navController('/checkout', {
                                     preventScrollReset: false,
                                 })
                                 //TODO: Buy the movie
@@ -128,42 +134,46 @@ const Detail: FC<{}> = () => {
                         <SVG_Share/>
                     </button>
                 </div>
-                <div className={'flex flex-row items-center p-4'}>
-                    <p className={'pr-4 font-bold h-fit text-xl'}>Options:</p>
-                    <select
-                        name="optionSelector"
-                        id={'0'} value={currentOption}
-                        className={'p-1 cursor-pointer'}
-                        onChange={(e) => {
-                            changeOption(Number(e.currentTarget.value))
-                        }}
-                    >
-                        {(additionMovieInfo?.options ?? []).map((value, index) => {
-                            return <option value={index}>{value.title}</option>
-                        })}
-                    </select>
-                    <p className={'px-4 font-bold h-fit text-xl'}>Quantity:</p>
-                    <div className="quantity">
-                        <div
-                            className={'cursor-pointer'}
-                            onClick={(e) => {
-                                e.stopPropagation()
-                                changeQuantity(curr => Math.max(1,curr - 1))
+                <div className={'sm:flex sm:items-center p-4'}>
+                    <div className={'flex py-2'}>
+                        <p className={'pr-4 font-bold h-fit text-xl'}>Options:</p>
+                        <select
+                            name="optionSelector"
+                            id={'0'} value={currentOption}
+                            className={'border border-gray-300 rounded-sm mx-2 p-0.5 font-bold'}
+                            onChange={(e) => {
+                                changeOption(Number(e.currentTarget.value))
                             }}
                         >
-                            -
-                        </div>
-                        <div className='mid select-none'>
-                            {quantity}
-                        </div>
-                        <div
-                            className={'cursor-pointer'}
-                            onClick={(e) => {
-                                e.stopPropagation()
-                                changeQuantity(curr => curr + 1)
-                            }}
-                        >
-                            +
+                            {(additionMovieInfo?.options ?? []).map((value, index) => {
+                                return <option value={index}>{value.title}</option>
+                            })}
+                        </select>
+                    </div>
+                    <div className={'flex py-2'}>
+                        <p className={'pr-4 font-bold h-fit text-xl'}>Quantity:</p>
+                        <div className={'flex select-none border border-gray-300 rounded-sm bg-white'}>
+                            <div
+                                className={'cursor-pointer inline-block w-fit h-fit px-2'}
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    changeQuantity(curr => Math.max(1, curr - 1))
+                                }}
+                            >
+                                -
+                            </div>
+                            <div className='cursor-pointer inline-block w-fit h-fit px-2'>
+                                {quantity}
+                            </div>
+                            <div
+                                className={'cursor-pointer inline-block w-fit h-fit px-2'}
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    changeQuantity(curr => curr + 1)
+                                }}
+                            >
+                                +
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -194,7 +204,12 @@ const Detail: FC<{}> = () => {
                     </section> : ''}
                 <section className={'p-4'}>
                     <h2 className={'font-bold subpixel-antialiased text-3xl py-4'}>More Details:</h2>
-                    <section className={'grid grid-cols-4 gap-4'}>
+                    <section
+                        className={'grid gap-4'}
+                        style={{
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))'
+                        }}
+                    >
                         <div>
                             <p className={'text-gray-500 pb-1'}>Genres:</p>
                             <p>{data.data.genres.map(value => {
@@ -217,13 +232,13 @@ const Detail: FC<{}> = () => {
                             <p className={'text-gray-500 pb-1'}>Revenue:</p>
                             <p>{AddSpaceToNumber(data.data.revenue)}$</p>
                         </div>
-                        <div className={'col-span-2 max-w-2xl'}>
+                        <div className={'max-w-2xl'}>
                             <p className={'text-gray-500 pb-1'}>Company:</p>
                             <p>{data.data.production_companies.map(value => {
                                 return value.name
                             }).join(', ')}</p>
                         </div>
-                        <div className={'col-span-2 max-w-2xl'}>
+                        <div className={'max-w-2xl'}>
                             <p className={'text-gray-500 pb-1'}>Keywords:</p>
                             <p>{data.data.keywords.keywords.map(value => {
                                 return value.name[0].toUpperCase() + value.name.slice(1)
@@ -231,18 +246,19 @@ const Detail: FC<{}> = () => {
                         </div>
                         <div className={'col-span-full'}>
                             <p className={'text-gray-500 pb-1'}>Cast:</p>
-                            <div className={'grid grid-cols-4'}>
+                            <div
+                                className={'grid gap-x-2'}
+                                style={{
+                                    gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))'
+                                }}
+                            >
                                 {data.data.credits.cast
-                                    // .sort((a, b)=>{
-                                    //     return a.popularity - b.popularity
-                                    // })
                                     .slice(0, 8)
                                     .map(val => {
                                             return <p>{val.name}</p>
                                         }
                                     )}
                             </div>
-
                         </div>
                     </section>
                 </section>

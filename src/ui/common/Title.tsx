@@ -3,8 +3,6 @@ import config from '../../data/datasource/config'
 import SVG_AddToCard from './svg/SVG_AddToCart'
 import SVG_Info from './svg/SVG_Info'
 import SVG_Share from './svg/SVG_Share'
-import {useOutletContext} from "react-router-dom";
-import ContextProps from "../Layout/ContextProps";
 
 const Title: FC<{
     title: string,
@@ -15,22 +13,17 @@ const Title: FC<{
     style?: React.CSSProperties,
 }> = (props) => {
     let [hover, setHover] = useState(false)
-    const { displayToast } = useOutletContext<ContextProps>()
-    ////console.log(props.width)
     return (<div
         style={props.style}
     >
-
         <div
-            className={"tshadow"}
+            className={"shadow-xl m-3 rounded-xl"}
             style={{
-                margin: '10px',
                 backgroundImage: `url(${config.posterUrl + props.posterPath})`,
                 //backgroundImage: "url('https://image.tmdb.org/t/p/w300" + props.film.backdrop_path + "')",
                 backgroundSize: 'cover',
                 backgroundRepeat: 'no-repeat',
                 aspectRatio: '2/3',
-                borderRadius: '15px',
             }}
             onMouseEnter={() => {
                 setHover(true)
@@ -38,6 +31,7 @@ const Title: FC<{
             onMouseLeave={() => {
                 setHover(false)
             }}
+            onClick={props.onInfo}
         >
             <div style={{
                 display: 'flex',

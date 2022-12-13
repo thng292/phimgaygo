@@ -14,15 +14,15 @@ const TitlesRow: FC<{
     if (props.films !== undefined) {
         return (<div>
             <p
-                className='category'
+                className='font-bold text-3xl p-2'
             >{props.title}</p>
-            <div className={"disable-scrollbars row"}
+            <div className={"disable-scrollbars flex flex-row"}
             >
                 {props.films.map((val: FilmOverview) => <Title
                     key={val.id}
                     style={{
-                        flexBasis: `${100 / (props.visibleCol ?? 5)}%`,
-                        flexShrink: '0',
+                        minWidth: '180px',
+                        maxWidth: '25vw'
                     }}
                     title={val.title}
                     posterPath={val.poster_path}
