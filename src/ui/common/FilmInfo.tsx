@@ -27,7 +27,6 @@ const FilmInfo: FC<{
             className="absolute bottom-5 flex flex-row"
         >
             <img
-
                 className="m-4 hidden rounded-xl sm:block"
                 src={props.poster_path} alt={props.title}
                 style={{
@@ -54,7 +53,7 @@ const FilmInfo: FC<{
                     }}
                 >{props.overview}</p>
                 <div
-                    className="absolute bottom-0 z-20 m-2 flex w-full flex-row justify-center sm:justify-start"
+                    className="absolute bottom-0 z-20 m-2 flex w-screen flex-row sm:w-full"
                 >
                     <button className="tbutton" onClick={() => props.onCart()}>
                         <SVG_AddToCart/>

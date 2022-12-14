@@ -128,12 +128,11 @@ input[type="checkbox"]:checked {
 
 #bigbanner {
     width: 100vw;
-    height: 80vh;
+    height: 60vh;
 }
 
 @media (min-width: 640px) {
     #bigbanner {
         width: 80vw;
-        height: 60vh;
     }
 }

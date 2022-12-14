@@ -162,7 +162,7 @@ const Detail: FC<{}> = () => {
                             >
                                 -
                             </div>
-                            <div className='cursor-pointer inline-block w-fit h-fit px-2'>
+                            <div className='cursor-pointer inline-block w-fit h-fit px-2 border border-l-gray-300 border-r-gray-300'>
                                 {quantity}
                             </div>
                             <div
