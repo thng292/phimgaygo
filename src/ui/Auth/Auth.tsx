@@ -8,7 +8,7 @@ import ContextProps from "../Layout/ContextProps";
 import getAdditionalUserInfo from "../../data/DAO/FireStore/AdditionalUserInfoDAO";
 
 function Auth() {
-    const { setUser, navController } = useOutletContext<ContextProps>();
+    const { setUser, navController, user } = useOutletContext<ContextProps>();
     const [tab, changeTab] = useState(true);
     // True: Sign in
     // False: Sign up
@@ -16,6 +16,7 @@ function Auth() {
     const [password, setPassword] = useState("");
     const [displayName, setDisplayName] = useState("");
     const userError = CheckValidEmail(email);
+    if (user!== null) navController('/');
     return (
         <div className='flex justify-center items-center h-screen w-screen'>
             <div
