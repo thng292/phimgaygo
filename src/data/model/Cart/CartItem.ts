@@ -1,4 +1,4 @@
-import ProductOption from "../firestore/ProductOption";
+import ProductOption from "../Firebase/ProductOption";
 
 export default interface CartItem<Type> {
     mainItem: Type,

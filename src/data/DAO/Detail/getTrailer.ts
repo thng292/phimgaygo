@@ -1,23 +1,18 @@
 import {useQuery} from "react-query";
-import DatasourceInstance from "../../datasource/DatasourceInstance";
-import config from "../../datasource/config";
-import Film from "../../model/Film/Film";
-import Video from "../../model/Film/Video";
+import DatasourceInstance from "../../Datasource/DatasourceInstance";
+import config, {oneTimeGet} from "../../Datasource/Config";
+import Movie from "../../model/Movie/Movie";
+import Videos from "../../model/Movie/Video";
 
 export default function getTrailer(
     id: number,
     enable: boolean,
     language: string = 'en',
 ) {
-    return useQuery([id, 'video'],
+    return useQuery(["MovieTrailer", id, language],
         () => DatasourceInstance.get(
             `/movie/${id}/videos?api_key=${config.key}&language=${language}`
-        ).then((val)=>(val.data as Video)),
-        {
-            cacheTime: config.timeLong,
-            refetchOnMount: false,
-            staleTime: config.timeLong,
-            enabled: enable,
-        }
+        ).then((val)=>(val.data as Videos)),
+        oneTimeGet
     )
 }

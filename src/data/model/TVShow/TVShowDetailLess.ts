@@ -1,0 +1,40 @@
+import Genre from "../Movie/Genre";
+import Company from "../Movie/Company";
+import Country from "../Movie/Country";
+import Language from "../Language";
+import {CreatedBy, LastEpisodeToAir, Network, Season} from "./TVShow";
+
+export default interface TVShowDetailLess {
+    adult: boolean;
+    backdrop_path: string;
+    created_by: CreatedBy[];
+    episode_run_time: number[];
+    first_air_date: string;
+    genres: Genre[];
+    homepage: string;
+    id: number;
+    in_production: boolean;
+    languages: string[];
+    last_air_date: string;
+    last_episode_to_air: LastEpisodeToAir;
+    name: string;
+    next_episode_to_air?: any;
+    networks: Network[];
+    number_of_episodes: number;
+    number_of_seasons: number;
+    origin_country: string[];
+    original_language: string;
+    original_name: string;
+    overview: string;
+    popularity: number;
+    poster_path: string;
+    production_companies: Company[];
+    production_countries: Country[];
+    seasons: Season[];
+    spoken_languages: Language[];
+    status: string;
+    tagline: string;
+    type: string;
+    vote_average: number;
+    vote_count: number;
+}

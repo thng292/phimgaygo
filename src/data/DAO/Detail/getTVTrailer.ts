@@ -1,15 +1,19 @@
-import config, {oneTimeGet} from "../../datasource/config";
+import config, {oneTimeGet} from "../../Datasource/Config";
 import {useQuery} from "react-query";
-import DatasourceInstance from "../../datasource/DatasourceInstance";
-import Videos from "../../model/Film/Video";
+import DatasourceInstance from "../../Datasource/DatasourceInstance";
+import Videos from "../../model/Movie/Video";
 
 export default function getTVTrailer(
     id: number,
+    enable: boolean = false,
     language: string = config.language
 ) {
-    return useQuery([id, language], ()=>
+    return useQuery(["TVTrailer" ,id, language], ()=>
         DatasourceInstance.get(`/tv/${id}/videos?api_key=${config.key}&language=${language}`)
             .then(value => value.data as Videos),
-        oneTimeGet
+        {
+            ...oneTimeGet,
+            enabled: enable
+        }
     )
 }

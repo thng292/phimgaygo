@@ -10,9 +10,9 @@ import {
     updateDoc,
     where
 } from "firebase/firestore";
-import {FireStore} from "../../datasource/DatasourceInstance";
+import {FireStore} from "../../Datasource/DatasourceInstance";
 import firebase from "firebase/compat";
-import Comment from "../../model/firestore/Comment";
+import Comment from "../../model/Firebase/Comment";
 
 const commentsCollectionRef = collection(FireStore, 'comments')
 

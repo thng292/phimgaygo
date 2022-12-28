@@ -1,10 +1,10 @@
 import React, {FunctionComponent, useEffect, useState} from 'react';
 import {useOutletContext} from "react-router-dom";
-import ContextProps from "../Layout/ContextProps";
-import AddSpaceToNumber from "../../Utils/AddSpaceToNumber";
-import config from "../../data/datasource/config";
+import ContextProps from "../SharedLayout/ContextProps";
+import AddSpaceToNumber from "../../utils/AddSpaceToNumber";
+import config from "../../data/Datasource/Config";
 import createBill from "../../data/DAO/FireStore/BillDAO";
-import LoadingSpinner from "../common/LoadingSpinner";
+import LoadingSpinner from "../common/Component/LoadingSpinner";
 import {addBills, addToLibrary, updatePoint} from "../../data/DAO/FireStore/AdditionalUserInfoDAO";
 
 const CheckOut: FunctionComponent<{}> = () => {
@@ -13,6 +13,7 @@ const CheckOut: FunctionComponent<{}> = () => {
     const [total, changeTotal] = useState(0)
     //False: point, True: card
     const [PaymentMethod, changePaymentMethod] = useState(false)
+    const [checkOutEnabled, setCheckout] = useState(false)
     const currTax = .1;
     useEffect(() => {
         let tmp = 0;
@@ -22,20 +23,7 @@ const CheckOut: FunctionComponent<{}> = () => {
         changeTotal(tmp);
     }, [checkoutStuff])
     useEffect(() => {
-        let tmp = setTimeout(() => {
-                if (!user) {
-                    navController('/auth')
-                }
-            }
-            , 5000)
-        if (user === null) {
-            changeShowSpinner(true)
-        } else {
-            changeShowSpinner(false)
-        }
-        return () => {
-            clearTimeout(tmp)
-        }
+        setCheckout(((additionalUserInfo?.points ?? 0) < total) || (checkoutStuff.length === 0))
     }, [user])
     if (user !== null) {
         // if (1) {
@@ -158,7 +146,7 @@ const CheckOut: FunctionComponent<{}> = () => {
                             <p className={'text-right'}>{AddSpaceToNumber(Number((total * (1 + currTax)).toFixed(0)))} VND</p>
                         </div>
                         <button
-                            disabled={(((additionalUserInfo?.points ?? 0) < total) || (checkoutStuff.length === 0))}
+                            disabled={checkOutEnabled}
                             className={`mt-4 p-4 bg-main-1000 text-center rounded-xl w-full font-bold text-white text-xl tracking-wider disabled:bg-main-400`}
                             onClick={() => {
                                 changeShowSpinner(true)
@@ -186,7 +174,7 @@ const CheckOut: FunctionComponent<{}> = () => {
                                                         option: value.productOptions[value.currentOption].title,
                                                     })
                                                 })
-                                                .catch(console.log)
+                                                .catch(console.error)
                                         })
                                         addBills(user.uid, val)
                                             .then(()=>{
@@ -194,7 +182,7 @@ const CheckOut: FunctionComponent<{}> = () => {
                                                 setCheckoutStuff([])
                                                 navController(`bill/${val}`)
                                             })
-                                            .catch(console.log)
+                                            .catch(console.error)
                                     })
                             }}
                         >

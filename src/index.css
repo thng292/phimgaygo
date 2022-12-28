@@ -3,12 +3,22 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --navbarheight: 4rem;
+}
+
 * {
     font-family: inherit;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: subpixel-antialiased;
 }
 
 .aspect-portrait {
     aspect-ratio: 3/4;
+}
+
+.min-w-24 {
+    min-width: 6rem;
 }
 
 .min-h-8 {
@@ -44,9 +54,9 @@
 }
 
 body {
-    background-color: #f9f9f9;
+    background-color: #000000;
+    color: white;
     overflow-x: hidden;
-    color: black;
     font-family: "Roboto", sans-serif;
 }
 
@@ -73,40 +83,29 @@ input[type="checkbox"]:checked {
     background-color: var(--ternary);
 }
 
-.disable-scrollbars {
-    scrollbar-width: thin;
-    -ms-scrollbar-track-color: #f9f9f9;
-    /* Firefox */
-    -ms-overflow-style: -ms-autohiding-scrollbar;
-    /* IE 10+ */
-    overflow: hidden;
+::-webkit-scrollbar {
+    display: none;
+    height: 4px;
+    width: 4px;
 }
 
-.disable-scrollbars:hover {
-    overflow: scroll hidden;
-}
-
-.disable-scrollbars::-webkit-scrollbar {
-    background: #f9f9f9;
-    /* Chrome/Safari/Webkit */
-    width: 3px;
-}
-
-/* Track */
 ::-webkit-scrollbar-track {
-    background: transparent;
-    height: 3px;
+    background: transparent
 }
 
-/* Handle */
 ::-webkit-scrollbar-thumb {
-    background: rgba(240, 46, 170, 0.4);
-    border-radius: 20px;
+    background-color: #ccc;
+    border-radius: 2rem;
 }
 
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: #555;
+.scroll-wrapper {
+    @apply flex overflow-x-auto overflow-y-hidden;
+    width: calc(100vw - 2rem);
+}
+
+.scroll-wrapper::-webkit-scrollbar {
+    display: initial;
+    background-color: transparent;
 }
 
 .logo {
@@ -128,11 +127,19 @@ input[type="checkbox"]:checked {
 
 #bigbanner {
     width: 100vw;
-    height: 60vh;
 }
 
-@media (min-width: 640px) {
+@media (max-width: 768px) {
     #bigbanner {
-        width: 80vw;
+        height: 70vh;
     }
+}
+
+svg {
+    mix-blend-mode: difference;
+}
+
+.bg-main-1000 svg {
+    mix-blend-mode: normal;
+    fill: black;
 }

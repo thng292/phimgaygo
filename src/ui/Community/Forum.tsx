@@ -2,11 +2,8 @@ import React from "react";
 
 function Forum() {
     return <div className='center-child'>
-        <p style={{
-            fontFamily: 'sans-serif',
-            fontWeight: 'bolder',
-            fontSize: '4rem'
-        }}>Forum</p>
+        <p className={'text-5xl'}>Forum</p>
+        <p>Depricated</p>
     </div>
 }
 

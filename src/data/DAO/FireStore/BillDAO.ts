@@ -1,7 +1,7 @@
 import {collection, doc, getDoc, getDocs, limit, orderBy, query, setDoc, where} from "firebase/firestore";
-import {FireStore} from "../../datasource/DatasourceInstance";
-import ProductOption from "../../model/firestore/ProductOption";
-import Bill from "../../model/firestore/Bill";
+import {FireStore} from "../../Datasource/DatasourceInstance";
+import ProductOption from "../../model/Firebase/ProductOption";
+import Bill from "../../model/Firebase/Bill";
 import firebase from "firebase/compat";
 
 const billCollectionRef = collection(FireStore, 'bills')

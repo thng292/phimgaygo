@@ -1,10 +1,10 @@
 import { useState } from "react";
 import Logo from "../common/Logo";
 import LogoGoogle from "/logo-google.jfif";
-import { signInEmail, signInGoogle, signUpEmail } from "../../data/datasource/UserDatasource";
-import CheckValidEmail from "../../Utils/CheckValidEmail";
+import { signInEmail, signInGoogle, signUpEmail } from "../../data/DAO/User/UserDAO";
+import CheckValidEmail from "../../utils/CheckValidEmail";
 import { useOutletContext } from "react-router-dom";
-import ContextProps from "../Layout/ContextProps";
+import ContextProps from "../SharedLayout/ContextProps";
 import getAdditionalUserInfo from "../../data/DAO/FireStore/AdditionalUserInfoDAO";
 
 function Auth() {
@@ -80,7 +80,7 @@ function Auth() {
                                                 setUser(user)
                                                 navController('/')
                                             })
-                                            .catch(()=>console.log("Fuck Error"))
+                                            .catch(()=>console.error)
                                     }
                                 );
                             }}
@@ -150,11 +150,11 @@ function Auth() {
                         signInGoogle()
                             .then((user) => {
                                 //console.log("this is you", user)
-                                getAdditionalUserInfo(user.uid, user).then(console.log)
+                                getAdditionalUserInfo(user.uid, user).then(console.error)
                                 setUser(user)
                                 navController('/')
                             })
-                            .catch((err) => console.log(err))
+                            .catch(console.error)
                     }
                 >
                     <img

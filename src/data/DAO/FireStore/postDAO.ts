@@ -9,9 +9,9 @@ import {
     setDoc, updateDoc,
     where
 } from "firebase/firestore";
-import {FireStore} from "../../datasource/DatasourceInstance";
+import {FireStore} from "../../Datasource/DatasourceInstance";
 import firebase from "firebase/compat";
-import Post from "../../model/firestore/Post";
+import Post from "../../model/Firebase/Post";
 
 const postCollectionRef = collection(FireStore, 'posts')
 

@@ -1,25 +1,27 @@
 import React from 'react'
 import './App.css'
-import {Route, Routes} from "react-router-dom";
-import SharedLayout from './ui/Layout/SharedLayout';
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import SharedLayout from './ui/SharedLayout/SharedLayout';
 import {QueryClient, QueryClientProvider} from 'react-query';
-import config from './data/datasource/config';
+import config from './data/Datasource/Config';
+import Screens, {MediaType} from "./utils/Screen";
+import {ReactQueryDevtools} from "react-query/devtools";
 
-// Lazy import
-// #Region
-const HomeScreen = React.lazy(() => import('./ui/Home/HomeScreen'))
-const Discover = React.lazy(() => import('./ui/Discover/Discover'))
-const Search = React.lazy(() => import("./ui/Search/Search"))
+// #LazyImport
+const Home = React.lazy(() => import('./ui/Home/Home'))
+
+const MovieDetail = React.lazy(() => import('./ui/Details/MovieDetail'))
+const TVShowDetail = React.lazy(() => import('./ui/Details/TVShowDetail'))
+
 const About = React.lazy(() => import('./ui/About/About'))
 const Auth = React.lazy(() => import('./ui/Auth/Auth'))
 const CheckOut = React.lazy(() => import('./ui/CheckOut/CheckOut'))
 const Contact = React.lazy(() => import('./ui/Contact/Contact'))
 const FAQ = React.lazy(() => import('./ui/FAQ/FAQ'))
 const Forum = React.lazy(() => import('./ui/Community/Forum'))
-const Detail = React.lazy(() => import('./ui/Details/Detail'))
 const BillView = React.lazy(() => import('./ui/CheckOut/BillView'))
-const NotFound = React.lazy(() => import('./ui/Layout/NotFound'))
-// #endRegion
+const NotFound = React.lazy(() => import('./ui/SharedLayout/NotFound'))
+// #endLazyImport
 
 //let filmRepo = new FilmRepo()
 // function DDdebug() {
@@ -44,52 +46,75 @@ const queryClient = new QueryClient({
     }
 })
 
+//TODO: ADD nested route to separate TVShow shows and Movies
+
+const router = createBrowserRouter([
+    {
+        path: '/',
+        element: <SharedLayout/>,
+        errorElement: <NotFound/>,
+        children: [
+            {
+                index: true,
+                element: <Home/>
+            },
+            // {
+            //     path: Screens.Search,
+            //     element: <TVShowSearch/>
+            // },
+            // {
+            //     path: MediaType.Movie + '/' + TVShowDiscover,
+            //     element: TVShowDiscover/>
+            // },
+            // {
+            //     path: MediaType.TVShow + '/' + TVShowDiscover,
+            //     element: <TVShowDiscover/>
+            // },
+            {
+                path: String(MediaType.Movie) + '/' + Screens.Detail,
+                element: <MovieDetail/>
+            },
+            {
+                path: MediaType.TVShow + '/' + Screens.Detail,
+                element: <TVShowDetail/>
+            },
+            {
+                path: Screens.Auth,
+                element: <Auth/>
+            },
+            {
+                path: Screens.About,
+                element: <About/>,
+            },
+            {
+                path: Screens.FAQ,
+                element: <FAQ/>,
+            },
+            {
+                path: Screens.Contact,
+                element: <Contact/>
+            },
+            {
+                path: Screens.Forum,
+                element: <Forum/>
+            },
+            {
+                path: Screens.Checkout,
+                element: <CheckOut/>
+            },
+            {
+                path: Screens.Bill,
+                element: <BillView/>
+            }
+        ]
+    }
+])
+
 function App() {
     return (
         <QueryClientProvider client={queryClient}>
-            <Routes>
-                {/* <Route path='/debug' element={<DDdebug />} /> */}
-                <Route path='/' element={<SharedLayout/>}>
-
-                    <Route index element={
-                        <HomeScreen/>
-                    }/>
-
-                    <Route path='discover' element={
-                        <Discover/>
-                    }/>
-                    <Route path='detail/:movieId' element={
-                        <Detail/>
-                    }/>
-                    <Route path='search' element={
-                        <Search/>
-                    }/>
-                    <Route path='auth' element={
-                        <Auth/>
-                    }/>
-                    <Route path='about' element={
-                        <About/>
-                    }/>
-                    <Route path='checkout' element={
-                        <CheckOut/>
-                    }/>
-                    <Route path='bill/:billId' element={
-                        <BillView/>
-                    }/>
-                    <Route path='contact' element={
-                        <Contact/>
-                    }/>
-                    <Route path='FAQ' element={
-                        <FAQ/>
-                    }/>
-                    <Route path='forum' element={
-                        <Forum/>
-                    }/>
-                    <Route path='*' element={
-                        <NotFound/>
-                    }></Route>
-                </Route>
-            </Routes>
+            <RouterProvider router={router}/>
+            <ReactQueryDevtools initialIsOpen={false}/>
         </QueryClientProvider>
     )
 }

@@ -1,6 +1,6 @@
 import {arrayUnion, collection, doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
-import {FireStore} from "../../datasource/DatasourceInstance";
-import AdditionalMovieInfo from "../../model/firestore/AdditionalMovieInfo";
+import {FireStore} from "../../Datasource/DatasourceInstance";
+import AdditionalMovieInfo from "../../model/Firebase/AdditionalMovieInfo";
 
 const moviesCollectionRef = collection(FireStore, 'movies')
 

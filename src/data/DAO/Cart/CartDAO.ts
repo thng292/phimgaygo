@@ -1,12 +1,12 @@
 import CartItem from "../../model/Cart/CartItem";
-import FilmOverview from "../../model/Film/FilmOverview";
+import MovieOverview from "../../model/Movie/MovieOverview";
 import React from "react";
-import ProductOption from "../../model/firestore/ProductOption";
+import ProductOption from "../../model/Firebase/ProductOption";
 
 export function addItemToCart(
-    cart: CartItem<FilmOverview>[],
-    updateCart: React.Dispatch<React.SetStateAction<CartItem<FilmOverview>[]>>,
-    item: FilmOverview,
+    cart: CartItem<MovieOverview>[],
+    updateCart: React.Dispatch<React.SetStateAction<CartItem<MovieOverview>[]>>,
+    item: MovieOverview,
     option: number = 0,
     quantity: number = 1,
     productOptions?: ProductOption[],
@@ -51,8 +51,8 @@ export function addItemToCart(
 }
 
 export function removeItemFormCart(
-    cart: CartItem<FilmOverview>[],
-    updateCart: React.Dispatch<React.SetStateAction<CartItem<FilmOverview>[]>>,
+    cart: CartItem<MovieOverview>[],
+    updateCart: React.Dispatch<React.SetStateAction<CartItem<MovieOverview>[]>>,
     id: number
 ) {
     let tmp = cart.map((val) => val);
@@ -65,8 +65,8 @@ export function removeItemFormCart(
 
 
 export function changeQuantity(
-    cart: CartItem<FilmOverview>[],
-    updateCart: React.Dispatch<React.SetStateAction<CartItem<FilmOverview>[]>>,
+    cart: CartItem<MovieOverview>[],
+    updateCart: React.Dispatch<React.SetStateAction<CartItem<MovieOverview>[]>>,
     id: number,
     newQuantity: number
 ) {
@@ -81,8 +81,8 @@ export function changeQuantity(
 }
 
 export function changeOption(
-    cart: CartItem<FilmOverview>[],
-    updateCart: React.Dispatch<React.SetStateAction<CartItem<FilmOverview>[]>>,
+    cart: CartItem<MovieOverview>[],
+    updateCart: React.Dispatch<React.SetStateAction<CartItem<MovieOverview>[]>>,
     id: number,
     option: number
 ) {
@@ -96,7 +96,7 @@ export function changeOption(
 }
 
 export function removeAllItem(
-    updateCart: React.Dispatch<React.SetStateAction<CartItem<FilmOverview>[]>>,
+    updateCart: React.Dispatch<React.SetStateAction<CartItem<MovieOverview>[]>>,
 ) {
     updateCart([]);
     localStorage.setItem("Cart", JSON.stringify([]));

@@ -1,8 +1,8 @@
 import {arrayUnion, collection, doc, getDoc, setDoc, updateDoc} from "firebase/firestore";
-import {FireStore} from "../../datasource/DatasourceInstance";
-import UserAdditionData from "../../model/firestore/UserAdditionData";
+import {FireStore} from "../../Datasource/DatasourceInstance";
+import UserAdditionData from "../../model/Firebase/UserAdditionData";
 import {User} from "firebase/auth";
-import config from "../../datasource/config";
+import config from "../../Datasource/Config";
 
 const usersCollectionRef = collection(FireStore, 'users')
 
