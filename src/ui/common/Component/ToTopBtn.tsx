@@ -1,14 +1,12 @@
+import { FC } from "react";
 import SVG_ArrowUpward from "../SVG/SVG_ArrowUpward";
 
-export default function ToTopBtn() {
+const ToTopBtn: FC<{show: boolean}> = ({show}) => {
     return <button
-        className="bg-main-1000 rounded-full"
+        className="bg-main-1000 rounded-full fixed z-50 bottom-8 right-8 p-4 transition-all duration-500"
         style={{
-            position: 'fixed',
-            bottom: '30px',
-            right: '30px',
-            width: 'auto',
-            padding: '15px 20px'
+            visibility: show ? "visible" : "hidden",
+            opacity: show ? '100%' : '0',
         }}
         onClick={() => window.scrollTo({
             top: 0,
@@ -16,6 +14,8 @@ export default function ToTopBtn() {
             behavior: 'smooth'
         })}
     >
-        {SVG_ArrowUpward()}
+        <SVG_ArrowUpward/>
     </button>
 }
+
+export default ToTopBtn

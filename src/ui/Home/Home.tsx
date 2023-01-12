@@ -20,41 +20,33 @@ import MovieDiscover from "../../data/model/Movie/MovieDiscover";
 import useIntersection from "../../utils/ElementInViewObseve";
 import Genre from "../../data/model/Movie/Genre";
 import getTVDiscover from "../../data/DAO/Discovery/getTVDiscover";
-import * as path from "path";
-import Screen from "../../utils/Screen";
 
 const Home: FC = () => {
-    const {addItemToCart, displayToast, navController} = useOutletContext<ContextProps>()
-
+    const {displayToast, navController} = useOutletContext<ContextProps>()
     // get Genres
     const movieGenres = getGenres()
     const tvShowGenres = getGenres("tv")
     // get Trending
     const movieTrending = getTrending()
     const tvShowTrending = getTrending("tv")
-    const trendingData: (MovieOverview | TVShowOverview)[] =
+    const trendingData: (MovieOverview | TVShowOverview)[] = useMemo(() =>
         [...(movieTrending.data?.results ?? []), ...(tvShowTrending.data?.results ?? [])]
             .filter(value => value.backdrop_path && value.poster_path)
             .sort((a, b) => b.vote_average - a.vote_average)
+        , [movieTrending.isSuccess])
 
     const itemWidth = CalculateWidth()
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            if (window.scrollY - window.document.body.scrollHeight >= 320 && window.document.hasFocus()) {
-                // updateGenresLoaded(old => old + 4);
-            }
-        }, 2000)
-        return () => {
-            clearInterval(interval)
-        }
-    }, [])
-
     const displayData = useMemo<[media_type, Genre][]>(() => {
-        return merge<[media_type, Genre]>((movieGenres.data?.genres ?? []).map(value => ['movie', value]), (tvShowGenres.data?.genres ?? []).map(value => ['tv', value]))
-    }, [movieGenres.data, tvShowGenres.data])
+        return merge<[media_type, Genre]>(
+            (movieGenres.data?.genres ?? [])
+                .map(value => ['movie', value]),
+            (tvShowGenres.data?.genres ?? [])
+                .map(value => ['tv', value])
+        )
+    }, [movieGenres.isSuccess, tvShowGenres.isSuccess])
 
-    return <div>
+    return <div className='w-screen'>
         <BigBanner
             ids={trendingData.map(value => value.id)}
             media_type={trendingData.map(value => value.media_type)}
@@ -71,11 +63,11 @@ const Home: FC = () => {
             postersFullURL={trendingData.map(value => config.posterUrl + value.poster_path)}
             backDropsFullURL={trendingData.map(value => config.backDropUrlSmall + value.backdrop_path)}
             bannerFullURL={trendingData.map(value => config.backDropUrlOriginal + value.backdrop_path)}
-            btn1Icon={<IconAndLabelWrap icon={SVG_Play()} label={'Watch'}/>}
+            btn1Icon={<IconAndLabelWrap icon={<SVG_Play/>} label={'Watch'}/>}
             btn1Action={(id, type) => {
                 navController(`${type}/detail/${id}`)
             }} // Watch
-            btn2Icon={SVG_Favorite()}
+            btn2Icon={<SVG_Favorite/>}
             btn2Action={(id, type) => {
                 throw new Error('Function not implemented.')
             }} // Add to favorite
@@ -87,7 +79,7 @@ const Home: FC = () => {
         {displayData.map(([type, {name, id}]) => {
             return <TitleRowLazyLoadWrapper
                 navController={navController}
-                key={id}
+                key={type + id}
                 name={name + (type === "movie" ? ' Movies' : ' Shows')}
                 genreID={id}
                 loaderFn={enable => {
@@ -117,13 +109,14 @@ const TitleRowLazyLoadWrapper: FC<{
     navController: NavigateFunction
 }> = ({name, loaderFn, itemWidth, movieGenres, tvShowGenres, navController}) => {
     const ref = useRef<HTMLDivElement | null>(null)
-    const visible = useIntersection(ref, -200);
+    const visible = useIntersection(ref, -0);
     const displayData = loaderFn(visible);
     const data = [...(displayData.data?.results ?? [])].filter(value => value.backdrop_path && value.poster_path)
     if (data.length === 0) {
         return <div ref={ref}><TitlesRow
             placeholder
             name={name}
+            className={'p-4'}
             onSeeMore={() => {
             }}
             itemWidth={itemWidth}
@@ -144,12 +137,12 @@ const TitleRowLazyLoadWrapper: FC<{
             vote_avgs={data.map(value => value.vote_average.toPrecision(2))}
             tags={data.map(value => value.vote_average.toPrecision(2))}
             imagesFullURL={data.map(value => config.backDropUrlSmall + value.backdrop_path)}
-            className={'p-4'}
-            btn1Icon={<IconAndLabelWrap icon={SVG_Play()} label={'Watch'}/>}
+            className={'py-4'}
+            btn1Icon={<IconAndLabelWrap icon={<SVG_Play/>} label={'Watch'}/>}
             btn1Action={function (id: number, type?: media_type | undefined): void {
-                throw new Error('Function not implemented.')
+                navController(`${type}/detail/${id}`)
             }} // Watch
-            btn2Icon={SVG_Favorite()}
+            btn2Icon={<SVG_Favorite/>}
             btn2Action={function (id: number, type?: media_type | undefined): void {
                 throw new Error('Function not implemented.')
             }} // Share
@@ -157,6 +150,7 @@ const TitleRowLazyLoadWrapper: FC<{
                 navController(`${type}/detail/${id}`)
             }} // Add to favorite
             itemWidth={itemWidth}
+            onSeeMore={() => {}}
         /></div>
     }
 }

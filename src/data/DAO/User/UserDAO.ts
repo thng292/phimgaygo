@@ -21,8 +21,7 @@ export function signUpEmail(email: string, password: string, displayName: string
     return new Promise((resolve: (user: User) => void, reject: (errorCode: string, errorMessage: string) => void) => {
         createUserWithEmailAndPassword(FireAuth, email, password)
             .then((userCredential) => {
-                FireAuth.currentUser &&
-                updateProfile(FireAuth.currentUser, {
+                updateProfile(userCredential.user, {
                     displayName,
                 })
                 resolve(userCredential.user)

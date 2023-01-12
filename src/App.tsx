@@ -15,11 +15,9 @@ const TVShowDetail = React.lazy(() => import('./ui/Details/TVShowDetail'))
 
 const About = React.lazy(() => import('./ui/About/About'))
 const Auth = React.lazy(() => import('./ui/Auth/Auth'))
-const CheckOut = React.lazy(() => import('./ui/CheckOut/CheckOut'))
 const Contact = React.lazy(() => import('./ui/Contact/Contact'))
 const FAQ = React.lazy(() => import('./ui/FAQ/FAQ'))
 const Forum = React.lazy(() => import('./ui/Community/Forum'))
-const BillView = React.lazy(() => import('./ui/CheckOut/BillView'))
 const NotFound = React.lazy(() => import('./ui/SharedLayout/NotFound'))
 // #endLazyImport
 
@@ -71,7 +69,7 @@ const router = createBrowserRouter([
             //     element: <TVShowDiscover/>
             // },
             {
-                path: String(MediaType.Movie) + '/' + Screens.Detail,
+                path: MediaType.Movie + '/' + Screens.Detail,
                 element: <MovieDetail/>
             },
             {
@@ -97,14 +95,6 @@ const router = createBrowserRouter([
             {
                 path: Screens.Forum,
                 element: <Forum/>
-            },
-            {
-                path: Screens.Checkout,
-                element: <CheckOut/>
-            },
-            {
-                path: Screens.Bill,
-                element: <BillView/>
             }
         ]
     }

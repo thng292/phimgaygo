@@ -47,7 +47,7 @@ const BigBanner: FC<BigBannerProps> = (props) => {
     }, [willChangeBg])
     return <div
         id={'bigbanner'}
-        className={"flex items-end sm:items-center shadow-2xl relative aspect-video"}
+        className={"flex items-center shadow-2xl relative aspect-video"}
         style={{
             backgroundImage: `linear-gradient(to top right, #222222dd, #42424200), url(${window.innerWidth > 640 ? props.bannerFullURL[currentIndex] : props.postersFullURL[currentIndex]})`,
             backgroundRepeat: 'no-repeat',
@@ -64,23 +64,25 @@ const BigBanner: FC<BigBannerProps> = (props) => {
     >
         <button
             className='absolute z-20 top-1/2 right-0 hidden h-16 w-16 -translate-y-1/2 cursor-pointer bg-transparent md:flex justify-center items-center'
-            onClick={() => {
+            onClick={(e) => {
+                e.stopPropagation()
                 setIndex((prevState: number) =>
                     ((prevState + 1) % props.backDropsFullURL.length)
                 )
             }}
         >
-            {SVG_NavForward('#ffffff')}
+            <SVG_NavForward/>
         </button>
         <button
             className='absolute z-20 top-1/2 left-0 hidden h-16 w-16 -translate-y-1/2 cursor-pointer bg-transparent md:flex justify-center items-center'
-            onClick={() => {
+            onClick={(e) => {
+                e.stopPropagation()
                 setIndex((prevState: number) =>
                     ((prevState - 1 + props.backDropsFullURL.length) % props.backDropsFullURL.length)
                 )
             }}
         >
-            {SVG_NavBack('#ffffff')}
+            <SVG_NavBack />
         </button>
         <BannerInfo
             id={props.ids[currentIndex]}
@@ -97,7 +99,7 @@ const BigBanner: FC<BigBannerProps> = (props) => {
             btn2Icon={props.btn2Icon}
             btn2Action={() => props.btn2Action(props.ids[currentIndex], currentTag)}
         />
-        <div className={'absolute bottom-0 p-4 bg-gradient-to-t from-black via-transparent to-transparent'}>
+        <div className={'absolute bottom-0 py-4 bg-gradient-to-t from-black via-transparent to-transparent w-full'}>
             <TitlesRow
                 titles={props.titles}
                 media_type={props.media_type}

@@ -96,13 +96,13 @@ const MovieDetail: FC<{}> = () => {
                             })
                         }}
                     >
-                        {SVG_Play()} <span className={'text-black px-2'}>Watch</span>
+                        <SVG_Play/> <span className={'text-black px-2'}>Watch</span>
                     </button>
                     <button
                         className="p-2 m-1 rounded secondary flex"
                         onClick={() => {
                         }}>
-                        {SVG_Favorite()} <span className={'text-black px-2'}>Favorite</span>
+                        <SVG_Favorite/> <span className={'text-black px-2'}>Favorite</span>
                     </button>
                 </div>
             </div>
@@ -202,11 +202,11 @@ const MovieDetail: FC<{}> = () => {
                     itemWidth={itemWidth}
                     imagesFullURL={Recommendations.map(value => config.backDropUrlSmall + value.backdrop_path)}
                     className={'p-4'}
-                    btn1Icon={<IconAndLabelWrap icon={SVG_Play()} label={'Watch'}/>}
+                    btn1Icon={<IconAndLabelWrap icon={<SVG_Play/>} label={'Watch'}/>}
                     btn1Action={function (id: number, type?: media_type | undefined): void {
-                        throw new Error('Function not implemented.')
+                        navController(`${type}/detail/${id}`)
                     }} // Watch
-                    btn2Icon={SVG_Favorite()}
+                    btn2Icon={<SVG_Favorite/>}
                     btn2Action={function (id: number, type?: media_type | undefined): void {
                         throw new Error('Function not implemented.')
                     }} // Share
@@ -227,11 +227,11 @@ const MovieDetail: FC<{}> = () => {
                     itemWidth={itemWidth}
                     imagesFullURL={Similar.map(value => config.backDropUrlSmall + value.backdrop_path)}
                     className={'p-4'}
-                    btn1Icon={<IconAndLabelWrap icon={SVG_Play()} label={'Watch'}/>}
+                    btn1Icon={<IconAndLabelWrap icon={<SVG_Play/>} label={'Watch'}/>}
                     btn1Action={function (id: number, type?: media_type | undefined): void {
-                        throw new Error('Function not implemented.')
+                        navController(`${type}/detail/${id}`)
                     }} // Watch
-                    btn2Icon={SVG_Favorite()}
+                    btn2Icon={<SVG_Favorite/>}
                     btn2Action={function (id: number, type?: media_type | undefined): void {
                         throw new Error('Function not implemented.')
                     }} // Share
@@ -244,63 +244,7 @@ const MovieDetail: FC<{}> = () => {
                     media_type={['movie']}
                     subtitles={Similar.map(value => value.original_title)}
                 />
-                <section className={'w-full'}>
-                    {user ?
-                        <div className={' w-3/4 mx-4 flex flex-row items-center'}>
-                            <img
-                                className={'w-12 h-12 rounded-full border-2 border-main-400'}
-                                src={user?.photoURL ?? (config.StorageURL(config.defaultAvatar))}
-                                alt={user?.displayName ?? ''}
-                            />
-                            <input
-                                type='text'
-                                placeholder='Comment'
-                                className={`w-full border-2 p-2 rounded m-4 transition ease-in-out  focus:text-gray-700 focus:bg-white focus:border-main-1000 focus:outline-0`}
-                                value={userComment}
-                                onChange={(e) => {
-                                    changeUserComment(e.currentTarget.value);
-                                }}
-                            />
-                            <button
-                                className={'bg-main-400 rounded-full p-2'}
-                                onClick={() => {
-                                    user && createComment(user.uid, userComment).then((data) => {
-                                        setComments(old => [data, ...old])
-                                        changeUserComment("")
-                                        addComments(Number(id), data.id).catch(console.error)
-                                    })
-                                        .catch(console.error)
-                                }}
-                            >
-
-                                {SVG_Send()}
-                            </button>
-                        </div> : <div className={'text-xl p-4'}
-                        >
-                            <Link
-                                className={'text-main-1000 hover:text-main-400'}
-                                to={'/auth'}>{`Sign in `}
-                            </Link>
-                            to comment
-                        </div>}
-                    {comments.length ? comments.map(value => {
                         //TODO: Comment
-                        return <div className={'w-full min-h-8'}>
-                            <p>{value.content}</p>
-                            {/*<div className={'flex flex-row'}>*/}
-                            {/*    <SVG_ArrowUpward /><p onClick={()=>{*/}
-                            {/*        upVoteComment(value.id)*/}
-                            {/*    }*/}
-                            {/*}>{value.up_vote_count}</p>*/}
-                            {/*    <SVG_ArrowDownward /><p*/}
-                            {/*    onClick={()=>{*/}
-                            {/*        downVoteComment(value.id)*/}
-                            {/*    }*/}
-                            {/*    }>{value.down_vote_count}</p>*/}
-                            {/*</div>*/}
-                        </div>
-                    }) : <p className={'w-full text-center text-2xl'}>No comments</p>}
-                </section>
             </div>
         </div>
     </div> : (data.error ? <>Error</> : <LoadingSpinner/>)

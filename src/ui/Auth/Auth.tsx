@@ -8,7 +8,7 @@ import ContextProps from "../SharedLayout/ContextProps";
 import getAdditionalUserInfo from "../../data/DAO/FireStore/AdditionalUserInfoDAO";
 
 function Auth() {
-    const { setUser, navController, user } = useOutletContext<ContextProps>();
+    const { navController, user } = useOutletContext<ContextProps>();
     const [tab, changeTab] = useState(true);
     // True: Sign in
     // False: Sign up
@@ -77,8 +77,7 @@ function Auth() {
                                     (user) => {
                                         getAdditionalUserInfo(user.uid, user)
                                             .then(()=> {
-                                                setUser(user)
-                                                navController('/')
+                                                //TODO: Inform and navigate back
                                             })
                                             .catch(()=>console.error)
                                     }
@@ -127,14 +126,7 @@ function Auth() {
                         <button
                             onClick={() => {
                                 signUpEmail(email, password, displayName).then(
-                                    (user) => {
-                                        //console.log("this is you: ", user);
-                                        getAdditionalUserInfo(user.uid, user).then(()=> {
-                                            setUser(user)
-                                            navController('/')
-                                        })
-
-                                    }
+                                    //TODO: Inform and navigate back
                                 );
                             }}
                             className='bg-main-400 rounded-3xl p-3 w-1/3'
@@ -149,10 +141,8 @@ function Auth() {
                     onClick={() =>
                         signInGoogle()
                             .then((user) => {
-                                //console.log("this is you", user)
-                                getAdditionalUserInfo(user.uid, user).then(console.error)
-                                setUser(user)
-                                navController('/')
+                                //TODO: Inform and navigate back
+
                             })
                             .catch(console.error)
                     }

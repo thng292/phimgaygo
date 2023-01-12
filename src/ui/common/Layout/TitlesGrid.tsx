@@ -38,7 +38,7 @@ const TitlesGrid: FC<{
             >
                 {props.name}
                 {props.onSeeMore && <span
-                    className={'text-sm font-normal px-4 h-full tracking-normal text-right inline-block opacity-0 transition-all group-hover:opacity-100 cursor-pointer'}
+                    className={'text-sm font-normal px-4 h-full tracking-normal text-right hidden sm:inline-block opacity-0 transition-all group-hover:opacity-100 cursor-pointer'}
                     onClick={props.onSeeMore}
                 >See More...</span>}
             </p>
@@ -74,7 +74,7 @@ const TitlesGrid: FC<{
                 {props.ids.map((val, index) => {
                     let currentType = props.media_type[(index <= props.media_type.length) ? index : 0]
                     return <Title
-                        key={val}
+                        key={props.name + currentType + val}
                         title={props.titles[index]}
                         tag={props.tags?.at(index)}
                         imageFullURL={props.imagesFullURL[index]}

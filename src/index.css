@@ -37,7 +37,7 @@
     grid-template-columns: 3fr 2fr;
 }
 
-.checkedLabel:checked + label {
+.checkedLabel:checked+label {
     background: #dddddd;
 }
 
@@ -100,7 +100,7 @@ input[type="checkbox"]:checked {
 
 .scroll-wrapper {
     @apply flex overflow-x-auto overflow-y-hidden;
-    width: calc(100vw - 2rem);
+    width: 100vw;
 }
 
 .scroll-wrapper::-webkit-scrollbar {
@@ -131,7 +131,7 @@ input[type="checkbox"]:checked {
 
 @media (max-width: 768px) {
     #bigbanner {
-        height: 70vh;
+        height: 90vh;
     }
 }
 
@@ -142,4 +142,13 @@ svg {
 .bg-main-1000 svg {
     mix-blend-mode: normal;
     fill: black;
+}
+
+.TitleRowBtn {
+    height: calc(100% - 3.25rem);
+}
+
+img {
+    object-fit: cover;
+    object-position: center;
 }

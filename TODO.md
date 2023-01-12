@@ -16,5 +16,12 @@
     + Wishlist
     + Buyed
     + History
-10. Universial Browsing Page
-    + Inject the loader by URL params
+10. On iframe clicked -> User watched
+11. Collect user interest like spotify:
+    1. Ask for the genre they like or movie they like
+    2. Recommend based on that
+    3. Browse by genre component
+12. User can browse trending movie on 404 pages
+13. Redesign the expand button:
+    1. Slice the array instead of fucking with the CSS
+14. Test navbar backdrop blur

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, {useEffect, useState} from 'react'
 
 export default function useIntersection(element: React.MutableRefObject<HTMLElement | null>, rootMargin: number) {
     const [isVisible, setState] = useState(false);
@@ -7,7 +7,9 @@ export default function useIntersection(element: React.MutableRefObject<HTMLElem
         const observer = new IntersectionObserver(
             ([entry]) => {
                 setState(entry.isIntersecting);
-            }, { rootMargin: String(rootMargin) + 'px' }
+            }, {
+                rootMargin: String(rootMargin) + 'px',
+            }
         );
 
         element.current && observer.observe(element.current);

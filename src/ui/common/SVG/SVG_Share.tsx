@@ -1,4 +1,4 @@
-export default function SVG_Share(fill: string = '#ffffff') {
+const SVG_Share: FC<{ fill?: string }> = ({fill = '#ffffff'}) => {
     return (
 
         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill={fill}>
@@ -8,3 +8,5 @@ export default function SVG_Share(fill: string = '#ffffff') {
         </svg>
     )
 }
+export default SVG_Share
+import {FC} from "react";
