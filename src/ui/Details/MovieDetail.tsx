@@ -1,17 +1,13 @@
-import React, {FC, useEffect, useRef, useState} from "react";
+import { FC, useRef } from "react";
 import getDetail from "../../data/DAO/Detail/getDetail";
-import {Link, Navigate, useOutletContext, useParams} from "react-router-dom";
+import { Navigate, useOutletContext, useParams } from "react-router-dom";
 import getTrailer from "../../data/DAO/Detail/getTrailer";
-import getAdditionalMovieInfo, {addComments} from "../../data/DAO/FireStore/AdditionalMovieInfoDAO";
-import config, {media_type} from "../../data/Datasource/Config";
+import config, { media_type } from "../../data/Datasource/Config";
 import YoutubeEmbed from "../common/Component/YoutubeEmbed";
 import ToHrsAndMin from "../../utils/ToHrsAndMin";
 import ContextProps from "../SharedLayout/ContextProps";
 import SVG_Play from "../common/SVG/SVG_Play";
 import AddSpaceToNumber from "../../utils/AddSpaceToNumber";
-import SVG_Send from "../common/SVG/SVG_Send";
-import createComment, {getComments} from "../../data/DAO/FireStore/CommentDAO";
-import Comment from "../../data/model/Firebase/Comment";
 import LoadingSpinner from "../common/Component/LoadingSpinner";
 import SVG_Favorite from "../common/SVG/SVG_Favorite";
 import TitlesRow from "../common/Layout/TitlesRow";
@@ -26,7 +22,6 @@ const MovieDetail: FC<{}> = () => {
     const {
         displayToast,
         navController,
-        user,
     } = useOutletContext<ContextProps>()
     const data = getDetail(Number(id))
     const videos = getTrailer(Number(id), data.isSuccess)
@@ -35,18 +30,6 @@ const MovieDetail: FC<{}> = () => {
     const Recommendations = data.data?.recommendations.results ?? []
     const Similar = data.data?.similar.results ?? []
     const movieGenres = getGenres()
-    useEffect(() => {
-        getAdditionalMovieInfo(Number(id)).then(data => {
-            getComments(data.comments, 10)
-                .then(comments => {
-                    setComments(comments)
-                    //console.log("Comments are: ", comments)
-                })
-                .catch(console.error)
-        }).catch(console.error)
-    }, [])
-    const [userComment, changeUserComment] = useState("")
-    const [comments, setComments] = useState<Comment[]>([])
     if (data.error) {
         return <Navigate to={'*'}/>
     }
@@ -76,9 +59,9 @@ const MovieDetail: FC<{}> = () => {
                 <div className={'m-4 flex flex-row text-gray-400 tracking-wider'}>
                     <p>{data.data.release_date.slice(0, 4)}</p>
                     <p className={'mx-2'}>•</p>
-                    <p>{data.data.release_dates.results.find(value => {
+                    <p>{data.data.release_dates.results.length > 0 ? (data.data.release_dates.results.find(value => {
                         return value.iso_3166_1 === 'US'
-                    })?.release_dates[0].certification ?? data.data.release_dates.results[0].release_dates[0].certification}
+                    })?.release_dates[0].certification ?? data.data.release_dates.results[0].release_dates[0].certification) : ''}
                     </p>
                     <p className={'mx-2'}>•</p>
                     <p>{ToHrsAndMin(Number(data.data.runtime))}</p>
@@ -194,7 +177,7 @@ const MovieDetail: FC<{}> = () => {
                         </div>
                     </section>
                 </section>
-                <TitlesRow
+                {Recommendations.length > 0 && <TitlesRow
                     name={'Recommendation'}
                     ids={Recommendations.map(value => value.id)}
                     titles={Recommendations.map(value => value.title)}
@@ -218,8 +201,8 @@ const MovieDetail: FC<{}> = () => {
                     vote_avgs={Recommendations.map(value => value.vote_average.toPrecision(2))}
                     media_type={['movie']}
                     subtitles={Recommendations.map(value => value.original_title)}
-                />
-                <TitlesRow
+                />}
+                {Similar.length > 0 && <TitlesRow
                     name={'Similar'}
                     ids={Similar.map(value => value.id)}
                     titles={Similar.map(value => value.title)}
@@ -243,7 +226,7 @@ const MovieDetail: FC<{}> = () => {
                     vote_avgs={Similar.map(value => value.vote_average.toPrecision(2))}
                     media_type={['movie']}
                     subtitles={Similar.map(value => value.original_title)}
-                />
+                />}
                         //TODO: Comment
             </div>
         </div>

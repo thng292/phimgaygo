@@ -72,7 +72,7 @@ const TitlesGrid: FC<{
                     gridTemplateColumns: `repeat(auto-fit, ${props.itemWidth ? `${props.itemWidth}px` : `minmax(${window.innerWidth > 640 ? '320px' : '170px'}, 1fr)`})`,
                 }}>
                 {props.ids.map((val, index) => {
-                    let currentType = props.media_type[(index <= props.media_type.length) ? index : 0]
+                    let currentType = props.media_type.at(index) ?? props.media_type[0]
                     return <Title
                         key={props.name + currentType + val}
                         title={props.titles[index]}

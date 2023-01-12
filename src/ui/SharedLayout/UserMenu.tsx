@@ -31,7 +31,7 @@ const UserMenu: FC<{
                 <p className={'py-2 px-4 font-bold hover:bg-gray-300 rounded-2xl'}>Account</p>
                 <p className={'py-2 px-4 font-bold hover:bg-gray-300 rounded-2xl'}>You
                     have: {additionalUserInfo?.points} points</p>
-                <p className={'py-2 px-4 font-bold hover:bg-gray-300 rounded-2xl'}
+                <p className={'py-2 px-4 font-bold hover:bg-gray-300 rounded-2xl mix-blend-difference'}
                    onClick={() =>
                        import('../../data/DAO/User/UserDAO').then(AuthLogic => {
                            AuthLogic.signUserOut().then(() =>
@@ -46,7 +46,7 @@ const UserMenu: FC<{
         </div>
     } else {
         return <div
-            className='border-2 border-main-1000 rounded-3xl p-1 px-2 mx-1 font-bold cursor-pointer'
+            className='border-2 border-main-1000 rounded-3xl p-1 px-4 mx-1 font-bold tracking-wide cursor-pointer mix-blend-difference'
             onClick={() => navigate("/auth")}
         >
             Sign in

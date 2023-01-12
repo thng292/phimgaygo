@@ -385,7 +385,7 @@ const TVShowDetail: FC = () => {
                             </div>
                         </section>
                     </section>
-                    <TitlesRow
+                    {Recommendations.length > 0 && <TitlesRow
                         name={"Recommendation"}
                         ids={Recommendations.map((value) => value.id)}
                         titles={Recommendations.map((value) => value.name)}
@@ -436,8 +436,8 @@ const TVShowDetail: FC = () => {
                         subtitles={Recommendations.map(
                             (value) => value.original_name
                         )}
-                    />
-                    <TitlesRow
+                    />}
+                    {Similar.length > 0 && <TitlesRow
                         name={"Similar"}
                         ids={Similar.map((value) => value.id)}
                         titles={Similar.map((value) => value.name)}
@@ -484,7 +484,7 @@ const TVShowDetail: FC = () => {
                         )}
                         media_type={["tv"]}
                         subtitles={Similar.map((value) => value.original_name)}
-                    />
+                    />}
                     //TODO: Comment
                 </div>
             </div>

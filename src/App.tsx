@@ -13,6 +13,9 @@ const Home = React.lazy(() => import('./ui/Home/Home'))
 const MovieDetail = React.lazy(() => import('./ui/Details/MovieDetail'))
 const TVShowDetail = React.lazy(() => import('./ui/Details/TVShowDetail'))
 
+
+const Search = React.lazy(() => import('./ui/Search/Search'))
+
 const About = React.lazy(() => import('./ui/About/About'))
 const Auth = React.lazy(() => import('./ui/Auth/Auth'))
 const Contact = React.lazy(() => import('./ui/Contact/Contact'))
@@ -56,10 +59,10 @@ const router = createBrowserRouter([
                 index: true,
                 element: <Home/>
             },
-            // {
-            //     path: Screens.Search,
-            //     element: <TVShowSearch/>
-            // },
+            {
+                path: Screens.Search,
+                element: <Search/>
+            },
             // {
             //     path: MediaType.Movie + '/' + TVShowDiscover,
             //     element: TVShowDiscover/>
@@ -104,7 +107,7 @@ function App() {
     return (
         <QueryClientProvider client={queryClient}>
             <RouterProvider router={router}/>
-            <ReactQueryDevtools initialIsOpen={false}/>
+            {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false}/>}
         </QueryClientProvider>
     )
 }

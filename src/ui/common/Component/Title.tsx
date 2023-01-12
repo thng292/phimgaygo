@@ -62,18 +62,14 @@ const Title: FC<{
                 <p
                     className={'px-4 text-sm overflow-hidden text-gray-300'}
                 >
-                    {props.subtitle} - {props.type?.toUpperCase()}
+                    {props.subtitle} - {props.vote_avg}
                 </p>
                 <p
                     className={'px-4 text-sm overflow-hidden text-gray-300'}
                 >
                     Genres: {props.genre}
                 </p>
-                {/*<p*/}
-                {/*    className={'px-4 text-sm overflow-hidden text-gray-300'}*/}
-                {/*>*/}
-                {/*    Year: {props.date}*/}
-                {/*</p>*/}
+                
                 <div className={'absolute flex gap-2 bottom-0 p-4'}>
                     <button
                         onClick={() => props.btn1Action()}

@@ -16,7 +16,7 @@ export default function SharedLayout() {
     let navigate = useNavigate();
     const shouldTransparent = checkTop();
     const [Toast, setToast] = useToast();
-
+    const [searchField, setSearchField] = useState<undefined | string>(undefined);
     const [user, additionalUserInfo] = useUser();
     return (
         <>
@@ -34,24 +34,32 @@ export default function SharedLayout() {
             >
                 <div className='flex flex-row items-center justify-between w-full'>
                     <div
-                        className='flex flex-row items-center cursor-pointer select-none'
-                        onClick={() => navigate("/")}
+                        className='flex flex-row gap-6 items-center cursor-pointer select-none'
+                        
                     >
-                        <Logo />
+                        <div onClick={() => navigate("/")} >
+                            <Logo />
+                        </div>
                         <Link
-                            className='hidden md:block font-bold w-24 text-center'
+                            className='hidden md:block font-bold text-center'
+                            to={'/'}
+                        >
+                            <p>Home</p>
+                        </Link>
+                        <Link
+                            className='hidden md:block font-bold text-center'
                             to={``}
                         >
                             <p>Movies</p>
                         </Link>
                         <Link
-                            className='hidden md:block font-bold w-24 text-center'
+                            className='hidden md:block font-bold text-center'
                             to={``}
                         >
                             <p>TV Shows</p>
                         </Link>
                         <Link
-                            className='hidden md:block font-bold w-24 text-center'
+                            className='hidden md:block font-bold text-center'
                             to='/about'
                         >
                             <p>About</p>
@@ -59,15 +67,44 @@ export default function SharedLayout() {
                     </div>
 
                     <div className='flex flex-row justify-center items-center'>
-                        <div
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                navigate(``);
-                            }}
-                            className='flex flex-row justify-center items-center border-2 border-main-1000 rounded-3xl p-1 px-2 ml-2'
-                        >
-                            <SVG_Search />
-                            <p>Search</p>
+                        <div className='flex flex-row justify-center items-center border-2 border-main-1000 rounded-3xl p-1 px-2 mr-2'>
+                            <input
+                                className='px-2 bg-transparent placeholder placeholder-white underline-offset-1 text-white focus:outline-none focus:underline'
+                                placeholder='Looking for something?'
+                                type={"text"}
+                                name='search'
+                                value={searchField}
+                                onChange={(e) =>
+                                    setSearchField(e.currentTarget.value)
+                                }
+                                onKeyDown={(e) => {
+                                    if (e.key === "Enter" && searchField) {
+                                        navigate(
+                                            `search?query=${encodeURIComponent(
+                                                searchField ?? ""
+                                            )}`
+                                        );
+                                        setSearchField(undefined);
+                                    }
+                                }}
+                                onClick={(e) => e.stopPropagation()}
+                            />
+                            <div
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    if (searchField) {
+                                        navigate(
+                                            `search?query=${encodeURIComponent(
+                                                searchField ?? ""
+                                            )}`
+                                        );
+                                        setSearchField(undefined);
+                                    }
+                                }}
+                                className='cursor-pointer'
+                            >
+                                <SVG_Search />
+                            </div>
                         </div>
                         <UserMenu
                             user={user}

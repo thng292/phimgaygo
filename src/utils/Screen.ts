@@ -4,6 +4,7 @@ const Screens = {
     Home: '',
     Discover: 'discover',
     Detail: 'detail/:id',
+    // Search: 'search?query=:query&adult=:adult&year=:year&page=:page',
     Search: 'search',
     About: 'about',
     Checkout: 'checkout',

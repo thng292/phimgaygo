@@ -170,7 +170,7 @@ const TitlesRow: FC<
                                 subtitle={props.subtitles[index]}
                                 genre={props.genres[index]}
                                 date={props.dates[index]}
-                                vote_avg={props.dates[index]}
+                                vote_avg={props.vote_avgs[index]}
                                 btn1Icon={props.btn1Icon}
                                 btn1Action={() => props.btn1Action(id, currTag)}
                                 btn2Icon={props.btn2Icon}
