@@ -62,7 +62,7 @@ const TitlesGrid: FC<{
             >
                 {props.name}
                 {props.onSeeMore && <span
-                    className={'text-sm font-normal px-4 h-full tracking-normal text-right inline-block opacity-0 transition-all group-hover:opacity-100 cursor-pointer'}
+                    className={'text-sm font-normal px-4 h-full tracking-normal text-right hidden sm:inline-block opacity-0 transition-all group-hover:opacity-100 cursor-pointer'}
                     onClick={props.onSeeMore}
                 >See More...</span>}
             </p>

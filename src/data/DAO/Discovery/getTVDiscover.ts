@@ -3,7 +3,6 @@ import config, {oneTimeGet} from "../../Datasource/Config"
 import {useQuery} from "react-query"
 import TVShowDiscover from "../../model/TVShow/TVShowDiscover";
 import TVShowOverview from "../../model/TVShow/TVShowOverview";
-import bigBanner from "../../../ui/common/Layout/BigBanner";
 
 interface getTvDiscoverProps {
     page?: number;

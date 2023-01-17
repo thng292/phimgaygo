@@ -40,8 +40,7 @@ const queryClient = new QueryClient({
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <SharedLayout/>,
-        errorElement: <NotFound/>,
+        element: <SharedLayout />,
         children: [
             {
                 index: true,
@@ -51,14 +50,6 @@ const router = createBrowserRouter([
                 path: Screens.Search,
                 element: <Search/>
             },
-            // {
-            //     path: MediaType.Movie + '/' + TVShowDiscover,
-            //     element: TVShowDiscover/>
-            // },
-            // {
-            //     path: MediaType.TVShow + '/' + TVShowDiscover,
-            //     element: <TVShowDiscover/>
-            // },
             {
                 path: MediaType.Movie + '/' + Screens.Detail,
                 element: <MovieDetail/>
@@ -86,6 +77,10 @@ const router = createBrowserRouter([
             {
                 path: Screens.Forum,
                 element: <Forum/>
+            },
+            {
+                path: '*',
+                element: <NotFound />
             }
         ]
     }

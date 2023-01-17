@@ -67,7 +67,7 @@ const TraierSection: FC<{
             />
             {(videos.length ?? 0) > 3 && <>
                 <SeeMoreBtn
-                    text={expand ? "Expand" : "Minimize"}
+                    text={!expand ? "Expand" : "Minimize"}
                     onClick={() => setExpand((old) => !old)}
                 />
                 {!expand && <div className="absolute bottom-0 z-20 h-48 w-full bg-gradient-to-t from-black pointer-events-none"/>}
