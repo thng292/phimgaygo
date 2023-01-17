@@ -101,7 +101,7 @@ const TitlesRow: FC<
             </p>
             <button
                 className={
-                    "absolute bottom-0 right-0 z-30 w-fit bg-gradient-to-l from-black transition-all duration-200 TitleRowBtn"
+                    "right-0 bg-gradient-to-l TitleRowBtn"
                 }
                 style={{
                     visibility:
@@ -128,7 +128,7 @@ const TitlesRow: FC<
 
             <button
                 className={
-                    "absolute bottom-0 left-0 z-30 w-fit bg-gradient-to-r from-black transition-all duration-200 TitleRowBtn"
+                    "left-0 z-30 w-fit bg-gradient-to-r TitleRowBtn"
                 }
                 style={{
                     visibility: scrollPos > 0 ? "visible" : "hidden",
@@ -148,7 +148,7 @@ const TitlesRow: FC<
                 className={"scroll-wrapper"}
                 ref={rowRef}
             >
-                <div className={"flex py-3"}>
+                <div className={"flex py-3 gap-2 first:ml-2 last:mr-2"}>
                     {props.ids.map((id, index) => {
                         let currTag =
                             props.media_type.at(index) ??
@@ -180,7 +180,6 @@ const TitlesRow: FC<
                                 }
                                 style={{
                                     width: props.itemWidth,
-                                    marginLeft: "0.5rem",
                                 }}
                             />
                         );

@@ -25,3 +25,9 @@
 13. Redesign the expand button:
     1. Slice the array instead of fucking with the CSS
 14. Test navbar backdrop blur
+15. Find a React youtube component
+16. Make screen for watching trailer
+17. Refactor the detail screen
+18. Pos sticky for the filter
+19. Loading indicator for the season
+20. Use the MUI toast

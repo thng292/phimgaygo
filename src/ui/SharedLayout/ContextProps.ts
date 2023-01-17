@@ -6,5 +6,4 @@ export default interface ContextProps {
     user: User | null,
     additionalUserInfo: UserAdditionData,
     navController: NavigateFunction,
-    displayToast: (text: string) => void,
 }

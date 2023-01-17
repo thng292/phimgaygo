@@ -7,7 +7,6 @@ import config, { media_type } from "../../data/Datasource/Config";
 import ToHrsAndMin from "../../utils/ToHrsAndMin";
 import SVG_Play from "../common/SVG/SVG_Play";
 import SVG_Favorite from "../common/SVG/SVG_Favorite";
-import YoutubeEmbed from "../common/Component/YoutubeEmbed";
 import TitlesRow from "../common/Layout/TitlesRow";
 import MapGenreToID from "../../utils/MapGenreToID";
 import IconAndLabelWrap from "../common/Component/IconAndLabelWrap";
@@ -17,10 +16,13 @@ import getTVTrailer from "../../data/DAO/Detail/getTVTrailer";
 import getTVSeason from "../../data/DAO/Detail/getTVSeason";
 import { Season } from "../../data/model/TVShow/TVShow";
 import { Episode } from "../../data/model/TVShow/TVShowSeason";
+import SeeMoreBtn from "../common/Component/SeeMoreBtn";
+import TraierSection from "./common/TrailerSection";
+import LabelAndExpand from "./common/LabelAndExpand";
 
 const TVShowDetail: FC = () => {
     const { id } = useParams();
-    const { displayToast, navController, user } =
+    const { navController, user } =
         useOutletContext<ContextProps>();
 
     const itemWidth = CalculateWidth();
@@ -30,15 +32,11 @@ const TVShowDetail: FC = () => {
     const [season, setSeason] = useState(1);
     const [episode, setEpisode] = useState(1);
     const [expand, setExpand] = useState<number | false>(false);
-    const [videoShowAll, setVideoShowAll] = useState(false);
     const [seasonShowAll, setSeasonShowAll] = useState(false);
 
     const WatchSectionRef = useRef<HTMLDivElement>(null);
     const Recommendations = data.data?.recommendations.results ?? [];
     const Similar = data.data?.similar.results ?? [];
-    const VideoData = (videos.data?.results ?? [])
-        .filter((value) => value.site === "YouTube")
-        .slice(0, videoShowAll ? (videos.data?.results ?? []).length-1 : 3)
     const tvGenres = getGenres("tv");
 
     if (data.error) {
@@ -61,7 +59,7 @@ const TVShowDetail: FC = () => {
             >
                 <div className={"p-3 sm:p-20 max-w-3xl"}>
                     <img
-                        className={"w-1/3 rounded-2xl m-4"}
+                        className={"w-1/3 rounded-2xl m-4 shadow-2xl"}
                         src={config.posterUrl + data.data.poster_path}
                         alt={data.data.original_name}
                     />
@@ -120,92 +118,123 @@ const TVShowDetail: FC = () => {
             <div className={"z-40 w-screen flex justify-center items-center"}>
                 <div className={"max-w-8xl w-full overflow-x-clip"}>
                     <section className={"px-4 relative"}>
-                        <h2
+                        <LabelAndExpand
+                            label={'Seasons & Episodes:'}
                             onClick={() =>
                                 setSeasonShowAll(
                                     (old) =>
-                                        !old && data.data.number_of_seasons > 2
+                                        data.data.number_of_seasons > 2 && !old
                                 )
                             }
-                            className={
-                                "group font-bold subpixel-antialiased text-3xl py-4 cursor-pointer"
-                            }
-                        >
-                            Seasons & Episode:
-                            {data.data.number_of_seasons > 2 && (
-                                <span
-                                    className={
-                                        "font-normal text-lg opacity-0 transition-all duration-500 px-2 float-right hidden sm:inline-block group-hover:opacity-100"
-                                    }
-                                >
-                                    {seasonShowAll ? "Minimize" : "Expand"}
-                                </span>
-                            )}
-                        </h2>
-                        {data.data.number_of_seasons > 2 && seasonShowAll && (
-                            <div
-                                className={
-                                    "absolute top-0 left-0 bottom-0 right-0 z-20 pointer-events-none"
-                                }
-                                style={{
-                                    backgroundImage:
-                                        "linear-gradient(to top, #000, transparent 10%)",
-                                }}
-                            />
-                        )}
+                            expand={!seasonShowAll}
+                        />
                         {data.data.number_of_seasons > 2 && (
-                            <SeeMoreBtn
-                                text={seasonShowAll ? "Minimize" : "Expand"}
-                                onClick={() => setSeasonShowAll((old) => !old)}
-                            />
-                        )}
-                        <div
-                            style={{
-                                height: seasonShowAll
-                                    ? "fit-content"
-                                    : `min(fit-content, calc(400px + 2rem))`,
-                            }}
-                            className={"overflow-y-auto w-full"}
-                        >
-                            {(data.data?.seasons ?? []).map((value) => (
-                                <SeasonSectionLazy
-                                    season={value.season_number}
-                                    id={Number(id)}
-                                    value={value}
-                                    expand={expand === value.season_number}
-                                    onClick={() => {
-                                        setExpand((old) =>
-                                            old === value.season_number
-                                                ? false
-                                                : value.season_number
-                                        );
-                                        setSeasonShowAll(true);
-                                    }}
-                                    onEpClicked={(ep) => {
-                                        setSeason(value.season_number);
-                                        setEpisode(ep);
-                                        WatchSectionRef.current?.scrollIntoView(
-                                            {
-                                                behavior: "smooth",
-                                                inline: "center",
-                                            }
-                                        );
-                                    }}
+                            <>
+                                <SeeMoreBtn
+                                    text={seasonShowAll ? "Minimize" : "Expand"}
+                                    onClick={() =>
+                                        setSeasonShowAll((old) => !old)
+                                    }
                                 />
-                            ))}
+                                {!seasonShowAll && (
+                                    <div className='absolute bottom-0 z-20 h-48 w-full bg-gradient-to-t from-black pointer-events-none' />
+                                )}
+                            </>
+                        )}
+                        { /*TODO*/ }
+                        <div className={"overflow-y-auto w-full"}>
+                            {(data.data?.seasons ?? [])
+                                .slice(0, seasonShowAll ? undefined : 3)
+                                .map((value) => (
+                                    <SeasonSectionLazy
+                                        season={value.season_number}
+                                        id={Number(id)}
+                                        value={value}
+                                        expand={expand === value.season_number}
+                                        onClick={() => {
+                                            setExpand((old) =>
+                                                old === value.season_number
+                                                    ? false
+                                                    : value.season_number
+                                            );
+                                            setSeasonShowAll(true);
+                                        }}
+                                        onEpClicked={(ep) => {
+                                            setSeason(value.season_number);
+                                            setEpisode(ep);
+                                            WatchSectionRef.current?.scrollIntoView(
+                                                {
+                                                    behavior: "smooth",
+                                                    inline: "center",
+                                                }
+                                            );
+                                        }}
+                                    />
+                                ))}
                         </div>
                     </section>
                     <section
                         ref={WatchSectionRef}
                         className={"p-4"}
                     >
-                        <h2
+                        <div
                             className={
-                                "font-bold subpixel-antialiased text-3xl py-4"
+                                "font-bold subpixel-antialiased text-3xl py-4 flex justify-between items-center"
                             }
                         >
-                            Watch:
-                        </h2>
+                            <p>Watch:</p>
+                            <div className='font-normal text-lg text-gray-300 flex items-center'>
+                                {/*TODO Next ep, next season, hide when first|last ep|season*/}
+                                <button
+                                    className='cursor-pointer hover:tracking-widest hover:scale-105 hover:text-white transition-all duration-300 disabled:text-gray-600 disabled:pointer-events-none'
+                                    disabled={
+                                        season ===
+                                            data.data.seasons.at(0)
+                                                ?.season_number && episode === 1
+                                    }
+                                    onClick={() =>
+                                        setEpisode((old) => {
+                                            if (old === 1) {
+                                                setSeason((value) => value - 1);
+                                                return data.data.seasons[
+                                                    season - 1
+                                                ].episode_count;
+                                            }
+                                            return old - 1;
+                                        })
+                                    }
+                                >
+                                    &lt; Prev
+                                </button>
+                                <div className='px-2'>|</div>
+                                <button
+                                    className='cursor-pointer hover:tracking-widest hover:scale-105 hover:text-white transition-all duration-300 disabled:text-gray-600 disabled:pointer-events-none'
+                                    disabled={
+                                        season ===
+                                            data.data.seasons.at(-1)
+                                                ?.season_number &&
+                                        episode ===
+                                            data.data.seasons.at(-1)
+                                                ?.episode_count
+                                    }
+                                    onClick={() =>
+                                        setEpisode((old) => {
+                                            if (
+                                                old ===
+                                                data.data.seasons[season]
+                                                    .episode_count
+                                            ) {
+                                                setSeason((value) => value + 1);
+                                                return 1;
+                                            }
+                                            return old + 1;
+                                        })
+                                    }
+                                >
+                                    Next &gt;
+                                </button>
+                            </div>
+                        </div>
                         <div className={"w-full flex justify-center"}>
                             <iframe
                                 src={
@@ -218,54 +247,10 @@ const TVShowDetail: FC = () => {
                             />
                         </div>
                     </section>
-                    <section className={"px-2 relative"}>
-                        <h2
-                            onClick={() => setVideoShowAll((old) => !old)}
-                            className={
-                                "font-bold subpixel-antialiased text-3xl py-4 cursor-pointer"
-                            }
-                        >
-                            Videos:
-                            <span
-                                className={
-                                    "font-normal text-lg opacity-0 transition-all duration-500 px-2 float-right hidden sm:inline-block group-hover:opacity-100"
-                                }
-                            >
-                                {videoShowAll ? "Minimize" : "Expand"}
-                            </span>
-                        </h2>
-                        {(videos.data?.results.length ?? 0) > 3 && (
-                            <SeeMoreBtn
-                                text={videoShowAll ? "Minimize" : "Expand"}
-                                onClick={() => setVideoShowAll((old) => !old)}
-                            />
+                    {videos.data?.results &&
+                        videos.data?.results.length !== 0 && (
+                            <TraierSection videos={videos.data?.results} />
                         )}
-                        {videos.data !== undefined &&
-                        videos.data.results.length !== 0 ? (
-                            <div
-                                className={"sm:grid gap-2 overflow-hidden"}
-                                style={{
-                                    gridTemplateColumns:
-                                        "repeat(auto-fit, minmax(380px, 1fr))",
-                                    height: videoShowAll
-                                        ? "fit-content"
-                                        : "min(60vh, fit-content)",
-                                }}
-                            >
-                                {VideoData
-                                    .map((value) => (
-                                        <YoutubeEmbed
-                                            className={
-                                                "w-full aspect-video transition-all duration-500 transition-gpu max-w-6xl hover:scale-105 focus:border-0 focus:outline-0"
-                                            }
-                                            url={value.key}
-                                        />
-                                    ))}
-                            </div>
-                        ) : (
-                            <p>No video</p>
-                        )}
-                    </section>
                     <section className={"p-4"}>
                         <h2
                             className={
@@ -385,112 +370,118 @@ const TVShowDetail: FC = () => {
                             </div>
                         </section>
                     </section>
-                    {Recommendations.length > 0 && <TitlesRow
-                        name={"Recommendation"}
-                        ids={Recommendations.map((value) => value.id)}
-                        titles={Recommendations.map((value) => value.name)}
-                        genres={Recommendations.map((value) =>
-                            MapGenreToID(
-                                tvGenres.data?.genres ?? [],
-                                value.genre_ids
-                            )
-                        )}
-                        itemWidth={itemWidth}
-                        imagesFullURL={Recommendations.map(
-                            (value) =>
-                                config.backDropUrlSmall + value.backdrop_path
-                        )}
-                        className={"p-4"}
-                        btn1Icon={
-                            <IconAndLabelWrap
-                                icon={<SVG_Play />}
-                                label={"Watch"}
-                            />
-                        }
-                        btn1Action={function (
-                            id: number,
-                            type?: media_type | undefined
-                        ): void {
-                            navController(`${type}/detail/${id}`);
-                        }} // Watch
-                        btn2Icon={<SVG_Favorite />}
-                        btn2Action={function (
-                            id: number,
-                            type?: media_type | undefined
-                        ): void {
-                            throw new Error("Function not implemented.");
-                        }} // Share
-                        onClickAction={(id, type) => {
-                            navController(`${type}/detail/${id}`);
-                        }} // Add to favorite
-                        tags={Recommendations.map((value) =>
-                            value.vote_average.toPrecision(2)
-                        )}
-                        dates={Recommendations.map(
-                            (value) => value.first_air_date
-                        )}
-                        vote_avgs={Recommendations.map((value) =>
-                            value.vote_average.toPrecision(2)
-                        )}
-                        media_type={["tv"]}
-                        subtitles={Recommendations.map(
-                            (value) => value.original_name
-                        )}
-                    />}
-                    {Similar.length > 0 && <TitlesRow
-                        name={"Similar"}
-                        ids={Similar.map((value) => value.id)}
-                        titles={Similar.map((value) => value.name)}
-                        genres={Similar.map((value) =>
-                            MapGenreToID(
-                                tvGenres.data?.genres ?? [],
-                                value.genre_ids
-                            )
-                        )}
-                        itemWidth={itemWidth}
-                        imagesFullURL={Similar.map(
-                            (value) =>
-                                config.backDropUrlSmall + value.backdrop_path
-                        )}
-                        className={"p-4"}
-                        btn1Icon={
-                            <IconAndLabelWrap
-                                icon={<SVG_Play />}
-                                label={"Watch"}
-                            />
-                        }
-                        btn1Action={function (
-                            id: number,
-                            type?: media_type | undefined
-                        ): void {
-                            navController(`${type}/detail/${id}`);
-                        }} // Watch
-                        btn2Icon={<SVG_Favorite />}
-                        btn2Action={function (
-                            id: number,
-                            type?: media_type | undefined
-                        ): void {
-                            throw new Error("Function not implemented.");
-                        }} // Share
-                        onClickAction={(id, type) => {
-                            navController(`${type}/detail/${id}`);
-                        }} // Add to favorite
-                        tags={Similar.map((value) =>
-                            value.vote_average.toPrecision(2)
-                        )}
-                        dates={Similar.map((value) => value.first_air_date)}
-                        vote_avgs={Similar.map((value) =>
-                            value.vote_average.toPrecision(2)
-                        )}
-                        media_type={["tv"]}
-                        subtitles={Similar.map((value) => value.original_name)}
-                    />}
-                    //TODO: Comment
+                    {Recommendations.length > 0 && (
+                        <TitlesRow
+                            name={"Recommendation"}
+                            ids={Recommendations.map((value) => value.id)}
+                            titles={Recommendations.map((value) => value.name)}
+                            genres={Recommendations.map((value) =>
+                                MapGenreToID(
+                                    tvGenres.data?.genres ?? [],
+                                    value.genre_ids
+                                )
+                            )}
+                            itemWidth={itemWidth}
+                            imagesFullURL={Recommendations.map(
+                                (value) =>
+                                    config.backDropUrlSmall +
+                                    value.backdrop_path
+                            )}
+                            className={""}
+                            btn1Icon={
+                                <IconAndLabelWrap
+                                    icon={<SVG_Play />}
+                                    label={"Watch"}
+                                />
+                            }
+                            btn1Action={function (
+                                id: number,
+                                type?: media_type | undefined
+                            ): void {
+                                navController(`${type}/detail/${id}`);
+                            }} // Watch
+                            btn2Icon={<SVG_Favorite />}
+                            btn2Action={function (
+                                id: number,
+                                type?: media_type | undefined
+                            ): void {
+                                throw new Error("Function not implemented.");
+                            }} // Share
+                            onClickAction={(id, type) => {
+                                navController(`${type}/detail/${id}`);
+                            }} // Add to favorite
+                            tags={Recommendations.map((value) =>
+                                value.vote_average.toPrecision(2)
+                            )}
+                            dates={Recommendations.map(
+                                (value) => value.first_air_date
+                            )}
+                            vote_avgs={Recommendations.map((value) =>
+                                value.vote_average.toPrecision(2)
+                            )}
+                            media_type={["tv"]}
+                            subtitles={Recommendations.map(
+                                (value) => value.original_name
+                            )}
+                        />
+                    )}
+                    {Similar.length > 0 && (
+                        <TitlesRow
+                            name={"Similar"}
+                            ids={Similar.map((value) => value.id)}
+                            titles={Similar.map((value) => value.name)}
+                            genres={Similar.map((value) =>
+                                MapGenreToID(
+                                    tvGenres.data?.genres ?? [],
+                                    value.genre_ids
+                                )
+                            )}
+                            itemWidth={itemWidth}
+                            imagesFullURL={Similar.map(
+                                (value) =>
+                                    config.backDropUrlSmall +
+                                    value.backdrop_path
+                            )}
+                            className={""}
+                            btn1Icon={
+                                <IconAndLabelWrap
+                                    icon={<SVG_Play />}
+                                    label={"Watch"}
+                                />
+                            }
+                            btn1Action={function (
+                                id: number,
+                                type?: media_type | undefined
+                            ): void {
+                                navController(`${type}/detail/${id}`);
+                            }} // Watch
+                            btn2Icon={<SVG_Favorite />}
+                            btn2Action={function (
+                                id: number,
+                                type?: media_type | undefined
+                            ): void {
+                                throw new Error("Function not implemented.");
+                            }} // Share
+                            onClickAction={(id, type) => {
+                                navController(`${type}/detail/${id}`);
+                            }} // Add to favorite
+                            tags={Similar.map((value) =>
+                                value.vote_average.toPrecision(2)
+                            )}
+                            dates={Similar.map((value) => value.first_air_date)}
+                            vote_avgs={Similar.map((value) =>
+                                value.vote_average.toPrecision(2)
+                            )}
+                            media_type={["tv"]}
+                            subtitles={Similar.map(
+                                (value) => value.original_name
+                            )}
+                        />
+                    )}
+                    {/*TODO: Comment*/}
                 </div>
             </div>
         </div>
-    ) : data.error ? (
-        <>Error</>
     ) : (
         <LoadingSpinner />
     );
@@ -506,10 +497,10 @@ const SeasonSectionLazy: FC<{
     onClick: () => void;
     onEpClicked: (ep: number) => void;
 }> = ({ value, id, season, expand, onClick, onEpClicked }) => {
-    const data = getTVSeason(id, season, expand && window.innerWidth >= 640);
+    const data = getTVSeason(id, season, expand);
 
     const EPView = () => {
-        if (value.episode_count > 50 || window.innerWidth <= 640) {
+        if (value.episode_count > 50) {
             return (
                 <EpisodeViewGrid
                     number_of_episode={value.episode_count}
@@ -552,7 +543,7 @@ const SeasonSectionLazy: FC<{
             <div
                 onClick={onClick}
                 className={
-                    "relative h-48 mt-4 flex flex-row rounded-sm transition-all duration-500 cursor-pointer hover:bg-gray-800"
+                    "relative h-48 mt-4 flex flex-row rounded-sm transition-all duration-500 cursor-pointer hover:bg-gray-800 overflow-hidden"
                 }
             >
                 <img
@@ -560,7 +551,7 @@ const SeasonSectionLazy: FC<{
                     src={config.posterUrl + value.poster_path}
                     alt={value.name}
                 />
-                <div className={"m-4 mb-0 flex-shrink overflow-hidden"}>
+                <div className={"m-4 mb-0 flex-grow overflow-hidden"}>
                     <div className={"font-bold justify-between"}>
                         <p className={"text-xl overflow-hidden"}>
                             {value.season_number}. {value.name}
@@ -570,10 +561,15 @@ const SeasonSectionLazy: FC<{
                         </p>
                         <p>Air date: {value.air_date}</p>
                     </div>
-                    <p className={"hidden sm:block text-justify mb-4 overflow-hidden"}>
+                    <p
+                        className={
+                            "hidden sm:block text-justify max-h-[4.5rem] overflow-hidden"
+                        }
+                    >
                         {value.overview}
                     </p>
                 </div>
+                {data.isLoading && <LoadingSpinner />}
             </div>
             {expand && EPView()}
         </div>
@@ -589,11 +585,11 @@ const EpisodeViewList: FC<{ data?: Episode; onEPClicked: () => void }> = ({
             <div
                 onClick={onEPClicked}
                 className={
-                    "flex m-2 rounded h-28 overflow-hidden hover:bg-gray-800 cursor-pointer"
+                    "flex m-2 rounded h-24 sm:h-28 overflow-hidden hover:bg-gray-800 cursor-pointer"
                 }
             >
                 <img
-                    className={"rounded h-full aspect-video"}
+                    className={"rounded h-24 w-36 sm:h-28 sm:aspect-video"}
                     src={config.backDropUrlSmall + data.still_path}
                     alt={data.episode_number.toString()}
                 />
@@ -602,7 +598,13 @@ const EpisodeViewList: FC<{ data?: Episode; onEPClicked: () => void }> = ({
                         {data.episode_number}. {data.name}
                     </p>
                     <p>Air date: {data.air_date}</p>
-                    <p className={"text-justify"}>{data.overview}</p>
+                    <p
+                        className={
+                            "hidden sm:block text-justify h-12 overflow-hidden"
+                        }
+                    >
+                        {data.overview}
+                    </p>
                 </div>
             </div>
         );
@@ -651,26 +653,6 @@ const EpisodeViewGrid: FC<{
                     <p className={"py-2 text-center"}>Ep.{index + 1}</p>
                 </div>
             ))}
-        </div>
-    );
-};
-
-const SeeMoreBtn: FC<{ onClick: () => void; text: string }> = ({
-    onClick,
-    text,
-}) => {
-    return (
-        <div
-            className={
-                "absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-full z-30"
-            }
-        >
-            <button
-                className='bg-gray-800 cursor-pointer rounded-full p-2 px-4 w-max'
-                onClick={onClick}
-            >
-                <h2>{text}</h2>
-            </button>
         </div>
     );
 };

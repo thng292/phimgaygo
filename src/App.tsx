@@ -24,18 +24,6 @@ const Forum = React.lazy(() => import('./ui/Community/Forum'))
 const NotFound = React.lazy(() => import('./ui/SharedLayout/NotFound'))
 // #endLazyImport
 
-//let filmRepo = new FilmRepo()
-// function DDdebug() {
-//     let data = getTrending()
-//     //console.log(data)
-//     if (data.isSuccess) {
-//         //console.log("Success", data.data)
-//     }
-//     return <>
-//         {data.isLoading && <p>Loading Data</p>}
-//         <h1>Debugging</h1>
-//     </>
-// }
 
 const queryClient = new QueryClient({
     defaultOptions: {

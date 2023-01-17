@@ -1,7 +1,9 @@
-import DatasourceInstance from "../../Datasource/DatasourceInstance"
-import config, {oneTimeGet} from "../../Datasource/Config"
-import Movie from "../../model/Movie/MovieDiscover"
-import {useQuery} from "react-query"
+import DatasourceInstance from "../../Datasource/DatasourceInstance";
+import config, { oneTimeGet } from "../../Datasource/Config";
+import Movie from "../../model/Movie/MovieDiscover";
+import { useQuery } from "react-query";
+import MovieDiscover from "../../model/Movie/MovieDiscover";
+import MovieOverview from "../../model/Movie/MovieOverview";
 
 export default function MovieSearch(
     query: string,
@@ -10,15 +12,31 @@ export default function MovieSearch(
     adult: boolean = false,
     page: number = 1,
     language: string = config.language,
-    region: string = config.region) {
-    return useQuery(["MovieSearch", query, year, adult, page, language, region], () =>
-            DatasourceInstance
-                .get(
-                    `/search/movie?api_key=${config.key}&query=${query}&include_adult=${adult}&language=${language}&page=${page}&region=${region}${year ? '&year=' + String(year) : ''}`
-                ).then((val) => (val.data as Movie)),
+    region: string = config.region
+) {
+    return useQuery(
+        ["MovieSearch", query, year, adult, page, language, region],
+        () =>
+            DatasourceInstance.get(
+                `/search/movie?api_key=${
+                    config.key
+                }&query=${query}&include_adult=${adult}&language=${language}&page=${page}&region=${region}${
+                    year ? "&year=" + String(year) : ""
+                }`
+            ).then((val) => {
+                return {
+                    ...val.data,
+                    results: val.data.results.map((value: MovieOverview) => {
+                        return {
+                            ...value,
+                            media_type: "movie",
+                        };
+                    }),
+                } as MovieDiscover;
+            }),
         {
             ...oneTimeGet,
-            enabled: enable
+            enabled: enable,
         }
-    )
+    );
 }

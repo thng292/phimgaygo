@@ -12,7 +12,7 @@ function stringToObject(inp: string): any {
     return result
 }
 
-export default function useUrlParams() {
+export default function useUrlParams<T>() {
     const { search } = useLocation()
-    return React.useMemo(() => stringToObject(search), [search])
+    return React.useMemo(() => stringToObject(search) as T, [search])
 }

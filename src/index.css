@@ -99,7 +99,7 @@ input[type="checkbox"]:checked {
 
 .scroll-wrapper {
     @apply flex overflow-x-auto overflow-y-hidden;
-    width: 100vw;
+    /* width: 100vw; */
 }
 
 .scroll-wrapper::-webkit-scrollbar {
@@ -145,6 +145,7 @@ svg {
 
 .TitleRowBtn {
     height: calc(100% - 3.25rem);
+    @apply hidden sm:block absolute bottom-0 z-30 w-fit from-black transition-all duration-200 
 }
 
 img {
