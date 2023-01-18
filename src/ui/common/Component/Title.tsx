@@ -27,16 +27,15 @@ const Title: FC<{
             style={props.style}
         >
             <div
-                className={`shadow-xl rounded-sm relative cursor-pointer ${
+                className={`shadow-xl rounded-sm relative cursor-pointer aspect-potrait sm:aspect-video ${
                     props.className ?? ""
                 }`}
                 style={{
-                    backgroundImage: `linear-gradient(to top, #000000bb, transparent 30%), url(${props.imageFullURL})`,
+                    backgroundImage: `${window.innerWidth > 640 ? 'linear-gradient(to top, #000000bb, transparent 30%), ' : ''}url(${props.imageFullURL})`,
                     backgroundSize: "cover",
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center",
                     // aspectRatio: '2/3',
-                    aspectRatio: "16/9",
                 }}
                 onMouseEnter={() => {
                     setHover(true);
@@ -109,7 +108,7 @@ const Title: FC<{
                 </div>
                 <p
                     className={
-                        "absolute box-content max-w-max h-8 m-3 font-bold text-xl overflow-hidden text-white bottom-0 left-0 right-0 transition-all"
+                        "absolute box-content max-w-max h-8 m-3 font-bold text-xl overflow-hidden text-white bottom-0 left-0 right-0 transition-all hidden sm:block"
                     }
                     style={{
                         opacity: hover ? "0" : "100",

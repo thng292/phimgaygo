@@ -164,7 +164,7 @@ export default function SharedLayout() {
                     </div>
                 </div>
             </nav>
-            <div className={"flex justify-center min-h-screen"}>
+            <div className={"min-h-screen"}>
                 <React.Suspense fallback={<LoadingSpinner />}>
                     <Outlet
                         context={

@@ -31,3 +31,4 @@
 18. Pos sticky for the filter
 19. Loading indicator for the season
 20. Use the MUI toast
+21. [https://developers.themoviedb.org/3/search/search-keywords] autocomplete keyword

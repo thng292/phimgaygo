@@ -32,13 +32,15 @@ function NotFound() {
         [movieTrending.isSuccess]
     );
     return (
-        <div className='flex flex-col items-center'>
-            <div className='h-[30vh]' />
-            <p className={"text-6xl"}>404</p>
-            <p className={"text-2xl p-2"}>Not Found :(</p>
-            <p className='p-2'>Looking for a movie to watch?</p>
-            <ArrowDownwardRoundedIcon className="animate-bounce" />
-            <div className='h-[30vh]' />
+        <>
+            <div className='flex flex-col items-center'>
+                <div className='h-[30vh]' />
+                <p className={"text-6xl"}>404</p>
+                <p className={"text-2xl p-2"}>Not Found :(</p>
+                <p className='p-2'>Looking for a movie to watch?</p>
+                <ArrowDownwardRoundedIcon className='animate-bounce' />
+                <div className='h-[30vh]' />
+            </div>
             <TitlesGrid
                 ids={trendingData.map((value) => value.id)}
                 name={"People are watching"}
@@ -103,9 +105,9 @@ function NotFound() {
                 onClickAction={(id, type) => {
                     navController(`${type}/detail/${id}`);
                 }} // Add to favorite
-                onSeeMore={() => { }}
+                onSeeMore={() => {}}
             />
-        </div>
+        </>
     );
 }
 

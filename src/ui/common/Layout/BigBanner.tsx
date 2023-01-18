@@ -110,7 +110,7 @@ const BigBanner: FC<BigBannerProps> = (props) => {
                 genres={props.genres}
                 dates={props.date}
                 vote_avgs={props.vote_avgs.map(value => value.toPrecision(2))}
-                imagesFullURL={props.backDropsFullURL}
+                imagesFullURL={window.innerWidth > 640 ? props.backDropsFullURL : props.postersFullURL}
                 btn1Icon={props.btn1Icon}
                 btn1Action={props.btn1Action}
                 btn2Icon={props.btn2Icon}

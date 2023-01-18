@@ -1,6 +1,7 @@
 import React from "react";
 
 function About() {
+    return <>In progress</>
     return <div className="center-child column" style={{
         width: '100%',
         fontSize: '2rem',

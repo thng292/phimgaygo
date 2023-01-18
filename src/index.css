@@ -152,3 +152,7 @@ img {
     object-fit: cover;
     object-position: center;
 }
+
+.aspect-potrait {
+    aspect-ratio: 3/4;
+}

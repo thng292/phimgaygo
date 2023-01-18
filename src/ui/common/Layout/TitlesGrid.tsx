@@ -29,10 +29,11 @@ const TitlesGrid: FC<{
     name: string,
     itemWidth?: number,
     className?: string,
+    style?: React.CSSProperties,
     onSeeMore?: () => void,
 }> = (props) => {
     if ('placeholder' in props) {
-        return <div className={props.className}>
+        return <div style={props.style} className={props.className}>
             <p
                 className='font-bold text-3xl p-4 tracking-wider group'
             >

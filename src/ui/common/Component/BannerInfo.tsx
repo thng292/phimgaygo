@@ -16,7 +16,7 @@ const BannerInfo: FC<{
     btn2Action: () => void,
 }> = (props) => {
     return <div
-        className="pl-4 sm:pl-16 flex flex-row"
+        className="pl-4 sm:pl-16 flex"
     >
         <img
             className="mx-4 rounded-xl hidden xl:block"

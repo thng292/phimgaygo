@@ -40,7 +40,7 @@ const Home: FC = () => {
         [movieTrending.isSuccess]
     );
 
-    const itemWidth = CalculateWidth();
+    const itemWidth = CalculateWidth(window.innerWidth > 640 ? {} : {maxWidth: 180, minWidth: 120});
 
     const displayData = useMemo<[media_type, Genre][]>(() => {
         return merge<[media_type, Genre]>(
@@ -50,7 +50,7 @@ const Home: FC = () => {
     }, [movieGenres.isSuccess, tvShowGenres.isSuccess]);
 
     return (
-        <div className='w-screen'>
+        <>
             <BigBanner
                 ids={trendingData.map((value) => value.id)}
                 media_type={trendingData.map((value) => value.media_type)}
@@ -120,12 +120,12 @@ const Home: FC = () => {
                             loaderFn={(enable) => {
                                 if (type === "movie") {
                                     return getMovieDiscover({
-                                        genres: id,
+                                        genres: [id],
                                         enable: enable,
                                     });
                                 } else {
                                     return getTVDiscover({
-                                        genres: id,
+                                        genres: [id],
                                         enable: enable,
                                     });
                                 }
@@ -137,7 +137,7 @@ const Home: FC = () => {
                     );
                 })}
             </div>
-        </div>
+        </>
     );
 };
 
@@ -217,7 +217,7 @@ const TitleRowLazyLoadWrapper: FC<{
                         value.vote_average.toPrecision(2)
                     )}
                     imagesFullURL={data.map(
-                        (value) => config.backDropUrlSmall + value.backdrop_path
+                        (value) => config.backDropUrlSmall + (window.innerWidth > 640 ? value.backdrop_path : value.poster_path)
                     )}
                     className={"py-4"}
                     btn1Icon={

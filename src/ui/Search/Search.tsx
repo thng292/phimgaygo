@@ -1,8 +1,7 @@
 import { FC, useMemo, useState } from "react";
-import useUrlParams from "../../utils/useUrlParams";
 import MovieSearch from "../../data/DAO/Search/MovieSearch";
 import TVSearch from "../../data/DAO/Search/TVSearch";
-import { useOutletContext } from "react-router-dom";
+import { useLocation, useOutletContext } from "react-router-dom";
 import ContextProps from "../SharedLayout/ContextProps";
 import SVG_Search from "../common/SVG/SVG_Search";
 import TitlesGrid from "../common/Layout/TitlesGrid";
@@ -25,22 +24,15 @@ import TVShowOverview from "../../data/model/TVShow/TVShowOverview";
 import LoadingSpinner from "../common/Component/LoadingSpinner";
 
 interface SearchParams {
-    query?: string;
-    adult?: boolean;
-    year?: number | "All";
-    page?: number;
+    query: string;
+    adult: boolean;
+    year: number | "All";
+    page: number;
 }
 
 const Search: FC = () => {
-    // const params = useUrlParams();
     const { navController } = useOutletContext<ContextProps>();
-    const params = useUrlParams<SearchParams>();
-
-    const query = params.query ?? "";
-    console.log('query', query)
-    const page = !isNaN(Number(params.page)) ? Number(params.page) : 1;
-    const adult = Boolean(params.adult) ?? false;
-    const year = (Number(params.year) ?? "All") as number | "All";
+    const { query, page, adult, year } = useUrlParams()
 
     const [_query, _setQuery] = useState(query);
     const [_page, _setPage] = useState(page);
@@ -109,7 +101,7 @@ const Search: FC = () => {
 
     //TODO: Add filter and pagination
     return (
-        <div className='mt-48 max-w-7xl w-[80%]'>
+        <div className='mt-48 w-[80%] m-auto'>
                 <div className='p-4 flex items-center w-full h-16 rounded-lg border-2 border-main-1000'>
                     <input
                         className='flex-grow bg-transparent placeholder placeholder-white underline-offset-1 text-xl text-white focus:outline-none focus:underline'
@@ -322,3 +314,16 @@ const Search: FC = () => {
 };
 
 export default Search;
+
+function useUrlParams() {
+    const { search } = useLocation()
+    let tmp = new URLSearchParams(search)
+    return useMemo(() => {
+        return {
+            query: tmp.get('query') ?? '',
+            adult: tmp.get('adult') === 'true',
+            year: Number(tmp.get('year')) > 1990 ? 'All' : Number(tmp.get('year')),
+            page: Number(tmp.get('page')) > 0 ? Number(tmp.get('page')) : 1,
+        } as SearchParams
+    }, [search])
+}

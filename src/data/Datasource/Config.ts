@@ -18,9 +18,16 @@ const config = {
 
 export type TimeWindow = "day" | "week"
 
-export type SortedBy = "release_date" | "popularity" | "revenue" | "vote_average"
+export const SortOptions = ["release_date", "popularity", "revenue", "vote_average"] as const
+export type SortOption = typeof SortOptions[number]
 
-export type Order = "asc" | "desc"
+export const Orders = ['asc', 'desc'] as const
+export type Order = typeof Orders[number]
+
+export type SortedBy = {
+    option: SortOption,
+    order: Order
+}
 
 export const oneTimeGet = {
     // One time get
