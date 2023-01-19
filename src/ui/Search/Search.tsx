@@ -267,11 +267,7 @@ const Search: FC = () => {
                         value.vote_average.toFixed(1)
                     )}
                     imagesFullURL={SearchResult.map(
-                        (value) =>
-                            config.backDropUrlSmall +
-                            (CalcWindowSize() !== "Small"
-                                ? value.backdrop_path
-                                : value.poster_path)
+                        (value) => (CalcWindowSize() !== 'Small' ? config.backDropUrlSmall + value.backdrop_path : config.posterUrl + value.poster_path)
                     )}
                     btn1Icon={
                         <IconAndLabelWrap

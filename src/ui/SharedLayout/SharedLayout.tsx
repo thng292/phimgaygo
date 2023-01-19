@@ -12,6 +12,7 @@ import { FireAuth } from "../../data/Datasource/DatasourceInstance";
 import LoadingSpinner from "../common/Component/LoadingSpinner";
 import UserMenu from "./UserMenu";
 import { Drawer, IconButton, List, ListItemButton } from "@mui/material";
+import useIntersection from "../../utils/ElementInViewObseve";
 
 export default function SharedLayout() {
     let navigate = useNavigate();
@@ -19,6 +20,8 @@ export default function SharedLayout() {
     const [searchField, setSearchField] = useState("");
     const [drawerOpend, setDrawerOpened] = useState(false);
     const [user, additionalUserInfo] = useUser();
+    const footerRef = useRef<HTMLDivElement>(null)
+    const footerInView = useIntersection(footerRef, 0)
     return (
         <>
             <nav
@@ -172,13 +175,17 @@ export default function SharedLayout() {
                                 additionalUserInfo,
                                 user,
                                 navController: navigate,
+                                footerInView
                             } as ContextProps
                         }
                     />
                 </React.Suspense>
             </div>
             <ToTopBtn show={!shouldTransparent} />
-            <footer className={"flex flex-col justify-center items-center p-8"}>
+            <footer
+                className={"flex flex-col justify-center items-center p-8"}
+                ref={footerRef}
+            >
                 <Logo />
                 <p>by Nguyễn Quang Thông</p>
                 <a href={"mailto: nguyenquangthong292@gmail.com"}>

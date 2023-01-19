@@ -54,7 +54,7 @@ const Title: FC<{
                         visibility: hover ? "hidden" : "visible",
                     }}
                     className={
-                        "text-black absolute z-30 top-0 right-0 m-2 p-1 font-bold text-sm bg-amber-300 rounded"
+                        "text-black absolute z-30 top-0 right-0 m-2 p-1 font-bold text-sm bg-amber-300 rounded hidden sm:block"
                     }
                 >
                     {props.tag}

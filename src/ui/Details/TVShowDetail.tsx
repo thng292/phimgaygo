@@ -22,6 +22,7 @@ import LabelAndExpand from "./common/LabelAndExpand";
 import { Button, ButtonGroup } from "@mui/material";
 import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
 import NavigateBeforeRoundedIcon from "@mui/icons-material/NavigateBeforeRounded";
+import CalcWindowSize from "../../utils/windowSize";
 
 const TVShowDetail: FC = () => {
     const { id } = useParams();
@@ -392,9 +393,7 @@ const TVShowDetail: FC = () => {
                             )}
                             itemWidth={itemWidth}
                             imagesFullURL={Recommendations.map(
-                                (value) =>
-                                    config.backDropUrlSmall +
-                                    value.backdrop_path
+                                (value) => (CalcWindowSize() !== 'Small' ? config.backDropUrlSmall + value.backdrop_path : config.posterUrl + value.poster_path)
                             )}
                             className={""}
                             btn1Icon={
@@ -447,9 +446,7 @@ const TVShowDetail: FC = () => {
                             )}
                             itemWidth={itemWidth}
                             imagesFullURL={Similar.map(
-                                (value) =>
-                                    config.backDropUrlSmall +
-                                    value.backdrop_path
+                                (value) => (CalcWindowSize() !== 'Small' ? config.backDropUrlSmall + value.backdrop_path : config.posterUrl + value.poster_path)
                             )}
                             className={""}
                             btn1Icon={

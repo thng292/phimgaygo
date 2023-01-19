@@ -1,4 +1,4 @@
-import { FC, useEffect, useMemo, useRef } from "react";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import getTrending from "../../data/DAO/Discovery/getTrending";
 import getMovieDiscover from "../../data/DAO/Discovery/getMovieDiscover";
 import { NavigateFunction, useOutletContext } from "react-router-dom";
@@ -23,13 +23,20 @@ import getTVDiscover from "../../data/DAO/Discovery/getTVDiscover";
 import CalcWindowSize from "../../utils/windowSize";
 
 const Home: FC = () => {
-    const { navController } = useOutletContext<ContextProps>();
+    const { navController, footerInView } = useOutletContext<ContextProps>();
+
+    const [noFooterHit, setNoFooterHit] = useState(0)
+    useEffect(() => {
+        footerInView && setNoFooterHit(old => old + 1)
+    }, [footerInView])
+
     // get Genres
     const movieGenres = getGenres();
     const tvShowGenres = getGenres("tv");
     // get Trending
     const movieTrending = getTrending();
     const tvShowTrending = getTrending("tv");
+
     const trendingData: (MovieOverview | TVShowOverview)[] = useMemo(
         () =>
             [
@@ -47,8 +54,8 @@ const Home: FC = () => {
         return merge<[media_type, Genre]>(
             (movieGenres.data?.genres ?? []).map((value) => ["movie", value]),
             (tvShowGenres.data?.genres ?? []).map((value) => ["tv", value])
-        );
-    }, [movieGenres.isSuccess, tvShowGenres.isSuccess]);
+        ).slice(0, noFooterHit * 3);
+    }, [movieGenres.isSuccess, tvShowGenres.isSuccess, noFooterHit]);
 
     return (
         <>
@@ -218,7 +225,7 @@ const TitleRowLazyLoadWrapper: FC<{
                         value.vote_average.toPrecision(2)
                     )}
                     imagesFullURL={data.map(
-                        (value) => config.backDropUrlSmall + (CalcWindowSize() !== 'Small' ? value.backdrop_path : value.poster_path)
+                        (value) => (CalcWindowSize() !== 'Small' ? config.backDropUrlSmall + value.backdrop_path : config.posterUrl + value.poster_path)
                     )}
                     className={"py-4"}
                     btn1Icon={

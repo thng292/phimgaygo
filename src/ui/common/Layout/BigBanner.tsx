@@ -4,6 +4,7 @@ import SVG_NavForward from "../SVG/SVG_NavForward";
 import SVG_NavBack from "../SVG/SVG_NavBack";
 import { media_type } from "../../../data/Datasource/Config";
 import TitlesRow from "./TitlesRow";
+import CalcWindowSize from "../../../utils/windowSize";
 
 interface BigBannerProps {
     ids: number[];
@@ -151,9 +152,9 @@ const BigBanner: FC<BigBannerProps> = (props) => {
                         value.toPrecision(2)
                     )}
                     imagesFullURL={
-                        window.innerWidth > 640
-                            ? props.backDropsFullURL
-                            : props.postersFullURL
+                        (CalcWindowSize() !== 'Small' ?
+                            props.backDropsFullURL :
+                            props.bannerFullURL)
                     }
                     btn1Icon={props.btn1Icon}
                     btn1Action={props.btn1Action}

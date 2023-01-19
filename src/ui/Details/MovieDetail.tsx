@@ -15,6 +15,7 @@ import getGenres from "../../data/DAO/Detail/getGenres";
 import MapGenreToID from "../../utils/MapGenreToID";
 import IconAndLabelWrap from "../common/Component/IconAndLabelWrap";
 import TrailerSection from "./common/TrailerSection";
+import CalcWindowSize from "../../utils/windowSize";
 
 //TODO: Movie detail and watch
 const MovieDetail: FC<{}> = () => {
@@ -264,9 +265,7 @@ const MovieDetail: FC<{}> = () => {
                             )}
                             itemWidth={itemWidth}
                             imagesFullURL={Recommendations.map(
-                                (value) =>
-                                    config.backDropUrlSmall +
-                                    value.backdrop_path
+                                (value) => (CalcWindowSize() !== 'Small' ? config.backDropUrlSmall + value.backdrop_path : config.posterUrl + value.poster_path)
                             )}
                             className={""}
                             btn1Icon={
@@ -319,9 +318,7 @@ const MovieDetail: FC<{}> = () => {
                             )}
                             itemWidth={itemWidth}
                             imagesFullURL={Similar.map(
-                                (value) =>
-                                    config.backDropUrlSmall +
-                                    value.backdrop_path
+                                (value) => (CalcWindowSize() !== 'Small' ? config.backDropUrlSmall + value.backdrop_path : config.posterUrl + value.poster_path)
                             )}
                             className={""}
                             btn1Icon={
