@@ -20,6 +20,7 @@ import MovieDiscover from "../../data/model/Movie/MovieDiscover";
 import useIntersection from "../../utils/ElementInViewObseve";
 import Genre from "../../data/model/Movie/Genre";
 import getTVDiscover from "../../data/DAO/Discovery/getTVDiscover";
+import CalcWindowSize from "../../utils/windowSize";
 
 const Home: FC = () => {
     const { navController } = useOutletContext<ContextProps>();
@@ -40,7 +41,7 @@ const Home: FC = () => {
         [movieTrending.isSuccess]
     );
 
-    const itemWidth = CalculateWidth(window.innerWidth > 640 ? {} : {maxWidth: 180, minWidth: 120});
+    const itemWidth = CalculateWidth({padding: 0});
 
     const displayData = useMemo<[media_type, Genre][]>(() => {
         return merge<[media_type, Genre]>(
@@ -107,7 +108,7 @@ const Home: FC = () => {
                 }}
                 itemWidth={itemWidth}
             />
-            <div className="mx-2 overflow-x-hidden">
+            <div className="overflow-x-hidden">
                 {displayData.map(([type, { name, id }]) => {
                     return (
                         <TitleRowLazyLoadWrapper
@@ -164,7 +165,7 @@ const TitleRowLazyLoadWrapper: FC<{
     navController,
 }) => {
     const ref = useRef<HTMLDivElement | null>(null);
-    const visible = useIntersection(ref, -0);
+    const visible = useIntersection(ref, 0);
     const displayData = loaderFn(visible);
     const data = [...(displayData.data?.results ?? [])].filter(
         (value) => value.backdrop_path && value.poster_path
@@ -217,7 +218,7 @@ const TitleRowLazyLoadWrapper: FC<{
                         value.vote_average.toPrecision(2)
                     )}
                     imagesFullURL={data.map(
-                        (value) => config.backDropUrlSmall + (window.innerWidth > 640 ? value.backdrop_path : value.poster_path)
+                        (value) => config.backDropUrlSmall + (CalcWindowSize() !== 'Small' ? value.backdrop_path : value.poster_path)
                     )}
                     className={"py-4"}
                     btn1Icon={

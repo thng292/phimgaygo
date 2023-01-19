@@ -121,7 +121,7 @@ export default function SharedLayout() {
                     <div className='flex flex-row justify-center items-center'>
                         <div className='flex flex-row justify-center items-center border-2 border-main-1000 rounded-3xl p-1 px-2 mr-2'>
                             <input
-                                className='px-2 bg-transparent placeholder placeholder-white underline-offset-1 text-white focus:outline-none focus:underline hidden sm:block'
+                                className='px-2 bg-transparent placeholder placeholder-white underline-offset-1 text-white focus:outline-none focus:underline hidden lg:block'
                                 placeholder='Looking for something?'
                                 type={"text"}
                                 name='search'

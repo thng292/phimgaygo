@@ -70,7 +70,8 @@ const TitlesGrid: FC<{
             <div
                 className={'grid gap-2'}
                 style={{
-                    gridTemplateColumns: `repeat(auto-fit, ${props.itemWidth ? `${props.itemWidth}px` : `minmax(${window.innerWidth > 640 ? '320px' : '170px'}, 1fr)`})`,
+                    gridTemplateColumns: `repeat(auto-fit, ${props.itemWidth ? props.itemWidth + 'px' : `${window.innerWidth > 640 ? '320px' : '170px'}, 1fr`})`,
+                    // gridTemplateColumns: `repeat(auto-fit, minmax(${props.itemWidth ? `${props.itemWidth} , 1fr` : (window.innerWidth > 640 ? '320px' : '170px')}, 1fr)`,
                 }}>
                 {props.ids.map((val, index) => {
                     let currentType = props.media_type.at(index) ?? props.media_type[0]

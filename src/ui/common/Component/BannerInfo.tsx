@@ -27,7 +27,7 @@ const BannerInfo: FC<{
                 aspectRatio: '2/3',
             }}/>
         <div
-            className={'relative xl:w-1/3 h-[35vh] min-h-[16rem]'}
+            className={'relative xl:w-1/3 max-h-[35vh] min-h-fit'}
         >
             <p className="p-3 pt-0 text-3xl font-bold text-white">{props.title}</p>
             <p className="px-3 font-bold text-white">{props.subtitle} - {props.tag.toUpperCase()}</p>
@@ -41,10 +41,10 @@ const BannerInfo: FC<{
                     href={`https://www.themoviedb.org/${props.id}`}>TMDB</a></p>
             </div>
             <p
-                className="w-full overflow-hidden p-3 text-white h-[15vh] hidden xl:block"
+                className="w-full overflow-hidden p-3 text-white max-h-[15vh] hidden xl:block"
             >{props.overview}</p>
             <div
-                className="absolute bottom-0 z-20 m-2 mb-0 flex w-screen flex-row hidden xl:block"
+                className="absolute bottom-0 z-20 m-2 mb-0 w-screen hidden xl:flex"
             >
                 <button
                     className="min-w-24 p-2 mx-1 rounded bg-main-1000"

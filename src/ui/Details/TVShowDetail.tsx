@@ -1,4 +1,4 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useRef, useState } from "react";
 import { Navigate, useOutletContext, useParams } from "react-router-dom";
 import ContextProps from "../SharedLayout/ContextProps";
 import CalculateWidth from "../../utils/CalculateWidth";
@@ -19,11 +19,13 @@ import { Episode } from "../../data/model/TVShow/TVShowSeason";
 import SeeMoreBtn from "../common/Component/SeeMoreBtn";
 import TraierSection from "./common/TrailerSection";
 import LabelAndExpand from "./common/LabelAndExpand";
+import { Button, ButtonGroup } from "@mui/material";
+import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
+import NavigateBeforeRoundedIcon from "@mui/icons-material/NavigateBeforeRounded";
 
 const TVShowDetail: FC = () => {
     const { id } = useParams();
-    const { navController, user } =
-        useOutletContext<ContextProps>();
+    const { navController, user } = useOutletContext<ContextProps>();
 
     const itemWidth = CalculateWidth();
     const data = getTVDetail(Number(id));
@@ -119,7 +121,7 @@ const TVShowDetail: FC = () => {
                 <div className={"max-w-8xl w-full overflow-x-clip"}>
                     <section className={"px-4 relative"}>
                         <LabelAndExpand
-                            label={'Seasons & Episodes:'}
+                            label={"Seasons & Episodes:"}
                             onClick={() =>
                                 setSeasonShowAll(
                                     (old) =>
@@ -141,7 +143,7 @@ const TVShowDetail: FC = () => {
                                 )}
                             </>
                         )}
-                        { /*TODO*/ }
+                        {/*TODO*/}
                         <div className={"overflow-y-auto w-full"}>
                             {(data.data?.seasons ?? [])
                                 .slice(0, seasonShowAll ? undefined : 3)
@@ -183,15 +185,14 @@ const TVShowDetail: FC = () => {
                             }
                         >
                             <p>Watch:</p>
-                            <div className='font-normal text-lg text-gray-300 flex items-center'>
-                                {/*TODO Next ep, next season, hide when first|last ep|season*/}
-                                <button
-                                    className='cursor-pointer hover:tracking-widest hover:scale-105 hover:text-white transition-all duration-300 disabled:text-gray-600 disabled:pointer-events-none'
-                                    disabled={
-                                        season ===
-                                            data.data.seasons.at(0)
-                                                ?.season_number && episode === 1
-                                    }
+                            {/*TODO Next ep, next season, hide when first|last ep|season*/}
+                            <ButtonGroup variant='text'>
+                                <Button
+                                    size='small'
+                                    sx={{
+                                        color: "white",
+                                    }}
+                                    startIcon={<NavigateBeforeRoundedIcon />}
                                     onClick={() =>
                                         setEpisode((old) => {
                                             if (old === 1) {
@@ -203,12 +204,20 @@ const TVShowDetail: FC = () => {
                                             return old - 1;
                                         })
                                     }
+                                    disabled={
+                                        season ===
+                                            data.data.seasons.at(0)
+                                                ?.season_number && episode === 1
+                                    }
                                 >
-                                    &lt; Prev
-                                </button>
-                                <div className='px-2'>|</div>
-                                <button
-                                    className='cursor-pointer hover:tracking-widest hover:scale-105 hover:text-white transition-all duration-300 disabled:text-gray-600 disabled:pointer-events-none'
+                                    Previous
+                                </Button>
+                                <Button
+                                    size='small'
+                                    sx={{
+                                        color: "white",
+                                    }}
+                                    endIcon={<NavigateNextRoundedIcon />}
                                     disabled={
                                         season ===
                                             data.data.seasons.at(-1)
@@ -231,9 +240,9 @@ const TVShowDetail: FC = () => {
                                         })
                                     }
                                 >
-                                    Next &gt;
-                                </button>
-                            </div>
+                                    Next
+                                </Button>
+                            </ButtonGroup>
                         </div>
                         <div className={"w-full flex justify-center"}>
                             <iframe

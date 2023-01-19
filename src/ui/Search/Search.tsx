@@ -22,6 +22,8 @@ import {
 import MovieOverview from "../../data/model/Movie/MovieOverview";
 import TVShowOverview from "../../data/model/TVShow/TVShowOverview";
 import LoadingSpinner from "../common/Component/LoadingSpinner";
+import CalcWindowSize from "../../utils/windowSize";
+import CalculateWidth from "../../utils/CalculateWidth";
 
 interface SearchParams {
     query: string;
@@ -32,7 +34,7 @@ interface SearchParams {
 
 const Search: FC = () => {
     const { navController } = useOutletContext<ContextProps>();
-    const { query, page, adult, year } = useUrlParams()
+    const { query, page, adult, year } = useUrlParams();
 
     const [_query, _setQuery] = useState(query);
     const [_page, _setPage] = useState(page);
@@ -99,204 +101,206 @@ const Search: FC = () => {
         ];
     }, []);
 
+    const itemWidth = CalculateWidth({padding: 0})
+
     //TODO: Add filter and pagination
     return (
-        <div className='mt-48 w-[80%] m-auto'>
-                <div className='p-4 flex items-center w-full h-16 rounded-lg border-2 border-main-1000'>
-                    <input
-                        className='flex-grow bg-transparent placeholder placeholder-white underline-offset-1 text-xl text-white focus:outline-none focus:underline'
-                        type={"text"}
-                        placeholder='Looking for something'
-                        value={_query}
-                        onChange={(e) => _setQuery(e.currentTarget.value)}
-                        onKeyDown={(e) =>
-                            e.key === "Enter" &&
-                            Boolean(_query) &&
+        <div className='mt-48 w-full'>
+            <div className='p-4 flex items-center h-16 rounded-lg border-2 border-main-1000 w-[80%] mx-auto'>
+                <input
+                    className='flex-grow bg-transparent placeholder placeholder-white underline-offset-1 text-xl text-white focus:outline-none focus:underline'
+                    type={"text"}
+                    placeholder='Looking for something'
+                    value={_query}
+                    onChange={(e) => _setQuery(e.currentTarget.value)}
+                    onKeyDown={(e) =>
+                        e.key === "Enter" &&
+                        Boolean(_query) &&
+                        searchHandle({
+                            query: _query,
+                            page: 1,
+                            adult: adult,
+                            year: "All",
+                        })
+                    }
+                />
+
+                <div
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        Boolean(_query) &&
                             searchHandle({
                                 query: _query,
                                 page: 1,
                                 adult: adult,
                                 year: "All",
-                            })
-                        }
-                    />
-
-                    <div
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            Boolean(_query) &&
-                                searchHandle({
-                                    query: _query,
-                                    page: 1,
-                                    adult: adult,
-                                    year: "All",
-                                });
-                        }}
-                        className='cursor-pointer'
-                    >
-                        <SVG_Search />
-                    </div>
+                            });
+                    }}
+                    className='cursor-pointer'
+                >
+                    <SVG_Search />
                 </div>
-                <div className='relative p-4 mt-8 border-2 border-gray-700 rounded-sm w-fit'>
-                    <p className='text-xl'>Filter:</p>
-                    <div className='grid grid-cols-2 gap-4 place-items-center w-max'>
-                        <p>Include Adult Results</p>
-                        <Switch
-                            checked={_adult}
-                            sx={{
-                                "& .MuiSwitch-switchBase.Mui-checked": {
-                                    color: "rgba(240, 46, 170, 1)",
-                                    "&:hover": {
-                                        backgroundColor:
-                                            "rgba(240, 46, 170, .5)",
-                                    },
+            </div>
+            <div className='relative p-4 mt-8 border-2 border-gray-700 rounded-sm w-fit mx-auto'>
+                <p className='text-xl'>Filter:</p>
+                <div className='grid grid-cols-2 gap-4 place-items-center w-max'>
+                    <p>Include Adult Results</p>
+                    <Switch
+                        checked={_adult}
+                        sx={{
+                            "& .MuiSwitch-switchBase.Mui-checked": {
+                                color: "rgba(240, 46, 170, 1)",
+                                "&:hover": {
+                                    backgroundColor: "rgba(240, 46, 170, .5)",
                                 },
-                                "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
-                                    {
-                                        backgroundColor:
+                            },
+                            "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
+                                {
+                                    backgroundColor: "rgba(240, 46, 170, 1)",
+                                },
+                        }}
+                        onChange={() => _setAdult((old) => !old)}
+                    />
+                    <p>Only look for result in</p>
+                    <Autocomplete
+                        autoHighlight
+                        autoComplete
+                        size='small'
+                        options={yearOptions}
+                        onInputChange={(e) =>
+                            _setYear(
+                                (e?.currentTarget?.textContent ?? "All") as
+                                    | number
+                                    | "All"
+                            )
+                        }
+                        renderInput={(params) => (
+                            <TextField
+                                {...params}
+                                label='Year'
+                                inputMode='numeric'
+                                sx={{
+                                    width: "120px",
+                                    "& label.Mui-focused": {
+                                        color: "rgba(240, 46, 170, 1)",
+                                    },
+                                    "& .MuiInput-underline:after": {
+                                        borderBottomColor:
                                             "rgba(240, 46, 170, 1)",
                                     },
-                            }}
-                            onChange={() => _setAdult((old) => !old)}
-                        />
-                        <p>Only look for result in</p>
-                        <Autocomplete
-                            autoHighlight
-                            autoComplete
-                            size='small'
-                            options={yearOptions}
-                            onInputChange={(e) =>
-                                _setYear(
-                                    (e?.currentTarget?.textContent ?? "All") as
-                                        | number
-                                        | "All"
-                                )
-                            }
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label='Year'
-                                    inputMode='numeric'
-                                    sx={{
-                                        width: "120px",
-                                        "& label.Mui-focused": {
-                                            color: "rgba(240, 46, 170, 1)",
-                                        },
-                                        "& .MuiInput-underline:after": {
-                                            borderBottomColor:
+                                    "& .MuiOutlinedInput-root": {
+                                        color: "white",
+                                        "&:hover fieldset": {
+                                            borderColor:
                                                 "rgba(240, 46, 170, 1)",
                                         },
-                                        "& .MuiOutlinedInput-root": {
-                                            color: "white",
-                                            "&:hover fieldset": {
-                                                borderColor:
-                                                    "rgba(240, 46, 170, 1)",
-                                            },
-                                            "&.Mui-focused fieldset": {
-                                                borderColor:
-                                                    "rgba(240, 46, 170, 1)",
-                                            },
+                                        "&.Mui-focused fieldset": {
+                                            borderColor:
+                                                "rgba(240, 46, 170, 1)",
                                         },
-                                    }}
-                                />
-                            )}
-                        />
-                    </div>
-
-                    <Button
-                        sx={{
-                            margin: ".5rem",
-                            marginTop: "1rem",
-                            backgroundColor: "rgba(240, 46, 170, 1)",
-                            "&:hover": {
-                                backgroundColor: "rgba(240, 46, 170, .6)",
-                            },
-                        }}
-                        variant='contained'
-                        onClick={() =>
-                            searchHandle({
-                                query: query,
-                                page: 1,
-                                adult: _adult,
-                                year: _year,
-                            })
-                        }
-                    >
-                        Apply
-                    </Button>
-                </div>
-                {MovieData.isLoading && TVShowData.isLoading ? (
-                    <div className='absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2'>
-                        <LoadingSpinner />
-                    </div>
-                ) : SearchResult.length > 0 ? (
-                    <TitlesGrid
-                        name={`Movies and shows related to \"${query}\"`}
-                        ids={SearchResult.map((value) => value.id)}
-                        titles={SearchResult.map((value) =>
-                            "title" in value ? value.title : value.name
-                        )}
-                        subtitles={SearchResult.map((value) =>
-                            "original_title" in value
-                                ? value.original_title
-                                : value.original_name
-                        )}
-                        genres={SearchResult.map((value) =>
-                            value.media_type === "movie"
-                                ? MapGenreToID(
-                                      movieGenres.data?.genres ?? [],
-                                      value.genre_ids
-                                  )
-                                : MapGenreToID(
-                                      tvShowGenres.data?.genres ?? [],
-                                      value.genre_ids
-                                  )
-                        )}
-                        media_type={SearchResult.map(
-                            (value) => value.media_type
-                        )}
-                        dates={SearchResult.map((value) =>
-                            "release_date" in value
-                                ? value.release_date
-                                : value.first_air_date
-                        )}
-                        vote_avgs={SearchResult.map((value) =>
-                            value.vote_average.toFixed(1)
-                        )}
-                        tags={SearchResult.map((value) =>
-                            value.vote_average.toFixed(1)
-                        )}
-                        imagesFullURL={SearchResult.map(
-                            (value) =>
-                                config.backDropUrlSmall + value.backdrop_path
-                        )}
-                        btn1Icon={
-                            <IconAndLabelWrap
-                                icon={<SVG_Play />}
-                                label={"Watch"}
+                                    },
+                                }}
                             />
-                        }
-                        btn1Action={(id, type) => {
-                            navController(`${type}/detail/${id}`);
-                        }} // Watch
-                        btn2Icon={<SVG_Favorite />}
-                        btn2Action={(id, type) => {
-                            throw new Error("Function not implemented.");
-                        }}
-                        onClickAction={(id, type) => {
-                            navController(`${type}/detail/${id}`);
-                        }}
+                        )}
                     />
-                ) : (
-                    Boolean(query) && (
-                        <p className='text-center text-2xl'>
-                            Sorry, we can't find anything related to "{query}"
-                            :(
-                        </p>
-                    )
-                )}
-                {Boolean(query) && (
-                    <div className="p-4 flex justify-center"><Pagination
+                </div>
+
+                <Button
+                    sx={{
+                        margin: ".5rem",
+                        marginTop: "1rem",
+                        backgroundColor: "rgba(240, 46, 170, 1)",
+                        "&:hover": {
+                            backgroundColor: "rgba(240, 46, 170, .6)",
+                        },
+                    }}
+                    variant='contained'
+                    onClick={() =>
+                        searchHandle({
+                            query: query,
+                            page: 1,
+                            adult: _adult,
+                            year: _year,
+                        })
+                    }
+                >
+                    Apply
+                </Button>
+            </div>
+            {MovieData.isLoading && TVShowData.isLoading ? (
+                <div className='absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2'>
+                    <LoadingSpinner />
+                </div>
+            ) : SearchResult.length > 0 ? (
+                <TitlesGrid
+                    name={`Movies and shows related to \"${query}\"`}
+                    ids={SearchResult.map((value) => value.id)}
+                    titles={SearchResult.map((value) =>
+                        "title" in value ? value.title : value.name
+                    )}
+                    subtitles={SearchResult.map((value) =>
+                        "original_title" in value
+                            ? value.original_title
+                            : value.original_name
+                    )}
+                    genres={SearchResult.map((value) =>
+                        value.media_type === "movie"
+                            ? MapGenreToID(
+                                  movieGenres.data?.genres ?? [],
+                                  value.genre_ids
+                              )
+                            : MapGenreToID(
+                                  tvShowGenres.data?.genres ?? [],
+                                  value.genre_ids
+                              )
+                    )}
+                    media_type={SearchResult.map((value) => value.media_type)}
+                    dates={SearchResult.map((value) =>
+                        "release_date" in value
+                            ? value.release_date
+                            : value.first_air_date
+                    )}
+                    vote_avgs={SearchResult.map((value) =>
+                        value.vote_average.toFixed(1)
+                    )}
+                    tags={SearchResult.map((value) =>
+                        value.vote_average.toFixed(1)
+                    )}
+                    imagesFullURL={SearchResult.map(
+                        (value) =>
+                            config.backDropUrlSmall +
+                            (CalcWindowSize() !== "Small"
+                                ? value.backdrop_path
+                                : value.poster_path)
+                    )}
+                    btn1Icon={
+                        <IconAndLabelWrap
+                            icon={<SVG_Play />}
+                            label={"Watch"}
+                        />
+                    }
+                    btn1Action={(id, type) => {
+                        navController(`${type}/detail/${id}`);
+                    }} // Watch
+                    btn2Icon={<SVG_Favorite />}
+                    btn2Action={(id, type) => {
+                        throw new Error("Function not implemented.");
+                    }}
+                    onClickAction={(id, type) => {
+                        navController(`${type}/detail/${id}`);
+                        }}
+                    itemWidth={Math.floor(itemWidth)}
+                />
+            ) : (
+                Boolean(query) && (
+                    <p className='text-center text-2xl'>
+                        Sorry, we can't find anything related to "{query}" :(
+                    </p>
+                )
+            )}
+            {Boolean(query) && (
+                <div className='p-4 flex justify-center'>
+                    <Pagination
                         count={MaxPage}
                         page={page}
                         onChange={(_, page) =>
@@ -307,8 +311,9 @@ const Search: FC = () => {
                                 page: page,
                             })
                         }
-                    /></div>
-                )}
+                    />
+                </div>
+            )}
         </div>
     );
 };
@@ -316,14 +321,17 @@ const Search: FC = () => {
 export default Search;
 
 function useUrlParams() {
-    const { search } = useLocation()
-    let tmp = new URLSearchParams(search)
+    const { search } = useLocation();
+    let tmp = new URLSearchParams(search);
     return useMemo(() => {
         return {
-            query: tmp.get('query') ?? '',
-            adult: tmp.get('adult') === 'true',
-            year: Number(tmp.get('year')) > 1990 ? 'All' : Number(tmp.get('year')),
-            page: Number(tmp.get('page')) > 0 ? Number(tmp.get('page')) : 1,
-        } as SearchParams
-    }, [search])
+            query: tmp.get("query") ?? "",
+            adult: tmp.get("adult") === "true",
+            year:
+                Number(tmp.get("year")) > 1990
+                    ? "All"
+                    : Number(tmp.get("year")),
+            page: Number(tmp.get("page")) > 0 ? Number(tmp.get("page")) : 1,
+        } as SearchParams;
+    }, [search]);
 }

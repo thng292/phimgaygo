@@ -1,22 +1,5 @@
 import { useEffect, useState } from "react";
-
-function calc(
-    padding: number,
-    gap: number,
-    minWidth: number,
-    maxWidth: number
-): number {
-    let col = 1;
-    let res = 0;
-    while (true) {
-        res = (window.innerWidth - padding * 2 - gap * (col - 1)) / col;
-        if (res >= maxWidth) {
-            col++;
-            continue;
-        }
-        return res > minWidth ? Math.floor(res) : minWidth;
-    }
-}
+import CalcWindowSize, { WINDOW_SIZE } from "./windowSize";
 
 /*
  * Small -> 2
@@ -29,25 +12,48 @@ function calc(
 interface CalculateWidthProps {
     padding: number;
     gap: number;
-    minWidth: number;
-    maxWidth: number;
 }
 
 export default function CalculateWidth({
     padding = 16,
     gap = 8,
-    minWidth = 240,
-    maxWidth = 320,
 }: Partial<CalculateWidthProps> = {}) {
     const [width, changeWidth] = useState(
-        calc(padding, gap, minWidth, maxWidth)
+        calc(padding, gap)
     );
     useEffect(() => {
-        const tmp = () => changeWidth(calc(padding, gap, minWidth, maxWidth));
+        const tmp = () => {
+            console.log(window.innerWidth, calc(padding, gap))
+            changeWidth(calc(padding, gap))
+        };
         window.addEventListener("resize", tmp);
         return () => {
             window.removeEventListener("resize", tmp);
         };
-    });
+    }, []);
     return width;
+}
+
+function calc(
+    padding: number,
+    gap: number,
+): number {
+    const ws = CalcWindowSize()
+    const availSpace = window.innerWidth - padding * 2
+    debugger
+    switch (ws) {
+        case WINDOW_SIZE.SMALL:     return (availSpace - gap * 2) / 3
+        case WINDOW_SIZE.MEDIUM:    return (availSpace - gap * 2) / 3
+        case WINDOW_SIZE.BIG:       return (availSpace - gap * 2) / 3
+        case WINDOW_SIZE.BIGGER:    return (availSpace - gap * 3) / 4
+        case WINDOW_SIZE.EXTENDED: {
+            const maxWidth = 320
+            let result = 0
+            let col = 1
+            do {
+                result = (availSpace - (col - 1) * gap) / col++
+            } while (result > maxWidth)
+            return result
+        }
+    }
 }
