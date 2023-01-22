@@ -60,18 +60,14 @@ const Search: FC = () => {
         year === "All" ? undefined : year
     );
     const searchHandle = (change: SearchParams) => {
-        (change.query !== query ||
-            change.year !== year ||
-            change.adult !== adult ||
-            change.page !== page) &&
-            navController(
-                `search?query=${encodeURIComponent(change.query ?? "")}&page=${
-                    change.page
-                }&adult=${change.adult}&year=${change.year}`,
-                {
-                    replace: true,
-                }
-            );
+        navController(
+            `search?query=${encodeURIComponent(change.query ?? "")}&page=${
+                change.page
+            }&adult=${change.adult}&year=${change.year}`,
+            {
+                replace: true,
+            }
+        );
     };
 
     const SearchResult = useMemo<(MovieOverview | TVShowOverview)[]>(
@@ -100,8 +96,6 @@ const Search: FC = () => {
             ),
         ];
     }, []);
-
-    const itemWidth = CalculateWidth({padding: 0})
 
     //TODO: Add filter and pagination
     return (
@@ -147,18 +141,6 @@ const Search: FC = () => {
                     <p>Include Adult Results</p>
                     <Switch
                         checked={_adult}
-                        sx={{
-                            "& .MuiSwitch-switchBase.Mui-checked": {
-                                color: "rgba(240, 46, 170, 1)",
-                                "&:hover": {
-                                    backgroundColor: "rgba(240, 46, 170, .5)",
-                                },
-                            },
-                            "& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track":
-                                {
-                                    backgroundColor: "rgba(240, 46, 170, 1)",
-                                },
-                        }}
                         onChange={() => _setAdult((old) => !old)}
                     />
                     <p>Only look for result in</p>
@@ -179,27 +161,6 @@ const Search: FC = () => {
                                 {...params}
                                 label='Year'
                                 inputMode='numeric'
-                                sx={{
-                                    width: "120px",
-                                    "& label.Mui-focused": {
-                                        color: "rgba(240, 46, 170, 1)",
-                                    },
-                                    "& .MuiInput-underline:after": {
-                                        borderBottomColor:
-                                            "rgba(240, 46, 170, 1)",
-                                    },
-                                    "& .MuiOutlinedInput-root": {
-                                        color: "white",
-                                        "&:hover fieldset": {
-                                            borderColor:
-                                                "rgba(240, 46, 170, 1)",
-                                        },
-                                        "&.Mui-focused fieldset": {
-                                            borderColor:
-                                                "rgba(240, 46, 170, 1)",
-                                        },
-                                    },
-                                }}
                             />
                         )}
                     />
@@ -209,10 +170,6 @@ const Search: FC = () => {
                     sx={{
                         margin: ".5rem",
                         marginTop: "1rem",
-                        backgroundColor: "rgba(240, 46, 170, 1)",
-                        "&:hover": {
-                            backgroundColor: "rgba(240, 46, 170, .6)",
-                        },
                     }}
                     variant='contained'
                     onClick={() =>
@@ -233,6 +190,7 @@ const Search: FC = () => {
                 </div>
             ) : SearchResult.length > 0 ? (
                 <TitlesGrid
+                    className='mx-2'
                     name={`Movies and shows related to \"${query}\"`}
                     ids={SearchResult.map((value) => value.id)}
                     titles={SearchResult.map((value) =>
@@ -266,8 +224,10 @@ const Search: FC = () => {
                     tags={SearchResult.map((value) =>
                         value.vote_average.toFixed(1)
                     )}
-                    imagesFullURL={SearchResult.map(
-                        (value) => (CalcWindowSize() !== 'Small' ? config.backDropUrlSmall + value.backdrop_path : config.posterUrl + value.poster_path)
+                    imagesFullURL={SearchResult.map((value) =>
+                        CalcWindowSize() !== "Small"
+                            ? config.backDropUrlSmall + value.backdrop_path
+                            : config.posterUrl + value.poster_path
                     )}
                     btn1Icon={
                         <IconAndLabelWrap
@@ -284,8 +244,7 @@ const Search: FC = () => {
                     }}
                     onClickAction={(id, type) => {
                         navController(`${type}/detail/${id}`);
-                        }}
-                    itemWidth={Math.floor(itemWidth)}
+                    }}
                 />
             ) : (
                 Boolean(query) && (

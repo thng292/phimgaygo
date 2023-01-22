@@ -12,6 +12,7 @@ interface getTvDiscoverProps {
     genres?: number[];
     keywords?: number[];
     language?: string;
+    adult?: boolean;
 }
 
 export default function getTVDiscover({

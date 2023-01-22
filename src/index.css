@@ -4,16 +4,15 @@
 
 :root {
     --navbarheight: 4rem;
+    --main-400: rgba(240, 46, 170, .4);
+    --main-1000: rgba(240, 46, 170, 1)
+
 }
 
 * {
     font-family: inherit;
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: subpixel-antialiased;
-}
-
-.aspect-portrait {
-    aspect-ratio: 3/4;
 }
 
 .min-w-24 {
@@ -36,20 +35,12 @@
     grid-template-columns: 3fr 2fr;
 }
 
-.checkedLabel:checked+label {
-    background: #dddddd;
-}
-
 .grid-cols-bill {
     grid-template-columns: 1fr 6fr 1fr 1fr 1fr;
 }
 
 .rounded-sm {
     border-radius: 0.5rem;
-}
-
-:root {
-    --ternary: rgba(255, 74, 183, 0.9);
 }
 
 body {
@@ -63,7 +54,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: var(--ternary);
+    background-color: var(--main-400);
     border: 0;
     padding: 0.5rem 1rem;
     margin: 0.25rem;
@@ -79,7 +70,7 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:checked {
-    background-color: var(--ternary);
+    background-color: var(--main-400);
 }
 
 ::-webkit-scrollbar {

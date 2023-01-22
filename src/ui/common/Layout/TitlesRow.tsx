@@ -5,6 +5,7 @@ import TitlePlaceholder from "../Component/TitlePlaceholder";
 import DuplicateStuff from "../../../utils/DuplicateStuff";
 import SVG_NavForward from "../SVG/SVG_NavForward";
 import SVG_NavBack from "../SVG/SVG_NavBack";
+import { Tooltip } from "@mui/material";
 
 const TitlesRow: FC<
     | {
@@ -92,7 +93,7 @@ const TitlesRow: FC<
                 {props.onSeeMore && (
                     <span
                         className={
-                            "text-sm font-normal px-4 h-full tracking-normal text-right inline-block opacity-0 transition-all group-hover:opacity-100"
+                            "text-sm font-normal px-4 h-full tracking-normal text-right hidden sm:inline-block opacity-0 transition-all group-hover:opacity-100"
                         }
                     >
                         See More...
@@ -144,7 +145,8 @@ const TitlesRow: FC<
             >
                 <SVG_NavBack />
             </button>
-            <div
+            <Tooltip title='Shift + Scroll to scroll horizontally'>
+                <div
                 className={"scroll-wrapper"}
                 ref={rowRef}
             >
@@ -202,6 +204,8 @@ const TitlesRow: FC<
                     )}
                 </div>
             </div>
+            </Tooltip>
+            
         </div>
     );
 };

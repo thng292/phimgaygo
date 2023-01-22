@@ -21,7 +21,7 @@ export default function TVSearch(
                     results: val.data.results.map((value: TVShowOverview) => {
                         return {
                             ...value,
-                            media_type: "movie",
+                            media_type: "tv",
                         };
                     }),
                 } as TVShowDiscover;

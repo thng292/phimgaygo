@@ -13,6 +13,7 @@ import LoadingSpinner from "../common/Component/LoadingSpinner";
 import UserMenu from "./UserMenu";
 import { Drawer, IconButton, List, ListItemButton } from "@mui/material";
 import useIntersection from "../../utils/ElementInViewObseve";
+import Screens from "../../utils/Screen";
 
 export default function SharedLayout() {
     let navigate = useNavigate();
@@ -20,8 +21,8 @@ export default function SharedLayout() {
     const [searchField, setSearchField] = useState("");
     const [drawerOpend, setDrawerOpened] = useState(false);
     const [user, additionalUserInfo] = useUser();
-    const footerRef = useRef<HTMLDivElement>(null)
-    const footerInView = useIntersection(footerRef, 0)
+    const footerRef = useRef<HTMLDivElement>(null);
+    const footerInView = useIntersection(footerRef, 0);
     return (
         <>
             <nav
@@ -51,9 +52,11 @@ export default function SharedLayout() {
                             open={drawerOpend}
                             onClose={() => setDrawerOpened(false)}
                         >
-                            <List sx={{
-                                minWidth: '50vw'
-                            }}>
+                            <List
+                                sx={{
+                                    minWidth: "50vw",
+                                }}
+                            >
                                 <ListItemButton>
                                     <IconButton
                                         onClick={() => setDrawerOpened(false)}
@@ -61,37 +64,35 @@ export default function SharedLayout() {
                                         <MenuIcon />
                                     </IconButton>
                                 </ListItemButton>
-                                <ListItemButton>
-                                    <Link
-                                        className='font-bold text-center'
-                                        to={"/"}
-                                    >
-                                        <p>Home</p>
-                                    </Link>
+                                <ListItemButton onClick={() => {
+                                    setDrawerOpened(false)
+                                    navigate("/")
+                                }}>
+                                    <p className='font-bold'>Home</p>
                                 </ListItemButton>
-                                <ListItemButton>
-                                    <Link
-                                        className='font-bold text-center'
-                                        to={``}
-                                    >
-                                        <p>Movies</p>
-                                    </Link>
+                                <ListItemButton
+                                    onClick={() => {
+                                        setDrawerOpened(false)
+                                        navigate(Screens.MovieDiscover)
+                                    }}
+                                >
+                                    <p className='font-bold'>Movies</p>
                                 </ListItemButton>
-                                <ListItemButton>
-                                    <Link
-                                        className='font-bold text-center'
-                                        to={``}
-                                    >
-                                        <p>TV Shows</p>
-                                    </Link>
+                                <ListItemButton
+                                    onClick={() => {
+                                        setDrawerOpened(false)
+                                        navigate(Screens.TVDiscover)
+                                    }}
+                                >
+                                    <p className='font-bold'>TV Shows</p>
                                 </ListItemButton>
-                                <ListItemButton>
-                                    <Link
-                                        className='font-bold text-center'
-                                        to='/about'
-                                    >
-                                        <p>About</p>
-                                    </Link>
+                                <ListItemButton
+                                    onClick={() => {
+                                        setDrawerOpened(false)
+                                        navigate(Screens.About)
+                                    }}
+                                >
+                                    <p className='font-bold'>About</p>
                                 </ListItemButton>
                             </List>
                         </Drawer>
@@ -103,19 +104,19 @@ export default function SharedLayout() {
                         </Link>
                         <Link
                             className='hidden md:block font-bold text-center'
-                            to={``}
+                            to={Screens.MovieDiscover}
                         >
                             <p>Movies</p>
                         </Link>
                         <Link
                             className='hidden md:block font-bold text-center'
-                            to={``}
+                            to={Screens.TVDiscover}
                         >
                             <p>TV Shows</p>
                         </Link>
                         <Link
                             className='hidden md:block font-bold text-center'
-                            to='/about'
+                            to={Screens.About}
                         >
                             <p>About</p>
                         </Link>
@@ -175,7 +176,7 @@ export default function SharedLayout() {
                                 additionalUserInfo,
                                 user,
                                 navController: navigate,
-                                footerInView
+                                footerInView,
                             } as ContextProps
                         }
                     />

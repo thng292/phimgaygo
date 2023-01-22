@@ -154,7 +154,7 @@ const BigBanner: FC<BigBannerProps> = (props) => {
                     imagesFullURL={
                         (CalcWindowSize() !== 'Small' ?
                             props.backDropsFullURL :
-                            props.bannerFullURL)
+                            props.postersFullURL)
                     }
                     btn1Icon={props.btn1Icon}
                     btn1Action={props.btn1Action}

@@ -2,13 +2,12 @@ import {media_type} from "../data/Datasource/Config";
 
 const Screens = {
     Home: '',
-    Discover: 'discover',
+    MovieDiscover: 'discover/movie',
+    TVDiscover: 'discover/tv',
     Detail: 'detail/:id',
-    // Search: 'search?query=:query&adult=:adult&year=:year&page=:page',
+    DetailStatic: 'detail',
     Search: 'search',
     About: 'about',
-    Checkout: 'checkout',
-    Bill: 'bill/:billId',
     Contact: 'contact',
     FAQ: 'FAQ',
     Forum: 'forum',
