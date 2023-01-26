@@ -99,18 +99,20 @@ const Home: FC = () => {
                 )}
                 btn1Icon={
                     <IconAndLabelWrap
-                        icon={<SVG_Play />}
+                        icon={<SVG_Play fill="black" />}
                         label={"Watch"}
                     />
                 }
                 btn1Action={(id, type) => {
                     navController(`${type}/detail/${id}`);
                 }} // Watch
-                btn2Icon={<SVG_Favorite />}
+                btn2Icon={<SVG_Favorite fill="black" />}
                 btn2Action={(id, type) => {
+                    //TODO Favorite
                     throw new Error("Function not implemented.");
                 }} // Add to favorite
                 onClickAction={(id, type) => {
+                    //TODO history
                     navController(`${type}/detail/${id}`);
                 }}
                 itemWidth={itemWidth}
@@ -230,7 +232,7 @@ const TitleRowLazyLoadWrapper: FC<{
                     className={"py-4"}
                     btn1Icon={
                         <IconAndLabelWrap
-                            icon={<SVG_Play />}
+                            icon={<SVG_Play fill="black" />}
                             label={"Watch"}
                         />
                     }
@@ -240,14 +242,16 @@ const TitleRowLazyLoadWrapper: FC<{
                     ): void {
                         navController(`${type}/detail/${id}`);
                     }} // Watch
-                    btn2Icon={<SVG_Favorite />}
+                    btn2Icon={<SVG_Favorite fill="black" />}
                     btn2Action={function (
                         id: number,
                         type?: media_type | undefined
                     ): void {
+                        //TODO Favorite
                         throw new Error("Function not implemented.");
                     }} // Share
                     onClickAction={(id, type) => {
+                        //TODO history
                         navController(`${type}/detail/${id}`);
                     }} // Add to favorite
                     itemWidth={itemWidth}

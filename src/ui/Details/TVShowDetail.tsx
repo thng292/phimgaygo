@@ -1,5 +1,5 @@
 import { FC, useRef, useState } from "react";
-import { Navigate, useOutletContext, useParams } from "react-router-dom";
+import { Link, Navigate, useOutletContext, useParams } from "react-router-dom";
 import ContextProps from "../SharedLayout/ContextProps";
 import CalculateWidth from "../../utils/CalculateWidth";
 import getGenres from "../../data/DAO/Detail/getGenres";
@@ -23,6 +23,7 @@ import { Button, ButtonGroup } from "@mui/material";
 import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
 import NavigateBeforeRoundedIcon from "@mui/icons-material/NavigateBeforeRounded";
 import CalcWindowSize from "../../utils/windowSize";
+import Screens from "../../utils/Screen";
 
 const TVShowDetail: FC = () => {
     const { id } = useParams();
@@ -105,14 +106,14 @@ const TVShowDetail: FC = () => {
                                 });
                             }}
                         >
-                            <SVG_Play />{" "}
+                            <SVG_Play fill="black" />{" "}
                             <span className={"text-black px-2"}>Watch</span>
                         </button>
                         <button
                             className='p-2 m-1 rounded secondary flex'
                             onClick={() => {}}
                         >
-                            <SVG_Favorite />{" "}
+                            <SVG_Favorite fill="black" />{" "}
                             <span className={"text-black px-2"}>Favorite</span>
                         </button>
                     </div>
@@ -284,18 +285,14 @@ const TVShowDetail: FC = () => {
                                         //https://codesandbox.io/s/react-router-query-parameters-kp309y?from-embed=&file=/example.js:727-738
                                         return (
                                             <>
-                                                <a
+                                                <Link
                                                     className={
                                                         "cursor-pointer hover:text-main-1000"
                                                     }
-                                                    onClick={() => {
-                                                        navController(
-                                                            `tv/discover/${value.id}`
-                                                        );
-                                                    }}
+                                                    to={`${Screens.TVDiscover}?genres=${value.id}`}
                                                 >
                                                     {value.name}
-                                                </a>
+                                                </Link>
                                                 <span>
                                                     {index !==
                                                     data.data.genres.length - 1
@@ -398,7 +395,7 @@ const TVShowDetail: FC = () => {
                             className={""}
                             btn1Icon={
                                 <IconAndLabelWrap
-                                    icon={<SVG_Play />}
+                                    icon={<SVG_Play fill="black" />}
                                     label={"Watch"}
                                 />
                             }
@@ -406,16 +403,19 @@ const TVShowDetail: FC = () => {
                                 id: number,
                                 type?: media_type | undefined
                             ): void {
+                                //TODO
                                 navController(`${type}/detail/${id}`);
                             }} // Watch
-                            btn2Icon={<SVG_Favorite />}
+                            btn2Icon={<SVG_Favorite fill="black" />}
                             btn2Action={function (
                                 id: number,
                                 type?: media_type | undefined
                             ): void {
                                 throw new Error("Function not implemented.");
+                                //TODO
                             }} // Share
                             onClickAction={(id, type) => {
+                                //TODO
                                 navController(`${type}/detail/${id}`);
                             }} // Add to favorite
                             tags={Recommendations.map((value) =>
@@ -451,7 +451,7 @@ const TVShowDetail: FC = () => {
                             className={""}
                             btn1Icon={
                                 <IconAndLabelWrap
-                                    icon={<SVG_Play />}
+                                    icon={<SVG_Play fill="black" />}
                                     label={"Watch"}
                                 />
                             }
@@ -460,15 +460,18 @@ const TVShowDetail: FC = () => {
                                 type?: media_type | undefined
                             ): void {
                                 navController(`${type}/detail/${id}`);
+                                //TODO
                             }} // Watch
-                            btn2Icon={<SVG_Favorite />}
+                            btn2Icon={<SVG_Favorite fill="black" />}
                             btn2Action={function (
                                 id: number,
                                 type?: media_type | undefined
                             ): void {
+                                //TODO
                                 throw new Error("Function not implemented.");
                             }} // Share
                             onClickAction={(id, type) => {
+                                //TODO
                                 navController(`${type}/detail/${id}`);
                             }} // Add to favorite
                             tags={Similar.map((value) =>

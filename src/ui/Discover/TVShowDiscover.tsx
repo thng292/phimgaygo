@@ -51,7 +51,7 @@ const yearOpts = [
 ];
 
 let keywordLoadingFlag = true;
-const currentMediaType: media_type = 'tv'
+const currentMediaType: media_type = "tv";
 
 const TVShowDiscover: FC = () => {
     const { navController } = useOutletContext<ContextProps>();
@@ -216,7 +216,13 @@ const TVShowDiscover: FC = () => {
                                     onDelete={() => {
                                         setGenres((old) => {
                                             const tmp = [...old];
-                                            tmp.splice(tmp.findIndex(item => item.id === value.id), 1);
+                                            tmp.splice(
+                                                tmp.findIndex(
+                                                    (item) =>
+                                                        item.id === value.id
+                                                ),
+                                                1
+                                            );
                                             return tmp;
                                         });
                                     }}
@@ -249,7 +255,14 @@ const TVShowDiscover: FC = () => {
                                               if (choosed)
                                                   setGenres((old) => {
                                                       const tmp = [...old];
-                                                      tmp.splice(tmp.findIndex(item => item.id === value.id), 1);
+                                                      tmp.splice(
+                                                          tmp.findIndex(
+                                                              (item) =>
+                                                                  item.id ===
+                                                                  value.id
+                                                          ),
+                                                          1
+                                                      );
                                                       return tmp;
                                                   });
                                               else
@@ -285,7 +298,13 @@ const TVShowDiscover: FC = () => {
                                     onDelete={() => {
                                         setKeywords((old) => {
                                             const tmp = [...old];
-                                            tmp.splice(tmp.findIndex(item => value.id===item.id), 1);
+                                            tmp.splice(
+                                                tmp.findIndex(
+                                                    (item) =>
+                                                        value.id === item.id
+                                                ),
+                                                1
+                                            );
                                             return tmp;
                                         });
                                     }}
@@ -339,39 +358,107 @@ const TVShowDiscover: FC = () => {
                 <div className='flex m-2 justify-center'>
                     <Button
                         variant='contained'
-                        onClick={() => navController(URLSearchconstruct({
-                            page: URLparams.page,
-                            sortby: sort.option,
-                            order: sort.order,
-                            genres: genres.map(value => value.id),
-                            keywords: keywords.map(value => value.id),
-                            year: year
-                        }, pathname))}
-                    >Apply</Button>
+                        onClick={() =>
+                            navController(
+                                URLSearchconstruct(
+                                    {
+                                        page: URLparams.page,
+                                        sortby: sort.option,
+                                        order: sort.order,
+                                        genres: genres.map((value) => value.id),
+                                        keywords: keywords.map(
+                                            (value) => value.id
+                                        ),
+                                        year: year,
+                                    },
+                                    pathname
+                                )
+                            )
+                        }
+                    >
+                        Apply
+                    </Button>
                 </div>
             </div>
-            {TVShowData.data ? <TitlesGrid
-                titles={TVShowData.data.results.map(value => value.name)}
-                media_type={[currentMediaType]}
-                ids={ TVShowData.data.results.map(value => value.id) }
-                name={'Popular TV show'}
-                subtitles={ TVShowData.data.results.map(value => value.original_name) }
-                genres={ TVShowData.data.results.map(value => MapGenreToID(genreData.data?.genres ?? [], value.genre_ids)) }
-                dates={ TVShowData.data.results.map(value => value.first_air_date) }
-                vote_avgs={ TVShowData.data.results.map(value => value.vote_average.toFixed(1)) }
-                imagesFullURL={ window.innerWidth > 640 ? TVShowData.data.results.map(value => config.backDropUrlSmall + value.backdrop_path) : TVShowData.data.results.map(value => config.posterUrl + value.poster_path) }
-                tags={ TVShowData.data.results.map(value => value.vote_average.toFixed(1)) }
-                btn1Action={ (id) => navController(`${currentMediaType}/${Screens.DetailStatic}/${id}`) }
-                btn1Icon={ <IconAndLabelWrap icon={<SVG_Play/>} label="Watch" /> }
-                btn2Action={ () => {throw 'Function not implemented'} }
-                btn2Icon={ <SVG_Favorite/> }
-                onClickAction={ (id) => navController(`${currentMediaType}/${Screens.DetailStatic}/${id}`) }
-            /> : <TitlesGrid placeholder name="Popular TV Show"/>}
+            {TVShowData.data ? (
+                <TitlesGrid
+                    className='px-4'
+                    titles={TVShowData.data.results.map((value) => value.name)}
+                    media_type={[currentMediaType]}
+                    ids={TVShowData.data.results.map((value) => value.id)}
+                    name={"Popular TV show"}
+                    subtitles={TVShowData.data.results.map(
+                        (value) => value.original_name
+                    )}
+                    genres={TVShowData.data.results.map((value) =>
+                        MapGenreToID(
+                            genreData.data?.genres ?? [],
+                            value.genre_ids
+                        )
+                    )}
+                    dates={TVShowData.data.results.map(
+                        (value) => value.first_air_date
+                    )}
+                    vote_avgs={TVShowData.data.results.map((value) =>
+                        value.vote_average.toFixed(1)
+                    )}
+                    imagesFullURL={
+                        window.innerWidth > 640
+                            ? TVShowData.data.results.map(
+                                  (value) =>
+                                      config.backDropUrlSmall +
+                                      value.backdrop_path
+                              )
+                            : TVShowData.data.results.map(
+                                  (value) =>
+                                      config.posterUrl + value.poster_path
+                              )
+                    }
+                    tags={TVShowData.data.results.map((value) =>
+                        value.vote_average.toFixed(1)
+                    )}
+                    btn1Action={(id) =>
+                        navController(
+                            `${currentMediaType}${Screens.DetailStatic}/${id}`
+                        )
+                    }
+                    btn1Icon={
+                        <IconAndLabelWrap
+                            icon={<SVG_Play fill='black' />}
+                            label='Watch'
+                        />
+                    }
+                    btn2Action={() => {
+                        //TODO Favorite
+                        throw "Function not implemented";
+                    }}
+                    btn2Icon={<SVG_Favorite fill='black' />}
+                    onClickAction={(id) =>
+                        //TODO History
+                        navController(
+                            `${currentMediaType}${Screens.DetailStatic}/${id}`
+                        )
+                    }
+                />
+            ) : (
+                <TitlesGrid
+                    placeholder
+                    name='Popular TV Show'
+                />
+            )}
             <div className='flex justify-center my-4'>
                 <Pagination
                     count={TVShowData.data?.total_pages}
                     page={URLparams.page}
-                    onChange={(_, page) => navController(URLSearchconstruct({ ...URLparams, page: page },pathname), {replace: true})}
+                    onChange={(_, page) =>
+                        navController(
+                            URLSearchconstruct(
+                                { ...URLparams, page: page },
+                                pathname
+                            ),
+                            { replace: true }
+                        )
+                    }
                 />
             </div>
         </div>
@@ -390,7 +477,13 @@ interface DiscoverParams {
 }
 
 function URLSearchconstruct(args: DiscoverParams, pathname: string) {
-    return `${pathname}?page=${args.page}&sortby=${args.sortby}&order=${args.order}&year=${args.year >= 1990 ? args.year : 'All'}` + (args.genres.length ? `&genres=${args.genres.join(',')}` : '') + (args.keywords.length ? `&keywords=${args.keywords.join(',')}` : '')
+    return (
+        `${pathname}?page=${args.page}&sortby=${args.sortby}&order=${
+            args.order
+        }&year=${Number(args.year) >= 1990 ? args.year : "All"}` +
+        (args.genres.length ? `&genres=${args.genres.join(",")}` : "") +
+        (args.keywords.length ? `&keywords=${args.keywords.join(",")}` : "")
+    );
 }
 
 function useUrlParams(search: string) {
@@ -412,9 +505,10 @@ function useUrlParams(search: string) {
             keywords: (tmp.get("keywords")?.split(",") ?? [])
                 .map((value) => Number(value))
                 .filter((value) => !isNaN(value)),
-            year: Number(tmp.get("year")) < 1990
-                ? "All"
-                : Number(tmp.get("year")),
+            year:
+                Number(tmp.get("year")) < 1990
+                    ? "All"
+                    : Number(tmp.get("year")),
         } as DiscoverParams;
     }, [search]);
 }

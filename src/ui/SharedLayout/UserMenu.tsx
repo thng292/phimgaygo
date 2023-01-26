@@ -2,6 +2,7 @@ import {FC, useState} from "react";
 import {User} from "firebase/auth";
 import UserAdditionData from "../../data/model/Firebase/UserAdditionData";
 import {NavigateFunction} from "react-router-dom";
+import Screens from "../../utils/Screen";
 
 const UserMenu: FC<{
     user: User | null,
@@ -47,7 +48,7 @@ const UserMenu: FC<{
     } else {
         return <div
             className='border-2 border-main-1000 rounded-3xl p-1 px-4 mx-1 font-bold tracking-wide cursor-pointer mix-blend-difference'
-            onClick={() => navigate("/auth")}
+            onClick={() => navigate(Screens.SignIn)}
         >
             Sign in
         </div>

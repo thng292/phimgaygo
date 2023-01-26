@@ -18,7 +18,7 @@ import {FireAuth} from '../../Datasource/DatasourceInstance'
 // Sign in, sign up and sign out
 //region
 export function signUpEmail(email: string, password: string, displayName: string) {
-    return new Promise((resolve: (user: User) => void, reject: (errorCode: string, errorMessage: string) => void) => {
+    return new Promise((resolve: (user: User) => void, reject: (error: any) => void) => {
         createUserWithEmailAndPassword(FireAuth, email, password)
             .then((userCredential) => {
                 updateProfile(userCredential.user, {
@@ -26,40 +26,16 @@ export function signUpEmail(email: string, password: string, displayName: string
                 })
                 resolve(userCredential.user)
             })
-            .catch((error) => {
-                reject(error.code, error.message)
-            })
+            .catch(reject)
     })
 }
 
 export function signInEmail(email: string, password: string) {
-    return new Promise((resolve: (user: User) => void, reject: (errorCode: string, errorMessage: string) => void) => {
-        signInWithEmailAndPassword(FireAuth, email, password)
-            .then((userCredential) => {
-                resolve(userCredential.user)
-            })
-            .catch((error) => {
-                reject(error.code, error.message)
-            })
-    })
+    return signInWithEmailAndPassword(FireAuth, email, password)
 }
 
 export function signInGoogle() {
-    return new Promise((resolve: (user: User) => void, reject: (errorCode: string, errorMessage: string) => void) => {
-        // getRedirectResult(FireAuth)
-        const providerGoogle = new GoogleAuthProvider()
-        signInWithPopup(FireAuth, providerGoogle)
-            .then((result) => {
-                if (result) {
-                    resolve(result.user)
-                } else {
-                    reject("Idk", "Strange error")
-                }
-            })
-            .catch((error) => {
-                reject(error.code, error.message)
-            })
-    })
+    return signInWithPopup(FireAuth, new GoogleAuthProvider())
 }
 
 export function signUserOut() {

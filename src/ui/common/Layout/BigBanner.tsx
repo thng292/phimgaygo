@@ -58,7 +58,7 @@ const BigBanner: FC<BigBannerProps> = (props) => {
     return (
         <div
             id={"bigbanner"}
-            className={"shadow-2xl relative aspect-video"}
+            className={"shadow-2xl relative aspect-video cursor-pointer"}
             style={{
                 backgroundImage: `linear-gradient(to top right, #222222dd, #42424200), url(${
                     window.innerWidth > 640

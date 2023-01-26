@@ -51,7 +51,7 @@ const yearOpts = [
 ];
 
 let keywordLoadingFlag = true;
-const currentMediaType: media_type = 'movie'
+const currentMediaType: media_type = "movie";
 
 const MovieDiscover: FC = () => {
     const { navController } = useOutletContext<ContextProps>();
@@ -109,11 +109,10 @@ const MovieDiscover: FC = () => {
             option: URLparams.sortby,
             order: URLparams.order,
         } as SortedBy,
-        year:
-            URLparams.year === "All" ? undefined : URLparams.year,
+        year: URLparams.year === "All" ? undefined : URLparams.year,
         genres: URLparams.genres,
         keywords: URLparams.keywords,
-        includeAdult: URLparams.adult
+        includeAdult: URLparams.adult,
     });
     return (
         <div className='mt-24'>
@@ -223,7 +222,13 @@ const MovieDiscover: FC = () => {
                                     onDelete={() => {
                                         setGenres((old) => {
                                             const tmp = [...old];
-                                            tmp.splice(tmp.findIndex(item => item.id === value.id), 1);
+                                            tmp.splice(
+                                                tmp.findIndex(
+                                                    (item) =>
+                                                        item.id === value.id
+                                                ),
+                                                1
+                                            );
                                             return tmp;
                                         });
                                     }}
@@ -256,7 +261,14 @@ const MovieDiscover: FC = () => {
                                               if (choosed)
                                                   setGenres((old) => {
                                                       const tmp = [...old];
-                                                      tmp.splice(tmp.findIndex(item => item.id === value.id), 1);
+                                                      tmp.splice(
+                                                          tmp.findIndex(
+                                                              (item) =>
+                                                                  item.id ===
+                                                                  value.id
+                                                          ),
+                                                          1
+                                                      );
                                                       return tmp;
                                                   });
                                               else
@@ -292,7 +304,13 @@ const MovieDiscover: FC = () => {
                                     onDelete={() => {
                                         setKeywords((old) => {
                                             const tmp = [...old];
-                                            tmp.splice(tmp.findIndex(item => value.id===item.id), 1);
+                                            tmp.splice(
+                                                tmp.findIndex(
+                                                    (item) =>
+                                                        value.id === item.id
+                                                ),
+                                                1
+                                            );
                                             return tmp;
                                         });
                                     }}
@@ -346,40 +364,108 @@ const MovieDiscover: FC = () => {
                 <div className='flex m-2 justify-center'>
                     <Button
                         variant='contained'
-                        onClick={() => navController(URLSearchconstruct({
-                            page: URLparams.page,
-                            adult: adult,
-                            sortby: sort.option,
-                            order: sort.order,
-                            genres: genres.map(value => value.id),
-                            keywords: keywords.map(value => value.id),
-                            year: year
-                        }, pathname))}
-                    >Apply</Button>
+                        onClick={() =>
+                            navController(
+                                URLSearchconstruct(
+                                    {
+                                        page: URLparams.page,
+                                        adult: adult,
+                                        sortby: sort.option,
+                                        order: sort.order,
+                                        genres: genres.map((value) => value.id),
+                                        keywords: keywords.map(
+                                            (value) => value.id
+                                        ),
+                                        year: year,
+                                    },
+                                    pathname
+                                )
+                            )
+                        }
+                    >
+                        Apply
+                    </Button>
                 </div>
             </div>
-            {MovieData.data ? <TitlesGrid
-                titles={MovieData.data.results.map(value => value.title)}
-                media_type={[currentMediaType]}
-                ids={ MovieData.data.results.map(value => value.id) }
-                name={'Popular Movie'}
-                subtitles={ MovieData.data.results.map(value => value.original_title) }
-                genres={ MovieData.data.results.map(value => MapGenreToID(genreData.data?.genres ?? [], value.genre_ids)) }
-                dates={ MovieData.data.results.map(value => value.release_date) }
-                vote_avgs={ MovieData.data.results.map(value => value.vote_average.toFixed(1)) }
-                imagesFullURL={ window.innerWidth > 640 ? MovieData.data.results.map(value => config.backDropUrlSmall + value.backdrop_path) : MovieData.data.results.map(value => config.posterUrl + value.poster_path) }
-                tags={ MovieData.data.results.map(value => value.vote_average.toFixed(1)) }
-                btn1Action={ (id) => navController(`${currentMediaType}/${Screens.DetailStatic}/${id}`) }
-                btn1Icon={ <IconAndLabelWrap icon={<SVG_Play/>} label="Watch" /> }
-                btn2Action={ () => {throw 'Function not implemented'} }
-                btn2Icon={ <SVG_Favorite/> }
-                onClickAction={ (id) => navController(`${currentMediaType}/${Screens.DetailStatic}/${id}`) }
-            /> : <TitlesGrid placeholder name="Popular Movie"/>}
+            {MovieData.data ? (
+                <TitlesGrid
+                    className='px-4'
+                    titles={MovieData.data.results.map((value) => value.title)}
+                    media_type={[currentMediaType]}
+                    ids={MovieData.data.results.map((value) => value.id)}
+                    name={"Popular Movie"}
+                    subtitles={MovieData.data.results.map(
+                        (value) => value.original_title
+                    )}
+                    genres={MovieData.data.results.map((value) =>
+                        MapGenreToID(
+                            genreData.data?.genres ?? [],
+                            value.genre_ids
+                        )
+                    )}
+                    dates={MovieData.data.results.map(
+                        (value) => value.release_date
+                    )}
+                    vote_avgs={MovieData.data.results.map((value) =>
+                        value.vote_average.toFixed(1)
+                    )}
+                    imagesFullURL={
+                        window.innerWidth > 640
+                            ? MovieData.data.results.map(
+                                  (value) =>
+                                      config.backDropUrlSmall +
+                                      value.backdrop_path
+                              )
+                            : MovieData.data.results.map(
+                                  (value) =>
+                                      config.posterUrl + value.poster_path
+                              )
+                    }
+                    tags={MovieData.data.results.map((value) =>
+                        value.vote_average.toFixed(1)
+                    )}
+                    btn1Action={(id) =>
+                        navController(
+                            `${currentMediaType}${Screens.DetailStatic}/${id}`
+                        )
+                    }
+                    btn1Icon={
+                        <IconAndLabelWrap
+                            icon={<SVG_Play fill='black' />}
+                            label='Watch'
+                        />
+                    }
+                    btn2Action={() => {
+                        //TODO
+                        throw "Function not implemented";
+                    }}
+                    btn2Icon={<SVG_Favorite fill='black' />}
+                    onClickAction={(id) =>
+                        //TODO
+                        navController(
+                            `${currentMediaType}${Screens.DetailStatic}/${id}`
+                        )
+                    }
+                />
+            ) : (
+                <TitlesGrid
+                    placeholder
+                    name='Popular Movie'
+                />
+            )}
             <div className='flex justify-center my-4'>
                 <Pagination
                     count={MovieData.data?.total_pages}
                     page={URLparams.page}
-                    onChange={(_, page) => navController(URLSearchconstruct({ ...URLparams, page: page },pathname), {replace: true})}
+                    onChange={(_, page) =>
+                        navController(
+                            URLSearchconstruct(
+                                { ...URLparams, page: page },
+                                pathname
+                            ),
+                            { replace: true }
+                        )
+                    }
                 />
             </div>
         </div>
@@ -399,7 +485,15 @@ interface DiscoverParams {
 }
 
 function URLSearchconstruct(args: DiscoverParams, pathname: string) {
-    return `${pathname}?page=${args.page}&adult=${args.adult}&sortby=${args.sortby}&order=${args.order}&year=${args.year >= 1990 ? args.year : 'All'}` + (args.genres.length ? `&genres=${args.genres.join(',')}` : '') + (args.keywords.length ? `&keywords=${args.keywords.join(',')}` : '')
+    return (
+        `${pathname}?page=${args.page}&adult=${args.adult}&sortby=${
+            args.sortby
+        }&order=${args.order}&year=${
+            Number(args.year) >= 1990 ? args.year : "All"
+        }` +
+        (args.genres.length ? `&genres=${args.genres.join(",")}` : "") +
+        (args.keywords.length ? `&keywords=${args.keywords.join(",")}` : "")
+    );
 }
 
 function useUrlParams(search: string) {
@@ -422,9 +516,10 @@ function useUrlParams(search: string) {
             keywords: (tmp.get("keywords")?.split(",") ?? [])
                 .map((value) => Number(value))
                 .filter((value) => !isNaN(value)),
-            year: Number(tmp.get("year")) < 1990
-                ? "All"
-                : Number(tmp.get("year")),
+            year:
+                Number(tmp.get("year")) < 1990
+                    ? "All"
+                    : Number(tmp.get("year")),
         } as DiscoverParams;
     }, [search]);
 }

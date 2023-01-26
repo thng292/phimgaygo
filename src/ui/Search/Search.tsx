@@ -231,14 +231,14 @@ const Search: FC = () => {
                     )}
                     btn1Icon={
                         <IconAndLabelWrap
-                            icon={<SVG_Play />}
+                            icon={<SVG_Play fill="black" />}
                             label={"Watch"}
                         />
                     }
                     btn1Action={(id, type) => {
                         navController(`${type}/detail/${id}`);
                     }} // Watch
-                    btn2Icon={<SVG_Favorite />}
+                    btn2Icon={<SVG_Favorite fill="black" />}
                     btn2Action={(id, type) => {
                         throw new Error("Function not implemented.");
                     }}

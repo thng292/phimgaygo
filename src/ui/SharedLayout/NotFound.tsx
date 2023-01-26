@@ -85,7 +85,7 @@ function NotFound() {
                 className={"px-4"}
                 btn1Icon={
                     <IconAndLabelWrap
-                        icon={<SVG_Play />}
+                        icon={<SVG_Play fill="black" />}
                         label={"Watch"}
                     />
                 }
@@ -95,7 +95,7 @@ function NotFound() {
                 ): void {
                     navController(`${type}/detail/${id}`);
                 }} // Watch
-                btn2Icon={<SVG_Favorite />}
+                btn2Icon={<SVG_Favorite fill="black" />}
                 btn2Action={function (
                     id: number,
                     type?: media_type | undefined

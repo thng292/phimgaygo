@@ -21,7 +21,8 @@ const MovieDiscover = React.lazy(() => import("./ui/Discover/MovieDiscover"));
 const Search = React.lazy(() => import("./ui/Search/Search"));
 
 const About = React.lazy(() => import("./ui/About/About"));
-const Auth = React.lazy(() => import("./ui/Auth/Auth"));
+const SignIn = React.lazy(() => import("./ui/Auth/SignIn"));
+const SignUp = React.lazy(() => import('./ui/Auth/SignUp'))
 const Contact = React.lazy(() => import("./ui/Contact/Contact"));
 const FAQ = React.lazy(() => import("./ui/FAQ/FAQ"));
 const Forum = React.lazy(() => import("./ui/Community/Forum"));
@@ -64,11 +65,11 @@ const router = createBrowserRouter([
                 element: <Search />,
             },
             {
-                path: MediaType.Movie + "/" + Screens.Detail,
+                path: MediaType.Movie + Screens.Detail,
                 element: <MovieDetail />,
             },
             {
-                path: MediaType.TVShow + "/" + Screens.Detail,
+                path: MediaType.TVShow + Screens.Detail,
                 element: <TVShowDetail />,
             },
             {
@@ -80,8 +81,12 @@ const router = createBrowserRouter([
                 element: <MovieDiscover/>
             },
             {
-                path: Screens.Auth,
-                element: <Auth />,
+                path: Screens.SignIn,
+                element: <SignIn/>,
+            },
+            {
+                path: Screens.SignUp,
+                element: <SignUp/>
             },
             {
                 path: Screens.About,

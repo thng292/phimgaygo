@@ -1,6 +1,6 @@
 import { FC, useRef, useState } from "react";
 import getDetail from "../../data/DAO/Detail/getDetail";
-import { Navigate, useOutletContext, useParams } from "react-router-dom";
+import { Link, Navigate, useOutletContext, useParams } from "react-router-dom";
 import getTrailer from "../../data/DAO/Detail/getTrailer";
 import config, { media_type } from "../../data/Datasource/Config";
 import ToHrsAndMin from "../../utils/ToHrsAndMin";
@@ -16,6 +16,7 @@ import MapGenreToID from "../../utils/MapGenreToID";
 import IconAndLabelWrap from "../common/Component/IconAndLabelWrap";
 import TrailerSection from "./common/TrailerSection";
 import CalcWindowSize from "../../utils/windowSize";
+import Screens from "../../utils/Screen";
 
 //TODO: Movie detail and watch
 const MovieDetail: FC<{}> = () => {
@@ -94,14 +95,14 @@ const MovieDetail: FC<{}> = () => {
                                 });
                             }}
                         >
-                            <SVG_Play />{" "}
+                            <SVG_Play fill="black" />{" "}
                             <span className={"text-black px-2"}>Watch</span>
                         </button>
                         <button
                             className='p-2 m-1 rounded secondary flex'
                             onClick={() => {}}
                         >
-                            <SVG_Favorite />{" "}
+                            <SVG_Favorite fill="black" />{" "}
                             <span className={"text-black px-2"}>Favorite</span>
                         </button>
                     </div>
@@ -160,18 +161,14 @@ const MovieDetail: FC<{}> = () => {
                                     {data.data.genres.map((value, index) => {
                                         return (
                                             <>
-                                                <a
+                                                <Link
                                                     className={
                                                         "cursor-pointer hover:text-main-1000"
                                                     }
-                                                    onClick={() => {
-                                                        navController(
-                                                            `movie/discover/${value.id}`
-                                                        );
-                                                    }}
+                                                    to={`${Screens.MovieDiscover}?genres=${value.id}`}
                                                 >
                                                     {value.name}
-                                                </a>
+                                                </Link>
                                                 <span>
                                                     {index !==
                                                     data.data.genres.length - 1
@@ -270,7 +267,7 @@ const MovieDetail: FC<{}> = () => {
                             className={""}
                             btn1Icon={
                                 <IconAndLabelWrap
-                                    icon={<SVG_Play />}
+                                    icon={<SVG_Play fill="black" />}
                                     label={"Watch"}
                                 />
                             }
@@ -280,7 +277,7 @@ const MovieDetail: FC<{}> = () => {
                             ): void {
                                 navController(`${type}/detail/${id}`);
                             }} // Watch
-                            btn2Icon={<SVG_Favorite />}
+                            btn2Icon={<SVG_Favorite fill="black" />}
                             btn2Action={function (
                                 id: number,
                                 type?: media_type | undefined
@@ -323,7 +320,7 @@ const MovieDetail: FC<{}> = () => {
                             className={""}
                             btn1Icon={
                                 <IconAndLabelWrap
-                                    icon={<SVG_Play />}
+                                    icon={<SVG_Play fill="black" />}
                                     label={"Watch"}
                                 />
                             }
@@ -333,7 +330,7 @@ const MovieDetail: FC<{}> = () => {
                             ): void {
                                 navController(`${type}/detail/${id}`);
                             }} // Watch
-                            btn2Icon={<SVG_Favorite />}
+                            btn2Icon={<SVG_Favorite fill="black" />}
                             btn2Action={function (
                                 id: number,
                                 type?: media_type | undefined

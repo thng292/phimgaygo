@@ -8,7 +8,7 @@ const config = {
     backDropUrlSmall: 'https://image.tmdb.org/t/p/w780',
     backDropUrlOriginal: 'https://image.tmdb.org/t/p/original',
     language: "en",
-    region: "US",
+    region: "VI",
     timeWindow: 'week' as TimeWindow,
     timeLong: 1000 * 60 * 30,
     timeShort: 1000 * 60 * 4,
