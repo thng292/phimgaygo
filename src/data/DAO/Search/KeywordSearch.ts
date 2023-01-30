@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useQuery } from "react-query";
 import config, { oneTimeGet } from "../../Datasource/Config";
 import KeywordSearch from "../../model/Movie/KeywordSearch";

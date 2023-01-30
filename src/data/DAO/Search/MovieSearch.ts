@@ -1,6 +1,5 @@
 import DatasourceInstance from "../../Datasource/DatasourceInstance";
 import config, { oneTimeGet } from "../../Datasource/Config";
-import Movie from "../../model/Movie/MovieDiscover";
 import { useQuery } from "react-query";
 import MovieDiscover from "../../model/Movie/MovieDiscover";
 import MovieOverview from "../../model/Movie/MovieOverview";
