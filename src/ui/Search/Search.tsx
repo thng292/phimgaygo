@@ -33,7 +33,7 @@ interface SearchParams {
 }
 
 const Search: FC = () => {
-    const { navController } = useOutletContext<ContextProps>();
+    const { navController, handleFavorite } = useOutletContext<ContextProps>();
     const { query, page, adult, year } = useUrlParams();
 
     const [_query, _setQuery] = useState(query);
@@ -97,7 +97,6 @@ const Search: FC = () => {
         ];
     }, []);
 
-    //TODO: Add filter and pagination
     return (
         <div className='mt-48 w-full'>
             <div className='p-4 flex items-center h-16 rounded-lg border-2 border-main-1000 w-[80%] mx-auto'>
@@ -239,9 +238,7 @@ const Search: FC = () => {
                         navController(`${type}/detail/${id}`);
                     }} // Watch
                     btn2Icon={<SVG_Favorite fill="black" />}
-                    btn2Action={(id, type) => {
-                        throw new Error("Function not implemented.");
-                    }}
+                    btn2Action={handleFavorite}
                     onClickAction={(id, type) => {
                         navController(`${type}/detail/${id}`);
                     }}

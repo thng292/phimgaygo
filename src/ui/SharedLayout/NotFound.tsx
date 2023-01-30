@@ -14,7 +14,7 @@ import SVG_Favorite from "../common/SVG/SVG_Favorite";
 import SVG_Play from "../common/SVG/SVG_Play";
 
 function NotFound() {
-    const { navController } = useOutletContext<ContextProps>();
+    const { navController, handleFavorite } = useOutletContext<ContextProps>();
     // get Genres
     const movieGenres = getGenres();
     const tvShowGenres = getGenres("tv");
@@ -96,16 +96,10 @@ function NotFound() {
                     navController(`${type}/detail/${id}`);
                 }} // Watch
                 btn2Icon={<SVG_Favorite fill="black" />}
-                btn2Action={function (
-                    id: number,
-                    type?: media_type | undefined
-                ): void {
-                    throw new Error("Function not implemented.");
-                }} // Share
+                btn2Action={handleFavorite} // Share
                 onClickAction={(id, type) => {
                     navController(`${type}/detail/${id}`);
-                }} // Add to favorite
-                onSeeMore={() => {}}
+                }}
             />
         </>
     );

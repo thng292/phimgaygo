@@ -1,58 +1,77 @@
-import {FC, useState} from "react";
-import {User} from "firebase/auth";
-import UserAdditionData from "../../data/model/Firebase/UserAdditionData";
-import {NavigateFunction} from "react-router-dom";
+import { FC, useRef, useState } from "react";
+import { User } from "firebase/auth";
+import { Link, NavigateFunction } from "react-router-dom";
 import Screens from "../../utils/Screen";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { ClickAwayListener } from "@mui/base";
+import { Avatar, Divider, IconButton, Menu, MenuItem } from "@mui/material";
+import { deleteUserAccount } from "../../data/DAO/User/UserDAO";
+import { deleteAdditionalUserInfo } from "../../data/DAO/FireStore/AdditionalUserInfoDAO";
 
 const UserMenu: FC<{
-    user: User | null,
-    additionalUserInfo: UserAdditionData | null,
-    navigate: NavigateFunction
-}> = ({user, additionalUserInfo, navigate}) => {
-    const [showUserMenu, changeUserMenu] = useState(false);
+    user: User | null;
+    navigate: NavigateFunction;
+}> = ({ user, navigate }) => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     if (user) {
-        return <div
-            className='w-11 h-11 cursor-pointer rounded-full relative bg-cover bg-center'
-            onClick={() => {
-                changeUserMenu((old) => !old);
-            }}
-            style={{
-                backgroundImage: `url(${additionalUserInfo?.photoURL})`,
-            }}
-        >
-            <div
-                //TODO
-                className='absolute top-14 right-0 rounded-2xl shadow-2xl bg-white w-max py-2'
-                style={{
-                    opacity: showUserMenu ? "100%" : "0%",
-                    display: showUserMenu ? 'block' : 'none'
-                }}
-            >
-                <p className={'py-2 px-4 font-bold border-b border-gray-200'}>Hello {user.displayName}!</p>
-                <p className={'py-2 px-4 font-bold hover:bg-gray-300 rounded-2xl'}>Account</p>
-                <p className={'py-2 px-4 font-bold hover:bg-gray-300 rounded-2xl'}>You
-                    have: {additionalUserInfo?.points} points</p>
-                <p className={'py-2 px-4 font-bold hover:bg-gray-300 rounded-2xl mix-blend-difference'}
-                   onClick={() =>
-                       import('../../data/DAO/User/UserDAO').then(AuthLogic => {
-                           AuthLogic.signUserOut().then(() =>
-                               navigate(0)
-                           )
-                       })
-                   }
+        return (
+            <div>
+                <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+                    {user.photoURL ? (
+                        <Avatar src={user.photoURL} />
+                    ) : (
+                        <AccountCircleIcon fontSize='large' />
+                    )}
+                </IconButton>
+                <Menu
+                    open={Boolean(anchorEl)}
+                    onClose={() => setAnchorEl(null)}
+                    anchorEl={anchorEl}
+                    onClick={() => setAnchorEl(null)}
                 >
-                    Sign out
-                </p>
+                    <MenuItem disabled>Hello {user.displayName}!</MenuItem>
+                    <Divider></Divider>
+                    <MenuItem onClick={() => navigate(Screens.Library)}>
+                        Library
+                    </MenuItem>
+                    <MenuItem onClick={() => navigate(Screens.History)}>
+                        History
+                    </MenuItem>
+                    
+                    <MenuItem
+                        onClick={() =>
+                            import("../../data/DAO/User/UserDAO").then(
+                                (AuthLogic) => {
+                                    AuthLogic.signUserOut().then(() =>
+                                        navigate(0)
+                                    );
+                                }
+                            )
+                        }
+                    >
+                        Sign out
+                    </MenuItem>
+                    <MenuItem sx={{
+                        '&': {
+                            color: 'red'
+                        }
+                    }} onClick={() => {
+                        deleteAdditionalUserInfo(user.uid)
+                        deleteUserAccount(user)
+                    }}>Delete this account</MenuItem>
+                </Menu>
             </div>
-        </div>
+        );
     } else {
-        return <div
-            className='border-2 border-main-1000 rounded-3xl p-1 px-4 mx-1 font-bold tracking-wide cursor-pointer mix-blend-difference'
-            onClick={() => navigate(Screens.SignIn)}
-        >
-            Sign in
-        </div>
+        return (
+            <div
+                className='border-2 border-main-1000 rounded-3xl p-1 px-4 mx-1 font-bold tracking-wide cursor-pointer mix-blend-difference'
+                onClick={() => navigate(Screens.SignIn)}
+            >
+                Sign in
+            </div>
+        );
     }
-}
+};
 
-export default UserMenu
+export default UserMenu;

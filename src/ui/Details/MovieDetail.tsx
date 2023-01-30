@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import getDetail from "../../data/DAO/Detail/getDetail";
 import { Link, Navigate, useOutletContext, useParams } from "react-router-dom";
 import getTrailer from "../../data/DAO/Detail/getTrailer";
@@ -17,11 +17,13 @@ import IconAndLabelWrap from "../common/Component/IconAndLabelWrap";
 import TrailerSection from "./common/TrailerSection";
 import CalcWindowSize from "../../utils/windowSize";
 import Screens from "../../utils/Screen";
+import { addToHistory } from "../../data/DAO/FireStore/AdditionalUserInfoDAO";
 
-//TODO: Movie detail and watch
+const currentMediaType: media_type = 'movie'
+
 const MovieDetail: FC<{}> = () => {
     const { id } = useParams();
-    const { navController } = useOutletContext<ContextProps>();
+    const { navController, user, handleFavorite } = useOutletContext<ContextProps>();
     const data = getDetail(Number(id));
     const videos = getTrailer(Number(id), data.isSuccess);
     const WatchSectionRef = useRef<HTMLDivElement>(null);
@@ -30,10 +32,14 @@ const MovieDetail: FC<{}> = () => {
     const Similar = data.data?.similar.results ?? [];
     const movieGenres = getGenres();
 
+    //Add to history
+    useEffect(() => {
+        user && addToHistory(user.uid, {id: Number(id), media_type: currentMediaType})
+    }, [user, id])
+
     if (data.error) {
         return <Navigate to={"*"} />;
     }
-    // @ts-ignore
     return data.data ? (
         <div className={"relative"}>
             <section
@@ -100,7 +106,7 @@ const MovieDetail: FC<{}> = () => {
                         </button>
                         <button
                             className='p-2 m-1 rounded secondary flex'
-                            onClick={() => {}}
+                            onClick={() => handleFavorite(Number(id), currentMediaType)}
                         >
                             <SVG_Favorite fill="black" />{" "}
                             <span className={"text-black px-2"}>Favorite</span>
@@ -278,12 +284,7 @@ const MovieDetail: FC<{}> = () => {
                                 navController(`${type}/detail/${id}`);
                             }} // Watch
                             btn2Icon={<SVG_Favorite fill="black" />}
-                            btn2Action={function (
-                                id: number,
-                                type?: media_type | undefined
-                            ): void {
-                                throw new Error("Function not implemented.");
-                            }} // Share
+                            btn2Action={handleFavorite} // Share
                             onClickAction={(id, type) => {
                                 navController(`${type}/detail/${id}`);
                             }} // Add to favorite
@@ -296,7 +297,7 @@ const MovieDetail: FC<{}> = () => {
                             vote_avgs={Recommendations.map((value) =>
                                 value.vote_average.toPrecision(2)
                             )}
-                            media_type={["movie"]}
+                            media_type={[currentMediaType]}
                             subtitles={Recommendations.map(
                                 (value) => value.original_title
                             )}
@@ -347,7 +348,7 @@ const MovieDetail: FC<{}> = () => {
                             vote_avgs={Similar.map((value) =>
                                 value.vote_average.toPrecision(2)
                             )}
-                            media_type={["movie"]}
+                            media_type={[currentMediaType]}
                             subtitles={Similar.map(
                                 (value) => value.original_title
                             )}

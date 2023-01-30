@@ -75,14 +75,15 @@ const BigBanner: FC<BigBannerProps> = (props) => {
             onPointerLeave={() => {
                 setWillChangeBg(true);
             }}
-            onClick={() =>
+            onClick={(e) => {
+                e.stopPropagation();
                 props.onClickAction(
                     props.ids[currentIndex],
                     props.media_type[currentIndex]
-                )
-            }
+                );
+            }}
         >
-            <div className="absolute bottom-0 w-full">
+            <div className='absolute bottom-0 w-full'>
                 <div className='relative'>
                     <button
                         className='absolute z-20 top-1/2 right-0 hidden h-16 w-16 -translate-y-1/2 cursor-pointer bg-transparent md:flex justify-center items-center'
@@ -139,7 +140,7 @@ const BigBanner: FC<BigBannerProps> = (props) => {
                     />
                 </div>
                 <TitlesRow
-                    className="mt-4 bg-gradient-to-t from-black"
+                    className='mt-4 bg-gradient-to-t from-black'
                     titles={props.titles}
                     media_type={props.media_type}
                     ids={props.ids}
@@ -152,9 +153,9 @@ const BigBanner: FC<BigBannerProps> = (props) => {
                         value.toPrecision(2)
                     )}
                     imagesFullURL={
-                        (CalcWindowSize() !== 'Small' ?
-                            props.backDropsFullURL :
-                            props.postersFullURL)
+                        CalcWindowSize() !== "Small"
+                            ? props.backDropsFullURL
+                            : props.postersFullURL
                     }
                     btn1Icon={props.btn1Icon}
                     btn1Action={props.btn1Action}

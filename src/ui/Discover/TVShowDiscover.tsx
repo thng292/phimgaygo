@@ -26,7 +26,6 @@ import {
     MenuItem,
     Pagination,
     Select,
-    Switch,
     TextField,
 } from "@mui/material";
 import ExpandMoreRoundedIcon from "@mui/icons-material/ExpandMoreRounded";
@@ -54,7 +53,7 @@ let keywordLoadingFlag = true;
 const currentMediaType: media_type = "tv";
 
 const TVShowDiscover: FC = () => {
-    const { navController } = useOutletContext<ContextProps>();
+    const { navController, handleFavorite } = useOutletContext<ContextProps>();
     const { search, pathname } = useLocation();
     const URLparams = useUrlParams(search);
     const [sort, setSort] = useState({
@@ -428,13 +427,9 @@ const TVShowDiscover: FC = () => {
                             label='Watch'
                         />
                     }
-                    btn2Action={() => {
-                        //TODO Favorite
-                        throw "Function not implemented";
-                    }}
+                    btn2Action={handleFavorite}
                     btn2Icon={<SVG_Favorite fill='black' />}
                     onClickAction={(id) =>
-                        //TODO History
                         navController(
                             `${currentMediaType}${Screens.DetailStatic}/${id}`
                         )

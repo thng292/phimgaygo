@@ -93,13 +93,19 @@ const Title: FC<{
 
                     <div className={"absolute flex gap-2 bottom-0 p-4"}>
                         <button
-                            onClick={() => props.btn1Action()}
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                props.btn1Action()
+                            }}
                             className='w-fit h-fit p-2 rounded bg-main-1000'
                         >
                             {props.btn1Icon}
                         </button>
                         <button
-                            onClick={() => props.btn2Action()}
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                props.btn2Action()
+                            }}
                             className='w-fit h-fit p-2 rounded secondary'
                         >
                             {props.btn2Icon}

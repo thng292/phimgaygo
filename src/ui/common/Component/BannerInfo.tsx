@@ -48,12 +48,18 @@ const BannerInfo: FC<{
             >
                 <button
                     className="min-w-24 p-2 mx-1 rounded bg-main-1000"
-                    onClick={props.btn1Action}>
+                    onClick={e => {
+                        e.stopPropagation()
+                        props.btn1Action()
+                    }}>
                     {props.btn1Icon}
                 </button>
                 <button
                     className="w-fit p-2 mx-1 rounded secondary"
-                    onClick={props.btn2Action}
+                    onClick={e => {
+                        e.stopPropagation()
+                        props.btn2Action()
+                    }}
                 >
                     {props.btn2Icon}
                 </button>

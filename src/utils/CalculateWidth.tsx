@@ -40,7 +40,6 @@ function calc(
 ): number {
     const ws = CalcWindowSize()
     const availSpace = window.innerWidth - padding * 2
-    debugger
     switch (ws) {
         case WINDOW_SIZE.SMALL:     return (availSpace - gap * 2) / 3
         case WINDOW_SIZE.MEDIUM:    return (availSpace - gap * 2) / 3

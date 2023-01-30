@@ -6,14 +6,26 @@ import SVG_Search from "../common/SVG/SVG_Search";
 import ToTopBtn from "../common/Component/ToTopBtn";
 import ContextProps from "./ContextProps";
 import MenuIcon from "@mui/icons-material/Menu";
-import getAdditionalUserInfo from "../../data/DAO/FireStore/AdditionalUserInfoDAO";
+import getAdditionalUserInfo, {
+    addToFavorite,
+    removeFromFavorite,
+} from "../../data/DAO/FireStore/AdditionalUserInfoDAO";
 import UserAdditionData from "../../data/model/Firebase/UserAdditionData";
 import { FireAuth } from "../../data/Datasource/DatasourceInstance";
 import LoadingSpinner from "../common/Component/LoadingSpinner";
 import UserMenu from "./UserMenu";
-import { Drawer, IconButton, List, ListItemButton } from "@mui/material";
+import {
+    Button,
+    Drawer,
+    IconButton,
+    List,
+    ListItemButton,
+    Snackbar,
+} from "@mui/material";
 import useIntersection from "../../utils/ElementInViewObseve";
 import Screens from "../../utils/Screen";
+import CloseIcon from "@mui/icons-material/Close";
+import { media_type } from "../../data/Datasource/Config";
 
 export default function SharedLayout() {
     let navigate = useNavigate();
@@ -21,6 +33,41 @@ export default function SharedLayout() {
     const [searchField, setSearchField] = useState("");
     const [drawerOpend, setDrawerOpened] = useState(false);
     const [user, additionalUserInfo] = useUser();
+    const [snackbarState, setSnackbarState] = useState<{
+        open: boolean;
+        text: string;
+        undoAction?: () => void;
+    }>({
+        text: "",
+        open: false,
+    });
+    const handleFavorite = (filmID: number, media_type: media_type) => {
+        if (user) {
+            setSnackbarState({
+                open: true,
+                text: "Adding to favorite",
+            });
+            addToFavorite(user.uid, {id: filmID, media_type}).then(() =>
+                setSnackbarState({
+                    open: true,
+                    text: "Added to favorite",
+                    undoAction: () => {
+                        removeFromFavorite(user.uid, {id: filmID, media_type}).then(() => {
+                            setSnackbarState({
+                                open: true,
+                                text: "Undo success",
+                            });
+                        });
+                    },
+                })
+            );
+        } else {
+            setSnackbarState({
+                text: "Login to add this movie to your favorite list",
+                open: true,
+            });
+        }
+    };
     const footerRef = useRef<HTMLDivElement>(null);
     const footerInView = useIntersection(footerRef, 0);
     return (
@@ -64,32 +111,34 @@ export default function SharedLayout() {
                                         <MenuIcon />
                                     </IconButton>
                                 </ListItemButton>
-                                <ListItemButton onClick={() => {
-                                    setDrawerOpened(false)
-                                    navigate("/")
-                                }}>
+                                <ListItemButton
+                                    onClick={() => {
+                                        setDrawerOpened(false);
+                                        navigate("/");
+                                    }}
+                                >
                                     <p className='font-bold'>Home</p>
                                 </ListItemButton>
                                 <ListItemButton
                                     onClick={() => {
-                                        setDrawerOpened(false)
-                                        navigate(Screens.MovieDiscover)
+                                        setDrawerOpened(false);
+                                        navigate(Screens.MovieDiscover);
                                     }}
                                 >
                                     <p className='font-bold'>Movies</p>
                                 </ListItemButton>
                                 <ListItemButton
                                     onClick={() => {
-                                        setDrawerOpened(false)
-                                        navigate(Screens.TVDiscover)
+                                        setDrawerOpened(false);
+                                        navigate(Screens.TVDiscover);
                                     }}
                                 >
                                     <p className='font-bold'>TV Shows</p>
                                 </ListItemButton>
                                 <ListItemButton
                                     onClick={() => {
-                                        setDrawerOpened(false)
-                                        navigate(Screens.About)
+                                        setDrawerOpened(false);
+                                        navigate(Screens.About);
                                     }}
                                 >
                                     <p className='font-bold'>About</p>
@@ -162,7 +211,6 @@ export default function SharedLayout() {
                         </div>
                         <UserMenu
                             user={user}
-                            additionalUserInfo={additionalUserInfo}
                             navigate={navigate}
                         />
                     </div>
@@ -173,16 +221,44 @@ export default function SharedLayout() {
                     <Outlet
                         context={
                             {
-                                additionalUserInfo,
                                 user,
                                 navController: navigate,
                                 footerInView,
-                            } as ContextProps
+                                setSnackbarState,
+                                handleFavorite,
+                            } satisfies ContextProps
                         }
                     />
                 </React.Suspense>
             </div>
             <ToTopBtn show={!shouldTransparent} />
+            <Snackbar
+                open={snackbarState.open}
+                onClose={(e, reason) =>
+                    reason !== "clickaway" &&
+                    setSnackbarState((old) => {
+                        return { ...old, open: false };
+                    })
+                }
+                autoHideDuration={4000}
+                message={snackbarState.text}
+                action={
+                    <>
+                        {snackbarState.undoAction && (
+                            <Button onClick={snackbarState.undoAction}>
+                                UNDO
+                            </Button>
+                        )}
+                        <IconButton
+                            onClick={() => setSnackbarState((old) => {
+                                return { ...old, open: false };
+                            })}
+                        >
+                            <CloseIcon htmlColor='black ' />
+                        </IconButton>
+                    </>
+                }
+            />
             <footer
                 className={"flex flex-col justify-center items-center p-8"}
                 ref={footerRef}
@@ -204,7 +280,7 @@ export default function SharedLayout() {
 function useUser() {
     const [user, setUser] = useState<User | null>(null);
     const [additionalUserInfo, setAdditionalUserInfo] =
-        useState<UserAdditionData>();
+        useState<UserAdditionData | null>(null);
 
     useEffect(() => {
         onAuthStateChanged(FireAuth, (USER) => {
@@ -218,7 +294,7 @@ function useUser() {
             }
         });
     }, []);
-    return [user, additionalUserInfo] as [User | null, UserAdditionData];
+    return [user, additionalUserInfo] as [User | null, UserAdditionData | null];
 }
 
 function checkTop() {

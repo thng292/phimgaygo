@@ -1,4 +1,4 @@
-import { FC, useRef, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import { Link, Navigate, useOutletContext, useParams } from "react-router-dom";
 import ContextProps from "../SharedLayout/ContextProps";
 import CalculateWidth from "../../utils/CalculateWidth";
@@ -24,10 +24,14 @@ import NavigateNextRoundedIcon from "@mui/icons-material/NavigateNextRounded";
 import NavigateBeforeRoundedIcon from "@mui/icons-material/NavigateBeforeRounded";
 import CalcWindowSize from "../../utils/windowSize";
 import Screens from "../../utils/Screen";
+import { addToHistory } from "../../data/DAO/FireStore/AdditionalUserInfoDAO";
+
+const currentMediaType: media_type = 'tv'
 
 const TVShowDetail: FC = () => {
     const { id } = useParams();
-    const { navController, user } = useOutletContext<ContextProps>();
+    const { navController, user, handleFavorite } =
+        useOutletContext<ContextProps>();
 
     const itemWidth = CalculateWidth();
     const data = getTVDetail(Number(id));
@@ -41,7 +45,11 @@ const TVShowDetail: FC = () => {
     const WatchSectionRef = useRef<HTMLDivElement>(null);
     const Recommendations = data.data?.recommendations.results ?? [];
     const Similar = data.data?.similar.results ?? [];
-    const tvGenres = getGenres("tv");
+    const tvGenres = getGenres(currentMediaType);
+    //Add to history
+    useEffect(() => {
+        user && addToHistory(user.uid, {id: Number(id), media_type: currentMediaType})
+    }, [user, id])
 
     if (data.error) {
         return <Navigate to={"*"} />;
@@ -106,14 +114,14 @@ const TVShowDetail: FC = () => {
                                 });
                             }}
                         >
-                            <SVG_Play fill="black" />{" "}
+                            <SVG_Play fill='black' />{" "}
                             <span className={"text-black px-2"}>Watch</span>
                         </button>
                         <button
                             className='p-2 m-1 rounded secondary flex'
-                            onClick={() => {}}
+                            onClick={() => handleFavorite(Number(id), currentMediaType)}
                         >
-                            <SVG_Favorite fill="black" />{" "}
+                            <SVG_Favorite fill='black' />{" "}
                             <span className={"text-black px-2"}>Favorite</span>
                         </button>
                     </div>
@@ -145,7 +153,6 @@ const TVShowDetail: FC = () => {
                                 )}
                             </>
                         )}
-                        {/*TODO*/}
                         <div className={"overflow-y-auto w-full"}>
                             {(data.data?.seasons ?? [])
                                 .slice(0, seasonShowAll ? undefined : 3)
@@ -187,7 +194,6 @@ const TVShowDetail: FC = () => {
                             }
                         >
                             <p>Watch:</p>
-                            {/*TODO Next ep, next season, hide when first|last ep|season*/}
                             <ButtonGroup variant='text'>
                                 <Button
                                     size='small'
@@ -281,8 +287,6 @@ const TVShowDetail: FC = () => {
                                 <p className={"text-gray-400 pb-1"}>Genres:</p>
                                 <p>
                                     {data.data.genres.map((value, index) => {
-                                        //TODO: change to url param using useLocation
-                                        //https://codesandbox.io/s/react-router-query-parameters-kp309y?from-embed=&file=/example.js:727-738
                                         return (
                                             <>
                                                 <Link
@@ -389,13 +393,16 @@ const TVShowDetail: FC = () => {
                                 )
                             )}
                             itemWidth={itemWidth}
-                            imagesFullURL={Recommendations.map(
-                                (value) => (CalcWindowSize() !== 'Small' ? config.backDropUrlSmall + value.backdrop_path : config.posterUrl + value.poster_path)
+                            imagesFullURL={Recommendations.map((value) =>
+                                CalcWindowSize() !== "Small"
+                                    ? config.backDropUrlSmall +
+                                      value.backdrop_path
+                                    : config.posterUrl + value.poster_path
                             )}
                             className={""}
                             btn1Icon={
                                 <IconAndLabelWrap
-                                    icon={<SVG_Play fill="black" />}
+                                    icon={<SVG_Play fill='black' />}
                                     label={"Watch"}
                                 />
                             }
@@ -403,21 +410,13 @@ const TVShowDetail: FC = () => {
                                 id: number,
                                 type?: media_type | undefined
                             ): void {
-                                //TODO
                                 navController(`${type}/detail/${id}`);
                             }} // Watch
-                            btn2Icon={<SVG_Favorite fill="black" />}
-                            btn2Action={function (
-                                id: number,
-                                type?: media_type | undefined
-                            ): void {
-                                throw new Error("Function not implemented.");
-                                //TODO
-                            }} // Share
+                            btn2Icon={<SVG_Favorite fill='black' />}
+                            btn2Action={handleFavorite} // Add To fav
                             onClickAction={(id, type) => {
-                                //TODO
                                 navController(`${type}/detail/${id}`);
-                            }} // Add to favorite
+                            }}
                             tags={Recommendations.map((value) =>
                                 value.vote_average.toPrecision(2)
                             )}
@@ -445,13 +444,16 @@ const TVShowDetail: FC = () => {
                                 )
                             )}
                             itemWidth={itemWidth}
-                            imagesFullURL={Similar.map(
-                                (value) => (CalcWindowSize() !== 'Small' ? config.backDropUrlSmall + value.backdrop_path : config.posterUrl + value.poster_path)
+                            imagesFullURL={Similar.map((value) =>
+                                CalcWindowSize() !== "Small"
+                                    ? config.backDropUrlSmall +
+                                      value.backdrop_path
+                                    : config.posterUrl + value.poster_path
                             )}
                             className={""}
                             btn1Icon={
                                 <IconAndLabelWrap
-                                    icon={<SVG_Play fill="black" />}
+                                    icon={<SVG_Play fill='black' />}
                                     label={"Watch"}
                                 />
                             }
@@ -460,20 +462,12 @@ const TVShowDetail: FC = () => {
                                 type?: media_type | undefined
                             ): void {
                                 navController(`${type}/detail/${id}`);
-                                //TODO
                             }} // Watch
-                            btn2Icon={<SVG_Favorite fill="black" />}
-                            btn2Action={function (
-                                id: number,
-                                type?: media_type | undefined
-                            ): void {
-                                //TODO
-                                throw new Error("Function not implemented.");
-                            }} // Share
+                            btn2Icon={<SVG_Favorite fill='black' />}
+                            btn2Action={handleFavorite} // Add To fav
                             onClickAction={(id, type) => {
-                                //TODO
                                 navController(`${type}/detail/${id}`);
-                            }} // Add to favorite
+                            }}
                             tags={Similar.map((value) =>
                                 value.vote_average.toPrecision(2)
                             )}
@@ -487,7 +481,6 @@ const TVShowDetail: FC = () => {
                             )}
                         />
                     )}
-                    {/*TODO: Comment*/}
                 </div>
             </div>
         </div>

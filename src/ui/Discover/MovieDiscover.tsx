@@ -54,7 +54,7 @@ let keywordLoadingFlag = true;
 const currentMediaType: media_type = "movie";
 
 const MovieDiscover: FC = () => {
-    const { navController } = useOutletContext<ContextProps>();
+    const { navController, handleFavorite } = useOutletContext<ContextProps>();
     const { search, pathname } = useLocation();
     const URLparams = useUrlParams(search);
     const [adult, setAdult] = useState(URLparams.adult);
@@ -435,13 +435,9 @@ const MovieDiscover: FC = () => {
                             label='Watch'
                         />
                     }
-                    btn2Action={() => {
-                        //TODO
-                        throw "Function not implemented";
-                    }}
+                    btn2Action={handleFavorite}
                     btn2Icon={<SVG_Favorite fill='black' />}
                     onClickAction={(id) =>
-                        //TODO
                         navController(
                             `${currentMediaType}${Screens.DetailStatic}/${id}`
                         )

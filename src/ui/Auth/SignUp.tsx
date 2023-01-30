@@ -42,7 +42,6 @@ const SignUp: FC = () => {
         setShowModal(true);
         signUpEmail(email, password, displayName)
             .then(() => {
-                setSignUpSuccess(true);
                 setTimeout(() => navController(Screens.Home), 4000);
             })
             .catch((reason) => {

@@ -1,15 +1,13 @@
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import Logo from "../common/Logo";
 import {
     signInEmail,
     signInGoogle,
-    signUpEmail,
 } from "../../data/DAO/User/UserDAO";
 import CheckValidEmail from "../../utils/CheckValidEmail";
 import { Link, useOutletContext } from "react-router-dom";
 import ContextProps from "../SharedLayout/ContextProps";
 import {
-    Backdrop,
     Button,
     CircularProgress,
     Divider,
@@ -36,7 +34,6 @@ const SignIn: FC = () => {
         setShowModal(true);
         signInEmail(email, password)
             .then(() => {
-                setSignInSuccess(true);
                 setTimeout(() => navController(Screens.Home), 4000);
             })
             .catch((reason) => {
@@ -193,6 +190,7 @@ const SignIn: FC = () => {
                             setShowModal(true);
                             signInGoogle().then(() => {
                                 setSignInSuccess(true);
+                                setShowModal(true)
                                 setTimeout(
                                     () => navController(Screens.Home),
                                     4000

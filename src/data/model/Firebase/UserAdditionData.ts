@@ -1,12 +1,8 @@
+export type TVShowState = {id: number, media_type: 'tv'}
+export type MovieShowState = { id: number, media_type: 'movie' }
+export type HistoryItem = (MovieShowState | TVShowState)
+export type FavoriteItem = (MovieShowState | TVShowState)
 export default interface UserAdditionData {
-    bills: string[],
-    posts: string[],
-    library: {
-        id: number,
-        option: string,
-    }[],
-    points: number,
-    role: string,
-    displayName: string,
-    photoURL: string,
+    favorites: FavoriteItem[],
+    histories:  HistoryItem[]
 }

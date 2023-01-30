@@ -21,9 +21,11 @@ import useIntersection from "../../utils/ElementInViewObseve";
 import Genre from "../../data/model/Movie/Genre";
 import getTVDiscover from "../../data/DAO/Discovery/getTVDiscover";
 import CalcWindowSize from "../../utils/windowSize";
+import { User } from "firebase/auth";
+import Screens from "../../utils/Screen";
 
 const Home: FC = () => {
-    const { navController, footerInView } = useOutletContext<ContextProps>();
+    const { navController, footerInView, handleFavorite, user } = useOutletContext<ContextProps>();
 
     const [noFooterHit, setNoFooterHit] = useState(0)
     useEffect(() => {
@@ -105,14 +107,10 @@ const Home: FC = () => {
                 }
                 btn1Action={(id, type) => {
                     navController(`${type}/detail/${id}`);
-                }} // Watch
+                }}
                 btn2Icon={<SVG_Favorite fill="black" />}
-                btn2Action={(id, type) => {
-                    //TODO Favorite
-                    throw new Error("Function not implemented.");
-                }} // Add to favorite
+                btn2Action={ handleFavorite }
                 onClickAction={(id, type) => {
-                    //TODO history
                     navController(`${type}/detail/${id}`);
                 }}
                 itemWidth={itemWidth}
@@ -121,6 +119,9 @@ const Home: FC = () => {
                 {displayData.map(([type, { name, id }]) => {
                     return (
                         <TitleRowLazyLoadWrapper
+                            media_type={type}
+                            user={user}
+                            handleFavorite={handleFavorite}
                             navController={navController}
                             key={type + id}
                             name={
@@ -140,8 +141,7 @@ const Home: FC = () => {
                                     });
                                 }
                             }}
-                            movieGenres={movieGenres.data?.genres ?? []}
-                            tvShowGenres={tvShowGenres.data?.genres ?? []}
+                            genres={type === 'movie' ? (movieGenres.data?.genres ?? []) : (tvShowGenres.data?.genres ?? [])}
                             itemWidth={itemWidth}
                         />
                     );
@@ -154,24 +154,25 @@ const Home: FC = () => {
 export default Home;
 
 const TitleRowLazyLoadWrapper: FC<{
+    media_type: media_type,
     name: string;
     genreID: number;
     loaderFn: (
         enable: boolean
-    ) =>
-        | UseQueryResult<TVShowDiscover, unknown>
-        | UseQueryResult<MovieDiscover, unknown>;
-    movieGenres: Genre[];
-    tvShowGenres: Genre[];
+    ) => UseQueryResult<MovieDiscover, unknown> | UseQueryResult<TVShowDiscover, unknown>;
+    genres: Genre[];
     itemWidth?: number;
     navController: NavigateFunction;
+    user: User | null,
+    handleFavorite: (filmID: number, media_type: media_type) => void
 }> = ({
     name,
     loaderFn,
     itemWidth,
-    movieGenres,
-    tvShowGenres,
+    genres,
+    genreID,
     navController,
+    user, handleFavorite, media_type
 }) => {
     const ref = useRef<HTMLDivElement | null>(null);
     const visible = useIntersection(ref, 0);
@@ -206,14 +207,10 @@ const TitleRowLazyLoadWrapper: FC<{
                             ? value.original_title
                             : value.original_name
                     )}
-                    genres={data.map((value, index) => {
-                        return value.media_type === "movie"
-                            ? MapGenreToID(movieGenres, value.genre_ids)
-                            : MapGenreToID(tvShowGenres, value.genre_ids);
-                    })}
+                    genres={data.map((value, index) => MapGenreToID(genres, value.genre_ids))}
                     dates={data.map((value) =>
                         new Date(
-                            "release_date" in value
+                            'release_date' in value
                                 ? value.release_date
                                 : value.first_air_date
                         )
@@ -236,26 +233,16 @@ const TitleRowLazyLoadWrapper: FC<{
                             label={"Watch"}
                         />
                     }
-                    btn1Action={function (
-                        id: number,
-                        type?: media_type | undefined
-                    ): void {
+                    btn1Action={(id, type) => {
                         navController(`${type}/detail/${id}`);
-                    }} // Watch
+                    }}
                     btn2Icon={<SVG_Favorite fill="black" />}
-                    btn2Action={function (
-                        id: number,
-                        type?: media_type | undefined
-                    ): void {
-                        //TODO Favorite
-                        throw new Error("Function not implemented.");
-                    }} // Share
+                    btn2Action={ handleFavorite }
                     onClickAction={(id, type) => {
-                        //TODO history
                         navController(`${type}/detail/${id}`);
-                    }} // Add to favorite
+                    }}
                     itemWidth={itemWidth}
-                    onSeeMore={() => {}}
+                    onSeeMore={() => navController(`${media_type === 'movie' ? Screens.MovieDiscover : Screens.TVDiscover}?genres=${genreID}`)}
                 />
             </div>
         );

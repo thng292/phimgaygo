@@ -39,7 +39,7 @@
     grid-template-columns: 1fr 6fr 1fr 1fr 1fr;
 }
 
-.rounded-sm {
+.rounded-md {
     border-radius: 0.5rem;
 }
 

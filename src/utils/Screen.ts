@@ -8,12 +8,10 @@ const Screens = {
     DetailStatic: '/detail',
     Search: '/search',
     About: '/about',
-    Contact: '/contact',
-    FAQ: '/FAQ',
-    Forum: '/forum',
-    Auth: '/auth',
     SignUp: '/signup',
-    SignIn: '/signin'
+    SignIn: '/signin',
+    Library: '/library',
+    History: '/history'
 } as const
 
 export default Screens

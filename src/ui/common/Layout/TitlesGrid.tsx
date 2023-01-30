@@ -18,11 +18,11 @@ const TitlesGrid: FC<
           tags?: string[];
           className?: string;
           style?: React.CSSProperties;
-          btn1Action: (id: number, type?: media_type) => void;
+          btn1Action: (id: number, type: media_type) => void;
           btn1Icon: JSX.Element;
-          btn2Action: (id: number, type?: media_type) => void;
+          btn2Action: (id: number, type: media_type) => void;
           btn2Icon: JSX.Element;
-          onClickAction: (id: number, type?: media_type) => void;
+          onClickAction: (id: number, type: media_type) => void;
           onSeeMore?: () => void;
           itemWidth?: number;
       }

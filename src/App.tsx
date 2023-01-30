@@ -23,9 +23,8 @@ const Search = React.lazy(() => import("./ui/Search/Search"));
 const About = React.lazy(() => import("./ui/About/About"));
 const SignIn = React.lazy(() => import("./ui/Auth/SignIn"));
 const SignUp = React.lazy(() => import('./ui/Auth/SignUp'))
-const Contact = React.lazy(() => import("./ui/Contact/Contact"));
-const FAQ = React.lazy(() => import("./ui/FAQ/FAQ"));
-const Forum = React.lazy(() => import("./ui/Community/Forum"));
+const History = React.lazy(() => import('./ui/History/History'))
+const Library = React.lazy(() => import('./ui/Library/Library'))
 const NotFound = React.lazy(() => import("./ui/SharedLayout/NotFound"));
 // #endLazyImport
 
@@ -48,8 +47,6 @@ const queryClient = new QueryClient({
         },
     },
 });
-
-//TODO: ADD nested route to separate TVShow shows and Movies
 
 const router = createBrowserRouter([
     {
@@ -93,16 +90,12 @@ const router = createBrowserRouter([
                 element: <About />,
             },
             {
-                path: Screens.FAQ,
-                element: <FAQ />,
+                path: Screens.History,
+                element: <History />,
             },
             {
-                path: Screens.Contact,
-                element: <Contact />,
-            },
-            {
-                path: Screens.Forum,
-                element: <Forum />,
+                path: Screens.Library,
+                element: <Library/>
             },
             {
                 path: "*",
