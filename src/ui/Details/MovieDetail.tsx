@@ -132,7 +132,7 @@ const MovieDetail: FC<{}> = () => {
                             Watch:
                         </h2>
                         <div className={"w-full flex justify-center"}>
-                            <iframe
+                            {/* <iframe
                                 src={
                                     import.meta.env.PROD
                                         ? `https://www.2embed.to/embed/tmdb/movie?id=${id}`
@@ -140,7 +140,8 @@ const MovieDetail: FC<{}> = () => {
                                 }
                                 allowFullScreen
                                 className={"max-w-6xl aspect-video w-full"}
-                            />
+                            /> */}
+                            <p className="font-medium subpixel-antialiased text-2xl py-4">You know this is illegal</p>
                         </div>
                     </section>
                     {videos.data && videos.data?.results.length !== 0 && (
