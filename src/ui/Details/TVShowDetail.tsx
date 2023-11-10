@@ -261,8 +261,9 @@ const TVShowDetail: FC = () => {
                                 }
                                 allowFullScreen
                                 className={"max-w-6xl aspect-video w-full"}
-                            /> */}
+                            /> 
                             <p className="font-medium subpixel-antialiased text-2xl py-4">You know this is illegal</p>
+                            */}
                         </div>
                     </section>
                     {videos.data?.results &&

@@ -122,9 +122,9 @@ const MovieDetail: FC<{}> = () => {
                 <div className={"max-w-8xl w-full overflow-x-clip"}>
                     <section
                         ref={WatchSectionRef}
-                        className={"p-4"}
+                        className={""}
                     >
-                        <h2
+                        {/* <h2
                             className={
                                 "font-bold subpixel-antialiased text-3xl py-4"
                             }
@@ -132,7 +132,7 @@ const MovieDetail: FC<{}> = () => {
                             Watch:
                         </h2>
                         <div className={"w-full flex justify-center"}>
-                            {/* <iframe
+                            <iframe
                                 src={
                                     import.meta.env.PROD
                                         ? `https://www.2embed.to/embed/tmdb/movie?id=${id}`
@@ -140,9 +140,9 @@ const MovieDetail: FC<{}> = () => {
                                 }
                                 allowFullScreen
                                 className={"max-w-6xl aspect-video w-full"}
-                            /> */}
-                            <p className="font-medium subpixel-antialiased text-2xl py-4">You know this is illegal</p>
-                        </div>
+                            />
+                            // <p className="font-medium subpixel-antialiased text-2xl py-4">You know this is illegal</p>
+                        </div> */}
                     </section>
                     {videos.data && videos.data?.results.length !== 0 && (
                         <TrailerSection videos={videos.data.results} />
