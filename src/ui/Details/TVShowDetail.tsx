@@ -48,7 +48,7 @@ const TVShowDetail: FC = () => {
     const tvGenres = getGenres(currentMediaType);
     //Add to history
     useEffect(() => {
-        user && addToHistory(user.uid, {id: Number(id), media_type: currentMediaType})
+        user && addToHistory(user.uid, { id: Number(id), media_type: currentMediaType })
     }, [user, id])
 
     if (data.error) {
@@ -59,11 +59,10 @@ const TVShowDetail: FC = () => {
             <section
                 className={"pt-16 sm:min-h-[90vh] w-screen"}
                 style={{
-                    backgroundImage: `${
-                        window.innerWidth > 750
+                    backgroundImage: `${window.innerWidth > 750
                             ? "linear-gradient(to top, #000, transparent 10%), linear-gradient(to right, #000, #222222 20%, #42424200), "
                             : ""
-                    } url(${config.backDropUrl + data.data.backdrop_path})`,
+                        } url(${config.backDropUrl + data.data.backdrop_path})`,
                     backgroundSize: "contain",
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "right top",
@@ -188,88 +187,12 @@ const TVShowDetail: FC = () => {
                         ref={WatchSectionRef}
                         className={"p-4"}
                     >
-                        <div
-                            className={
-                                "font-bold subpixel-antialiased text-3xl py-4 flex justify-between items-center"
-                            }
-                        >
-                            <p>Watch:</p>
-                            <ButtonGroup variant='text'>
-                                <Button
-                                    size='small'
-                                    sx={{
-                                        color: "white",
-                                    }}
-                                    startIcon={<NavigateBeforeRoundedIcon />}
-                                    onClick={() =>
-                                        setEpisode((old) => {
-                                            if (old === 1) {
-                                                setSeason((value) => value - 1);
-                                                return data.data.seasons[
-                                                    season - 1
-                                                ].episode_count;
-                                            }
-                                            return old - 1;
-                                        })
-                                    }
-                                    disabled={
-                                        season ===
-                                            data.data.seasons.at(0)
-                                                ?.season_number && episode === 1
-                                    }
-                                >
-                                    Previous
-                                </Button>
-                                <Button
-                                    size='small'
-                                    sx={{
-                                        color: "white",
-                                    }}
-                                    endIcon={<NavigateNextRoundedIcon />}
-                                    disabled={
-                                        season ===
-                                            data.data.seasons.at(-1)
-                                                ?.season_number &&
-                                        episode ===
-                                            data.data.seasons.at(-1)
-                                                ?.episode_count
-                                    }
-                                    onClick={() =>
-                                        setEpisode((old) => {
-                                            if (
-                                                old ===
-                                                data.data.seasons[season]
-                                                    .episode_count
-                                            ) {
-                                                setSeason((value) => value + 1);
-                                                return 1;
-                                            }
-                                            return old + 1;
-                                        })
-                                    }
-                                >
-                                    Next
-                                </Button>
-                            </ButtonGroup>
-                        </div>
-                        <div className={"w-full flex justify-center"}>
-                            {/* <iframe
-                                src={
-                                    import.meta.env.PROD
-                                        ? `https://www.2embed.to/embed/tmdb/tv?id=${id}&s=${season}&e=${episode}`
-                                        : ""
-                                }
-                                allowFullScreen
-                                className={"max-w-6xl aspect-video w-full"}
-                            /> 
-                            <p className="font-medium subpixel-antialiased text-2xl py-4">You know this is illegal</p>
-                            */}
-                        </div>
+                        {videos.data?.results &&
+                            videos.data?.results.length !== 0 && (
+                                <TraierSection videos={videos.data?.results} />
+                            )}
                     </section>
-                    {videos.data?.results &&
-                        videos.data?.results.length !== 0 && (
-                            <TraierSection videos={videos.data?.results} />
-                        )}
+
                     <section className={"p-4"}>
                         <h2
                             className={
@@ -301,7 +224,7 @@ const TVShowDetail: FC = () => {
                                                 </Link>
                                                 <span>
                                                     {index !==
-                                                    data.data.genres.length - 1
+                                                        data.data.genres.length - 1
                                                         ? ", "
                                                         : ""}
                                                 </span>
@@ -398,7 +321,7 @@ const TVShowDetail: FC = () => {
                             imagesFullURL={Recommendations.map((value) =>
                                 CalcWindowSize() !== "Small"
                                     ? config.backDropUrlSmall +
-                                      value.backdrop_path
+                                    value.backdrop_path
                                     : config.posterUrl + value.poster_path
                             )}
                             className={""}
@@ -449,7 +372,7 @@ const TVShowDetail: FC = () => {
                             imagesFullURL={Similar.map((value) =>
                                 CalcWindowSize() !== "Small"
                                     ? config.backDropUrlSmall +
-                                      value.backdrop_path
+                                    value.backdrop_path
                                     : config.posterUrl + value.poster_path
                             )}
                             className={""}
